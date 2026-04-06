@@ -1,0 +1,238 @@
+---
+title: "Wandr: Collaborative Trip Planning for Groups"
+subtitle: "Travel UX · Personal Project · 2025"
+company: "Personal Project"
+year: "2025"
+role: "Product Designer"
+duration: "3 weeks"
+tags: ["Travel", "Collaboration", "Product Design"]
+thumbnail: "/images/case-studies/collaborative-travel-planner/cover.png"
+outcome: "Designing a shared itinerary tool that lets groups collaboratively plan multi-city trips — adding stops, commenting on destinations, and coordinating transportation."
+featured: true
+order: 9
+---
+
+## TL;DR
+
+Planning a multi-city vacation with family or friends quickly becomes overwhelming — scattered WhatsApp threads, conflicting spreadsheets, and no single source of truth. I designed **Wandr**, a collaborative trip planning tool where groups can build shared itineraries, add and modify destinations, comment on stops, plan length of stay, and coordinate transportation between locations — all in one place.
+
+**Problem:** Group trip planning is fragmented, stressful, and uncoordinated
+**Scope:** Mobile-first responsive web app — consumer travel UX
+
+---
+
+## Context
+
+Every year, millions of group trips fall apart not because people don't want to travel — but because the *planning* breaks down. Coordination across 4–8 people with different preferences, budgets, and schedules is inherently complex. Existing tools either solve for solo travelers (Google Trips, TripIt) or are too generic (shared Google Docs, Notion templates).
+
+The gap is clear: there's no purpose-built tool that treats **collaborative group planning** as a first-class experience — where everyone can contribute, discuss, and align on a shared itinerary in real time.
+
+> **The core question:** How do you give a group of travelers agency over a shared plan without the experience devolving into chaos?
+
+---
+
+## Defining the Problem
+
+I started by interviewing 12 people who had recently planned group trips (3+ travelers, 2+ cities). The patterns were immediately visible:
+
+### Key Pain Points
+
+- **No single source of truth** — Plans lived across WhatsApp groups, Google Sheets, screenshots, and individual notes. Nobody knew what was "final."
+- **Decision paralysis in groups** — Adding a destination meant convincing everyone, but there was no structured way to propose, discuss, or vote on stops.
+- **Duration planning was guesswork** — Groups rarely aligned on how long to spend at each city. One person wants 3 days in Jaipur, another wants 1.
+- **Transport between cities was an afterthought** — Flight/train options between stops were researched separately, often by whoever took initiative.
+- **Uneven contribution** — Usually one person did 80% of the planning work. Others passively consumed the plan.
+
+### User Research Snapshot
+
+| Insight | Source |
+|---|---|
+| 9/12 users said "one person ends up doing all the work" | Interviews |
+| Average group uses 4+ tools to plan a single trip | Survey (n=30) |
+| 67% of plans change significantly after initial creation | Survey |
+| Transport coordination was rated the #1 pain point | Card sort |
+
+---
+
+## Design Principles
+
+Before jumping into solutions, I established four principles to guide every decision:
+
+1. **Shared by default** — Every action is visible to the group. No private parallel plans.
+2. **Low-friction contribution** — Adding a stop or comment should take < 10 seconds.
+3. **Structured flexibility** — Provide enough structure to prevent chaos, but don't over-constrain. Groups need room to explore.
+4. **Progressive disclosure** — Show the simple version first (destinations + dates). Transport, budgets, and logistics surface when needed.
+
+---
+
+## Information Architecture
+
+The tool is organized around a **Trip** as the top-level container:
+
+```
+Trip
+├── Overview (map view + timeline)
+├── Stops (ordered list of destinations)
+│   ├── Stop Details (city, dates, duration)
+│   ├── Places to Visit (within the stop)
+│   ├── Accommodation
+│   └── Discussion Thread
+├── Transport (between stops)
+│   ├── Options (flight, train, bus, drive)
+│   └── Group Poll
+├── Travelers (member list + roles)
+└── Budget Tracker
+```
+
+Each **Stop** is a first-class object — not just a pin on a map. It has its own duration, sub-destinations, and discussion thread. This lets groups go deep on individual cities without cluttering the top-level view.
+
+---
+
+## Core Flows
+
+### 1. Creating a Trip & Inviting the Group
+
+The onboarding flow is designed to get a shareable trip link in under 60 seconds:
+
+1. **Name the trip** — "Rajasthan Road Trip" or "Europe Summer 2025"
+2. **Set rough dates** — Flexible date range (not rigid start/end)
+3. **Invite travelers** — Share link via WhatsApp, copy link, or email
+4. **Assign roles** — Organizer (full edit), Contributor (add/comment), Viewer (read-only)
+
+> Design decision: I chose link-based invites over account-required access. Reducing friction to join was critical — if even one person can't get in, the tool fails.
+
+### 2. Building the Itinerary
+
+The shared itinerary is the heart of the product. It renders as a **vertical timeline** with stops as nodes:
+
+- **Add a Stop** — Search for a city/destination, set arrival/departure dates, and add to the timeline. The group sees it immediately.
+- **Reorder Stops** — Drag to rearrange the route. The map updates in real time.
+- **Set Duration** — Each stop shows a duration badge. Travelers can suggest changes, triggering a lightweight inline poll.
+- **Comment on Stops** — Every stop has a threaded discussion. "Should we do 3 nights here instead of 2?" lives right next to the destination, not in a separate chat.
+
+### 3. Adding Places Within a Stop
+
+Inside each stop, travelers can suggest **tourist hubs and attractions**:
+
+- Search or manually add places (temples, beaches, restaurants, viewpoints)
+- Each place shows estimated visit time and distance from accommodation
+- Group members can upvote/downvote places — the most popular float to the top
+- Places can be organized into day-wise sub-groups
+
+### 4. Transport Between Stops
+
+Between every pair of consecutive stops, a **Transport Card** appears:
+
+- Auto-suggests options: flights, trains, buses, or self-drive with estimated duration and cost
+- Group members can add specific options they've found (e.g., "Rajdhani Express at 6am, ₹1,200")
+- A quick poll lets the group vote on their preferred option
+- Once decided, the chosen transport locks into the timeline with booking links
+
+---
+
+## Key Design Decisions
+
+### Timeline Over Map-First
+
+Most travel tools lead with a map. I chose a **vertical timeline** as the primary view because:
+- It naturally communicates sequence and duration
+- It's easier to scan on mobile
+- It maps to how people think about trips ("first we go here, then here")
+- Map is available as a secondary view for spatial context
+
+### Inline Discussion Over Separate Chat
+
+Rather than a single group chat (which gets noisy and loses context), every stop and transport segment has its own **threaded discussion**. This keeps conversations contextual — "should we add an extra day?" lives next to the stop it refers to, not buried in a 200-message thread.
+
+### Lightweight Polls Over Consensus
+
+Groups are slow to decide. Instead of requiring explicit consensus on every change, Wandr uses **soft signals**:
+- Upvotes/downvotes on suggested places
+- Quick 2-option polls on transport or duration
+- An "Any works for me" option to reduce blocking
+
+### Progressive Budget Tracking
+
+Budget wasn't part of the initial problem statement, but every interviewee mentioned it. I added a lightweight **running cost estimate** that updates as transport and accommodation are added — without requiring manual expense entry.
+
+---
+
+## Visual Design
+
+The visual language balances **warmth and clarity**:
+
+- **Color palette**: Earthy tones (warm sand, terracotta accents) to evoke travel without feeling corporate
+- **Typography**: Clean sans-serif for UI, slightly playful display font for trip names
+- **Illustrations**: Minimal line illustrations for empty states ("No stops yet — where to first?")
+- **Map style**: Muted base map with colorful route lines connecting stops
+- **Cards**: Rounded, elevated cards for stops with subtle shadows — each one feels like a postcard
+
+### Component System
+
+| Component | Purpose |
+|---|---|
+| StopCard | Destination with dates, duration, and discussion |
+| TransportCard | Connection between stops with options and poll |
+| PlaceChip | Suggested attraction within a stop |
+| TravelerAvatar | Group member indicator with role badge |
+| PollWidget | Inline voting for group decisions |
+| TimelineConnector | Visual line connecting stops with transport info |
+
+---
+
+## Interaction Details
+
+### Real-Time Collaboration
+
+All changes sync in real time via WebSockets:
+- When someone adds a stop, it animates into the timeline for all viewers
+- Active cursors show who's currently editing what
+- A subtle activity feed shows recent changes ("Priya added Udaipur as Stop 3")
+
+### Conflict Resolution
+
+When two people edit the same stop simultaneously:
+- Last-write-wins for simple fields (dates, duration)
+- Discussion prompts appear for conflicting changes ("Arnab changed duration to 2 days, Priya changed it to 4 — discuss?")
+
+### Offline Support
+
+Travel planning often happens on spotty connections. The app works offline:
+- Changes queue locally and sync when connection returns
+- Clear indicators show which changes are pending sync
+
+---
+
+## Outcome & Impact
+
+This is a personal project, so metrics are based on usability testing with 8 participants (2 groups of 4):
+
+- **Task completion rate**: 100% — all groups successfully built a 4-city itinerary in under 15 minutes
+- **Average time to add a stop**: 12 seconds (target was < 15s)
+- **Collaboration balance**: In testing, contribution was distributed 35/30/20/15% across group members — significantly better than the typical 80/10/5/5% split
+- **Transport planning**: Groups rated transport coordination 4.6/5 for ease of use (vs. 1.8/5 for their current process)
+- **NPS**: 72 across test participants
+
+> "This is exactly what we needed for our Himachal trip last month. We used 4 different apps and still messed up the train booking." — Test participant
+
+---
+
+## Reflection
+
+### What Worked
+
+- **Threaded discussions per stop** eliminated the "lost in chat" problem completely
+- **The timeline-first approach** was immediately intuitive — nobody needed to be taught how it worked
+- **Transport cards between stops** addressed the #1 pain point from research
+
+### What I'd Do Differently
+
+- **Budgeting needs more depth** — The lightweight tracker was appreciated but power users wanted split-expense functionality
+- **Notification design** — With 4+ people editing, notification volume could get noisy. I'd add digest modes and smart grouping
+- **Template trips** — Starting from a blank slate is harder than adapting an existing plan. Pre-built templates for popular routes would reduce the cold-start problem
+
+### What's Next
+
+- Integrate with booking APIs (flights, hotels) for one-tap reservations
+- Add AI-powered suggestions ("Based on your stops, you might enjoy...")
+- Build a native mobile app for on-trip use with offline-first architecture

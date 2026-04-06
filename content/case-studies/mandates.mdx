@@ -1,0 +1,65 @@
+---
+title: "Mandates: Designing Recurring Payments"
+subtitle: "Payment Infrastructure · JUSPAY · 2024"
+company: "JUSPAY"
+year: "2024"
+role: "Product Designer II"
+duration: "3 months"
+tags: ["Fintech", "Recurring Payments", "UPI"]
+thumbnail: "/images/case-studies/mandates/cover.jpg"
+outcome: "Simplifying recurring payment setup and management — making mandates transparent, trustworthy, and easy to control."
+featured: true
+order: 7
+---
+
+## TL;DR
+
+UPI mandates (autopay) let merchants block or debit recurring amounts from a user's bank account. But the existing flow was confusing — users didn't understand what they were authorizing, how much would be debited, or how to revoke it. I redesigned the mandate creation and confirmation experience across desktop and mobile, making the process transparent, trustworthy, and simple.
+
+**Problem:** Users abandoned mandate setup because the flow felt opaque and risky
+**Scope:** Desktop web, Mobile web, Android & iOS — checkout UX
+
+---
+
+## Context
+
+BASBA (Block Amount and Send Back on Approval) is a UPI-based payment flow where the premium amount is blocked via a one-time mandate and only debited after merchant confirmation. This is critical for industries like insurance, subscriptions, and recurring services where the final amount may differ from the initial authorization.
+
+The challenge: mandate flows involve multiple parties (merchant, payment aggregator, UPI app, bank) and require users to understand concepts like "mandate amount vs premium amount" and "blocking vs debiting" — financial concepts most users have never encountered.
+
+> **The core tension:** How do you make a complex multi-party financial authorization feel as simple as a regular payment?
+
+---
+
+## Design Showcase
+
+<MandatesBento />
+
+---
+
+## Approach
+
+The redesign focused on three principles:
+
+1. **Transparency first** — Show exactly what's being authorized: the premium amount, the mandate ceiling, the end date, and the frequency. No hidden terms.
+
+2. **Progressive disclosure** — Don't overwhelm users with all details upfront. Surface the essentials (amount, app, action) and let curious users dig deeper via "Know More" links.
+
+3. **Trust through familiarity** — Use familiar UPI app logos, bank names, and payment patterns so the mandate flow feels like a natural extension of a regular UPI payment.
+
+---
+
+## Key Decisions
+
+- **Split-panel desktop layout:** Payment methods on the left, detailed flow on the right — mirrors the mental model of "choose then configure"
+- **QR + UPI ID dual path:** Desktop users get both scan-to-pay and direct UPI ID entry, reducing friction for different user preferences
+- **Mandate details card:** A clear summary showing Premium Amount, Mandate Amount, End Date, and Frequency — all visible before the user taps "Proceed to Pay"
+- **Multi-app support:** CRED, PhonePe, Google Pay, Paytm, BHIM — users see their preferred app upfront with familiar branding
+
+---
+
+## Impact
+
+- Reduced mandate setup abandonment
+- Improved user trust through transparent amount disclosure
+- Consistent experience across 500+ merchant integrations

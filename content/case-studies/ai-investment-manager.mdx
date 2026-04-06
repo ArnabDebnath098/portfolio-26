@@ -1,0 +1,276 @@
+---
+title: "Wealth Lens: AI-Powered Investment Manager"
+subtitle: "Fintech · AI · Personal Project · 2025"
+company: "Personal Project"
+year: "2025"
+role: "Product Designer"
+duration: "4 weeks"
+tags: ["Fintech", "AI", "Investment", "Product Design"]
+thumbnail: "/images/case-studies/investment.png"
+outcome: "Designing a unified asset management experience where users track portfolios, get AI-driven investment suggestions, and visualize growth over time."
+featured: true
+order: 10
+---
+
+## TL;DR
+
+Most investors juggle 4–6 apps to track their money — one for stocks, one for mutual funds, a spreadsheet for real estate, a DeFi wallet for crypto. **Wealth Lens** brings everything into a single dashboard where users can add all their assets, track investment history and growth, and receive AI-suggested investment recommendations based on their goals, risk appetite, and market conditions.
+
+**Problem:** Fragmented investment tracking leads to poor financial decisions and missed opportunities
+**Scope:** Mobile-first responsive web app — consumer fintech
+
+---
+
+## Context
+
+India's retail investor base has exploded — from 40M demat accounts in 2020 to over 150M in 2025. Yet most of these investors are first-generation, managing portfolios across multiple brokers (Zerodha, Groww, Angel One), mutual fund platforms (Coin, Kuvera), crypto exchanges (WazirX, CoinSwitch), and offline assets like real estate and gold.
+
+The result: nobody has a complete picture of their wealth. Decisions are made in silos — selling mutual funds while ignoring underperforming stocks, or over-allocating to crypto without seeing total equity exposure. Existing tools either focus on one asset class or require tedious manual entry.
+
+> **The core question:** How do you give everyday investors a single, intelligent view of everything they own — and help them make better decisions without requiring a finance degree?
+
+---
+
+## Defining the Problem
+
+I interviewed 15 retail investors (age 24–40, portfolio size ₹2L–₹50L) across experience levels. The findings were consistent:
+
+### Key Pain Points
+
+- **No single source of truth** — Investors check 3–5 apps daily. Nobody knows their actual net worth at any given moment.
+- **Growth tracking is manual** — Users screenshot portfolio values or maintain spreadsheets to track performance over time. Most give up after a few months.
+- **Decision paralysis** — "Should I invest more in this fund or diversify?" Without holistic context, every decision feels like guesswork.
+- **Jargon overload** — Terms like Sharpe ratio, CAGR, expense ratio, and alpha intimidate new investors. They want simple answers: "Am I doing well? What should I do next?"
+- **No actionable insights** — Apps show data but don't tell you what to do with it. A 12% return sounds good until you realize the benchmark did 18%.
+
+### Research Snapshot
+
+| Insight | Source |
+|---|---|
+| 13/15 users track investments across 3+ platforms | Interviews |
+| 80% have no idea of their actual asset allocation | Survey (n=40) |
+| Average time spent checking investments: 25 min/day | Screen time data |
+| "I wish someone would just tell me what to do" — most common quote | Interviews |
+| 60% tried portfolio trackers but abandoned within 2 months | Survey |
+
+---
+
+## Design Principles
+
+1. **Consolidate, don't complicate** — Adding an asset should take under 30 seconds. Auto-sync where possible, manual add as fallback.
+2. **Insights over information** — Don't just show numbers. Tell the user what the numbers mean and what to do about it.
+3. **Progressive intelligence** — Start simple (total value, basic growth). Unlock deeper AI insights as the user adds more data and sets goals.
+4. **Trust through transparency** — Every AI suggestion must show its reasoning. "Why is it recommending this?" should always be answerable.
+
+---
+
+## Information Architecture
+
+```
+Wealth Lens
+├── Dashboard (net worth, allocation pie, growth chart)
+├── Assets
+│   ├── Stocks (synced + manual)
+│   ├── Mutual Funds (synced + manual)
+│   ├── Fixed Deposits
+│   ├── Crypto
+│   ├── Real Estate (manual)
+│   ├── Gold (manual + live pricing)
+│   └── Custom Assets
+├── History & Growth
+│   ├── Timeline (net worth over time)
+│   ├── Asset-wise performance
+│   └── Benchmark comparison
+├── AI Advisor
+│   ├── Portfolio Health Score
+│   ├── Suggestions (invest, rebalance, exit)
+│   ├── Goal-based planning
+│   └── Market alerts
+├── Goals
+│   ├── Retirement
+│   ├── Home purchase
+│   ├── Emergency fund
+│   └── Custom goals
+└── Settings & Connections
+    ├── Broker sync (OAuth)
+    ├── Risk profile quiz
+    └── Notification preferences
+```
+
+---
+
+## Core Flows
+
+### 1. Onboarding & Asset Addition
+
+Getting users to add their first assets is the critical activation moment:
+
+1. **Quick risk profile** — 5-question quiz (investment horizon, risk comfort, income stability) that takes under 60 seconds
+2. **Auto-sync brokers** — Connect Zerodha, Groww, Angel One via OAuth. Stocks and mutual funds import automatically
+3. **Manual asset entry** — For real estate, gold, FDs, and crypto. Guided forms with smart defaults (e.g., current gold rate auto-filled)
+4. **First dashboard moment** — Once 2+ assets are added, the dashboard lights up with net worth, allocation breakdown, and the first AI insight
+
+> Design decision: I show the dashboard with partial data rather than gating it behind "add all assets." Seeing value immediately motivates users to add more.
+
+### 2. Dashboard & Portfolio Overview
+
+The dashboard is the daily landing screen. It answers three questions at a glance:
+
+- **"How much do I have?"** — Net worth prominently displayed with daily/weekly/monthly change
+- **"Where is my money?"** — Asset allocation donut chart with drill-down by category
+- **"Am I doing well?"** — Portfolio performance vs. benchmark (Nifty 50, S&P 500) with simple up/down indicators
+
+Key interactions:
+- Tap any segment of the allocation chart to see individual holdings
+- Swipe between time ranges (1W, 1M, 3M, 1Y, All) on the growth chart
+- Pull to refresh for latest prices
+
+### 3. Investment History & Growth Tracking
+
+The history section automatically tracks portfolio value over time — no manual logging needed:
+
+- **Net worth timeline** — Area chart showing total portfolio value with key events marked (large deposits, market crashes, rebalances)
+- **Asset-wise performance** — Compare how each asset class performed over the same period
+- **Holding period returns** — For each investment, show actual returns vs. what you'd have earned in a fixed deposit (opportunity cost framing)
+- **Monthly snapshots** — Auto-generated monthly summary: what grew, what fell, net change, new investments made
+
+### 4. AI Investment Advisor
+
+The centerpiece feature. The AI advisor analyzes the user's complete portfolio and provides:
+
+**Portfolio Health Score (0–100)**
+A single number that captures diversification, risk-adjusted returns, goal alignment, and cost efficiency. The score breaks down into:
+- Diversification (are you over-concentrated?)
+- Risk alignment (does your portfolio match your stated risk appetite?)
+- Cost efficiency (are you paying high expense ratios unnecessarily?)
+- Goal progress (are you on track for your financial goals?)
+
+**Actionable Suggestions**
+Each suggestion is a card with:
+- What to do ("Invest ₹5,000 in Nifty 50 Index Fund")
+- Why ("Your large-cap allocation is 15% below your target. This fund has the lowest expense ratio at 0.1%")
+- Expected impact ("This would improve your diversification score from 62 to 71")
+- One-tap action (deep link to broker app or in-app investment)
+
+**Types of suggestions:**
+- **Invest** — Where to put new money based on current allocation gaps
+- **Rebalance** — Sell overweight positions, buy underweight ones
+- **Exit** — Flag consistently underperforming holdings with better alternatives
+- **Protect** — Emergency fund adequacy, insurance gaps, over-exposure to volatile assets
+
+**Goal-Based Planning**
+Users set financial goals (retirement at 50, buy house in 5 years, ₹10L emergency fund). The AI:
+- Calculates required monthly SIP to reach each goal
+- Shows current progress as a percentage
+- Adjusts recommendations when the user falls behind or gets ahead
+- Sends gentle nudges ("You're ₹3,000 short on this month's retirement contribution")
+
+---
+
+## Key Design Decisions
+
+### Health Score Over Raw Metrics
+
+New investors don't understand Sharpe ratios. A single 0–100 score with color coding (red/yellow/green) is immediately intuitive. Power users can expand to see the underlying metrics, but the score is the hook.
+
+### Explanation-First AI
+
+Every AI suggestion shows its reasoning in plain language. "Invest in X" is not enough — "Invest in X because your portfolio is 70% in one sector, and this fund gives you exposure to healthcare which you currently have 0% in" builds trust and educates.
+
+### Passive Tracking Over Active Logging
+
+The #1 reason portfolio trackers are abandoned is the maintenance burden. Wealth Lens tracks value automatically via broker sync and live pricing. The user's job is just to add assets once — the app does the rest.
+
+### Nudge, Don't Nag
+
+Financial apps that send daily notifications get muted. Wealth Lens sends a maximum of 2 notifications per week:
+- Weekly portfolio summary (Sunday evening)
+- Urgent alerts only (significant market events affecting their holdings, goal deadlines approaching)
+
+---
+
+## Visual Design
+
+The visual language conveys **trust, clarity, and calm** — critical for a finance app:
+
+- **Color palette**: Deep navy primary (#1a1f36), white surfaces, green for gains, warm red for losses. Accent: electric blue (#3366FF) for CTAs and AI elements
+- **Typography**: Clean geometric sans-serif. Tabular numbers for financial data. Large, confident net worth display
+- **Charts**: Minimal, no grid lines. Smooth curves with gradient fills. Interactive but not overwhelming
+- **AI elements**: Subtle glow/aurora effect on AI suggestion cards to differentiate them from static data
+- **Empty states**: Encouraging, not clinical. "Your portfolio is waiting" with illustration, not "No data found"
+
+### Component System
+
+| Component | Purpose |
+|---|---|
+| NetWorthCard | Hero metric with change indicator |
+| AllocationDonut | Interactive asset class breakdown |
+| GrowthChart | Time-series area chart with range selector |
+| AssetRow | Individual holding with return % and sparkline |
+| AIInsightCard | Suggestion with reasoning, impact, and CTA |
+| HealthScoreRing | Animated circular progress with breakdown |
+| GoalTracker | Progress bar with projected completion date |
+| HistorySnapshot | Monthly summary card with key metrics |
+
+---
+
+## Interaction Details
+
+### Smart Asset Detection
+
+When a user connects a broker, the app doesn't just import current holdings — it reconstructs transaction history to show accurate cost basis and holding period returns. This means:
+- True XIRR calculations, not just point-to-point returns
+- Tax-lot tracking for capital gains estimation
+- Dividend reinvestment properly accounted for
+
+### Real-Time Portfolio Simulation
+
+Before acting on a suggestion, users can simulate the impact:
+- "If I invest ₹10,000 in this fund, how does my allocation change?"
+- Visual before/after of the allocation donut
+- Updated health score preview
+- Projected growth with the new investment added
+
+### Market Context Cards
+
+When markets move significantly, context cards appear on the dashboard:
+- "Nifty fell 3% today. Your portfolio impact: -₹12,400 (1.2%)"
+- "Your tech stocks fell more than the market. AI suggests: hold — fundamentals unchanged"
+- Prevents panic selling by framing losses in portfolio context rather than absolute numbers
+
+---
+
+## Outcome & Impact
+
+Usability tested with 10 participants (mix of new and experienced investors):
+
+- **Onboarding completion**: 90% added 3+ assets within 5 minutes
+- **Dashboard comprehension**: 100% could accurately state their net worth and top allocation within 10 seconds
+- **AI trust score**: 4.2/5 — users rated AI suggestions as "trustworthy" when reasoning was shown (vs. 2.8/5 without reasoning in A/B test)
+- **Health Score engagement**: 8/10 users immediately tried to understand how to improve their score
+- **Weekly retention intent**: 9/10 said they would check the app at least weekly (vs. 4/10 for their current tracking method)
+
+> "This is the first app that actually tells me what to do instead of just showing me numbers I don't understand." — Test participant (age 27, 2 years investing experience)
+
+---
+
+## Reflection
+
+### What Worked
+
+- **The Health Score** was the breakout feature — users immediately latched onto it as a gamified motivation to improve their portfolio
+- **Explanation-first AI** dramatically increased trust. The A/B test proved reasoning isn't optional
+- **Auto-sync eliminated the logging burden** that kills most portfolio trackers
+
+### What I'd Do Differently
+
+- **Tax optimization suggestions** — Users asked about tax harvesting and LTCG/STCG implications. This was out of scope but clearly valuable
+- **Social benchmarking** — "How does my portfolio compare to people my age?" was a common request. Needs careful privacy design
+- **Spending integration** — Connecting bank accounts to track savings rate alongside investments would complete the financial picture
+
+### What's Next
+
+- Build a functional prototype with mock portfolio data and real market pricing APIs
+- Explore partnerships with discount brokers for seamless in-app investing
+- Add multi-currency support for NRI investors
+- Design a "Family Portfolio" view for household-level wealth tracking

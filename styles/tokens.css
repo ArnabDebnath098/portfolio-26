@@ -1,0 +1,253 @@
+/* ============================================
+   DESIGN TOKENS — Arnab Debnath Portfolio
+   Primitive → Semantic → Component
+   Indian Editorial: Parchment · Terracotta · Gold · Indigo
+   ============================================ */
+
+:root {
+  /* ── Primitive: Monochrome ── */
+  --primitive-black:   #0a0a08;
+  --primitive-black-2: #111110;
+  --primitive-black-3: #1a1a17;
+  --primitive-black-4: #232320;
+  --primitive-black-5: #2e2e2a;
+  --primitive-gray-1:  #3a3a35;
+  --primitive-gray-2:  #4f4f48;
+  --primitive-gray-3:  #6b6b62;
+  --primitive-gray-4:  #8c8c80;
+  --primitive-gray-5:  #abab9d;
+  --primitive-gray-6:  #c4c4b4;
+  --primitive-gray-7:  #d9d9cc;
+  --primitive-gray-8:  #eae8e0;
+  --primitive-gray-9:  #f5f3ed;
+  --primitive-white:   #fdf9f3;
+
+  /* ── Primitive: Parchment (warm base) ── */
+  --primitive-parchment-1: #fdf9f3;
+  --primitive-parchment-2: #f7f2e8;
+  --primitive-parchment-3: #ede6d6;
+  --primitive-parchment-4: #e0d8c4;
+
+  /* ── Primitive: Terracotta (primary accent) ── */
+  --primitive-red-vivid:  #c8401a;
+  --primitive-red-bright: #e04d20;
+  --primitive-red-deep:   #a03214;
+  --primitive-red-dark:   #7a240e;
+  --primitive-red-subtle: rgba(200, 64, 26, 0.12);
+  --primitive-red-muted:  rgba(200, 64, 26, 0.06);
+
+  /* ── Primitive: Gold (ornamental only) ── */
+  --primitive-gold-bright: #c8962a;
+  --primitive-gold-deep:   #a67820;
+  --primitive-gold-subtle: rgba(200, 150, 42, 0.15);
+
+  /* ── Primitive: Indigo (cultural depth) ── */
+  --primitive-indigo-vivid:  #3b3f8c;
+  --primitive-indigo-deep:   #2d3070;
+  --primitive-indigo-subtle: rgba(59, 63, 140, 0.10);
+
+  /* ── Primitive: Status ── */
+  --primitive-green-400: #4ade80;
+  --primitive-green-500: #22c55e;
+  --primitive-amber-400: #fbbf24;
+  --primitive-amber-500: #f59e0b;
+
+  /* ── Primitive: Space ── */
+  --space-0:  0;
+  --space-px: 1px;
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+  --space-40: 10rem;
+  --space-48: 12rem;
+
+  /* ── Primitive: Radius ── */
+  --radius-none: 0;
+  --radius-xs:   3px;
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-2xl:  32px;
+  --radius-full: 9999px;
+
+  /* ── Primitive: Typography ── */
+  --font-size-xs:   0.75rem;
+  --font-size-sm:   0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg:   1.125rem;
+  --font-size-xl:   1.25rem;
+  --font-size-2xl:  1.5rem;
+  --font-size-3xl:  1.875rem;
+  --font-size-4xl:  2.25rem;
+  --font-size-5xl:  3rem;
+  --font-size-6xl:  3.75rem;
+  --font-size-7xl:  4.5rem;
+  --font-size-8xl:  6rem;
+  --font-size-9xl:  8rem;
+
+  --font-weight-normal:   400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+  --font-weight-black:    800;
+
+  --line-height-tight:   1.05;
+  --line-height-snug:    1.2;
+  --line-height-normal:  1.5;
+  --line-height-relaxed: 1.7;
+
+  --letter-spacing-tight:  -0.04em;
+  --letter-spacing-snug:   -0.02em;
+  --letter-spacing-normal: -0.01em;
+  --letter-spacing-wide:   0.05em;
+  --letter-spacing-wider:  0.12em;
+
+  /* ── Primitive: Motion ── */
+  --duration-instant: 0ms;
+  --duration-fast:    120ms;
+  --duration-normal:  200ms;
+  --duration-slow:    350ms;
+  --duration-slower:  500ms;
+  --duration-slowest: 800ms;
+
+  --ease-linear:  linear;
+  --ease-out:     cubic-bezier(0.0, 0.0, 0.2, 1);
+  --ease-in:      cubic-bezier(0.4, 0.0, 1, 1);
+  --ease-in-out:  cubic-bezier(0.4, 0.0, 0.2, 1);
+  --ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth:  cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* ── Primitive: Shadow ── */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.15);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.25), 0 1px 2px -1px rgb(0 0 0 / 0.2);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.2);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+  --shadow-xl: 0 20px 40px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.3);
+}
+
+/* ============================================
+   SEMANTIC TOKENS — Light Theme (default)
+   ============================================ */
+:root,
+[data-theme="light"] {
+  /* Background — warm parchment */
+  --color-bg-base:     var(--primitive-parchment-1);
+  --color-bg-surface:  var(--primitive-parchment-2);
+  --color-bg-elevated: var(--primitive-parchment-3);
+  --color-bg-subtle:   var(--primitive-parchment-4);
+  --color-bg-inverse:  var(--primitive-black);
+
+  /* Text */
+  --color-text-primary:   var(--primitive-black);
+  --color-text-secondary: var(--primitive-gray-2);
+  --color-text-muted:     var(--primitive-gray-4);
+  --color-text-disabled:  var(--primitive-gray-6);
+  --color-text-inverse:   var(--primitive-white);
+  --color-text-on-accent: var(--primitive-white);
+
+  /* Border — warm-tinted */
+  --color-border-default: var(--primitive-parchment-4);
+  --color-border-subtle:  var(--primitive-parchment-3);
+  --color-border-strong:  var(--primitive-gray-6);
+
+  /* Accent — Terracotta */
+  --color-accent:        var(--primitive-red-vivid);
+  --color-accent-hover:  var(--primitive-red-bright);
+  --color-accent-subtle: var(--primitive-red-subtle);
+  --color-accent-muted:  var(--primitive-red-muted);
+
+  /* Ornamental — Gold */
+  --color-ornament:        var(--primitive-gold-bright);
+  --color-ornament-subtle: var(--primitive-gold-subtle);
+
+  /* Cultural — Indigo */
+  --color-indigo:        var(--primitive-indigo-vivid);
+  --color-indigo-subtle: var(--primitive-indigo-subtle);
+
+  /* Status */
+  --color-success: var(--primitive-green-500);
+  --color-warning: var(--primitive-amber-500);
+  --color-error:   var(--primitive-red-deep);
+
+  /* Card */
+  --color-card-bg:           var(--primitive-parchment-1);
+  --color-card-border:       var(--primitive-parchment-4);
+  --color-card-hover-bg:     var(--primitive-parchment-2);
+  --color-card-hover-border: var(--primitive-gray-6);
+
+  /* Nav */
+  --color-nav-bg:          rgba(253, 249, 243, 0.90);
+  --color-nav-border:      rgba(180, 160, 130, 0.15);
+  --color-nav-pill-shadow: 0 4px 24px rgba(120, 80, 40, 0.10), 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* ============================================
+   SEMANTIC TOKENS — Dark Theme
+   ============================================ */
+[data-theme="dark"] {
+  /* Background */
+  --color-bg-base:     var(--primitive-black);
+  --color-bg-surface:  var(--primitive-black-2);
+  --color-bg-elevated: var(--primitive-black-3);
+  --color-bg-subtle:   var(--primitive-black-4);
+  --color-bg-inverse:  var(--primitive-white);
+
+  /* Text */
+  --color-text-primary:   var(--primitive-white);
+  --color-text-secondary: var(--primitive-gray-5);
+  --color-text-muted:     var(--primitive-gray-3);
+  --color-text-disabled:  var(--primitive-gray-2);
+  --color-text-inverse:   var(--primitive-black);
+  --color-text-on-accent: var(--primitive-white);
+
+  /* Border */
+  --color-border-default: var(--primitive-black-5);
+  --color-border-subtle:  var(--primitive-black-4);
+  --color-border-strong:  var(--primitive-gray-1);
+
+  /* Accent — Terracotta */
+  --color-accent:        var(--primitive-red-vivid);
+  --color-accent-hover:  var(--primitive-red-bright);
+  --color-accent-subtle: var(--primitive-red-subtle);
+  --color-accent-muted:  var(--primitive-red-muted);
+
+  /* Ornamental — Gold */
+  --color-ornament:        var(--primitive-gold-bright);
+  --color-ornament-subtle: var(--primitive-gold-subtle);
+
+  /* Cultural — Indigo */
+  --color-indigo:        #6b70d4;
+  --color-indigo-subtle: rgba(107, 112, 212, 0.12);
+
+  /* Status */
+  --color-success: var(--primitive-green-400);
+  --color-warning: var(--primitive-amber-400);
+  --color-error:   var(--primitive-red-vivid);
+
+  /* Card */
+  --color-card-bg:           var(--primitive-black-2);
+  --color-card-border:       var(--primitive-black-5);
+  --color-card-hover-bg:     var(--primitive-black-3);
+  --color-card-hover-border: var(--primitive-gray-1);
+
+  /* Nav */
+  --color-nav-bg:          rgba(10, 10, 10, 0.88);
+  --color-nav-border:      rgba(255, 255, 255, 0.08);
+  --color-nav-pill-shadow: 0 4px 32px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.4);
+
+  /* Aurora gradient (darker tones for dark theme) */
+  --aurora-1: #7a240e;
+  --aurora-2: #2d3070;
+  --aurora-3: #a67820;
+}

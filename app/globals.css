@@ -1,26 +1,264 @@
+@import url('https://fonts.googleapis.com/css2?family=Gloock&family=Parkinsans:wght@300..800&family=Teko:wght@300..700&display=swap');
 @import "tailwindcss";
+@import "../styles/tokens.css";
+@import "../styles/animations.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ── Animatable aurora gradient properties ── */
+@property --aurora-1 {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #c8401a;
+}
+@property --aurora-2 {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #3b3f8c;
+}
+@property --aurora-3 {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #c8962a;
 }
 
+/* ── Chat textarea — suppress all browser focus chrome ── */
+[data-id="chat-input-field"] {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  -webkit-appearance: none;
+  appearance: none;
+}
+[data-id="chat-input-field"]:focus,
+[data-id="chat-input-field"]:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* ── Tailwind theme bridge — CSS vars → Tailwind utilities ── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Colors */
+  --color-bg-base:          var(--color-bg-base);
+  --color-bg-surface:       var(--color-bg-surface);
+  --color-bg-elevated:      var(--color-bg-elevated);
+  --color-bg-subtle:        var(--color-bg-subtle);
+  --color-bg-inverse:       var(--color-bg-inverse);
+
+  --color-text-primary:     var(--color-text-primary);
+  --color-text-secondary:   var(--color-text-secondary);
+  --color-text-muted:       var(--color-text-muted);
+  --color-text-disabled:    var(--color-text-disabled);
+  --color-text-inverse:     var(--color-text-inverse);
+  --color-text-on-accent:   var(--color-text-on-accent);
+
+  --color-border-default:   var(--color-border-default);
+  --color-border-subtle:    var(--color-border-subtle);
+  --color-border-strong:    var(--color-border-strong);
+
+  --color-accent:           var(--color-accent);
+  --color-accent-hover:     var(--color-accent-hover);
+  --color-accent-subtle:    var(--color-accent-subtle);
+  --color-accent-muted:     var(--color-accent-muted);
+
+  --color-card-bg:          var(--color-card-bg);
+  --color-card-border:      var(--color-card-border);
+  --color-nav-bg:           var(--color-nav-bg);
+
+  /* Radius */
+  --radius-xs:   var(--radius-xs);
+  --radius-sm:   var(--radius-sm);
+  --radius-md:   var(--radius-md);
+  --radius-lg:   var(--radius-lg);
+  --radius-xl:   var(--radius-xl);
+  --radius-2xl:  var(--radius-2xl);
+  --radius-full: var(--radius-full);
+
+  /* Font */
+  --font-sans:    "Parkinsans", sans-serif;
+  --font-mono:    'Datatype', ui-monospace, 'Cascadia Code', monospace;
+  --font-display: "Gloock", serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Base ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
+  font-family: "Parkinsans", sans-serif;
+  font-weight: 300;
+  font-optical-sizing: auto;
+  font-style: normal;
+  line-height: var(--line-height-normal);
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+/* ── Gloock — display/heading font ── */
+.font-display,
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Gloock", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+}
+
+/* ── Datatype font for numbers/code ── */
+.font-datatype,
+.stat-number,
+[data-datatype] {
+  font-family: 'Datatype', ui-monospace, 'Cascadia Code', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Selection ── */
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-text-on-accent);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+/* ── Focus visible ── */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-xs);
+}
+
+/* ── Global grainy noise texture ── */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  pointer-events: none;
+  opacity: 0.12;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px;
+}
+
+/* ── Editorial divider line ── */
+.rule-red {
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: var(--color-accent);
+  border-radius: 0;
+}
+
+/* ── Prose (MDX) ── */
+.prose {
+  color: var(--color-text-primary);
+}
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  color: var(--color-text-primary);
+  letter-spacing: var(--letter-spacing-tight);
+  font-family: "Gloock", serif;
+  font-optical-sizing: auto;
+}
+.prose a {
+  color: var(--color-accent);
+  text-underline-offset: 3px;
+}
+.prose code {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-xs);
+  padding: 0.15em 0.4em;
+  font-size: 0.875em;
+  font-family: 'Datatype', ui-monospace, monospace;
+}
+.prose strong {
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+.prose blockquote {
+  border-left: 3px solid var(--color-accent);
+  padding-left: 1.5rem;
+  color: var(--color-text-secondary);
+  font-style: normal;
+}
+
+
+/* ── Logo theme filter ── */
+.logo-themed { filter: brightness(0); transition: filter 0.2s; }
+[data-theme="dark"] .logo-themed { filter: none; }
+
+/* ── Nav pill shadow ── */
+.nav-pill-shadow {
+  box-shadow: var(--color-nav-pill-shadow);
+}
+
+/* ── Testimonials carousel mask ── */
+.carousel-fade-mask {
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+
+/* ── Intro animation: wave hand ── */
+.intro-wave {
+  display: inline-block;
+  transform-origin: 70% 70%;
+  animation: wave 1.2s ease-in-out 0.2s both;
+}
+
+/* ── Intro animation: hello text ── */
+.intro-hello-text {
+  font-family: "Noto Serif Display", serif;
+  font-size: 32px;
+  font-weight: 600;
+  font-style: italic;
+  font-variation-settings: "wdth" 100;
+}
+
+/* ── Intro animation: greeting text ── */
+.intro-greeting-text {
+  font-family: "Geist", system-ui, sans-serif;
+}
+
+/* ── Chat shimmer gradient ── */
+.chat-shimmer-accent {
+  background-image: linear-gradient(90deg, transparent 0%, var(--color-accent) 50%, transparent 100%);
+  background-size: 200% 100%;
+  opacity: 0.08;
+}
+
+/* ── Chat thinking shimmer ── */
+.chat-thinking-shimmer {
+  background-image: linear-gradient(90deg, var(--color-text-muted) 0%, var(--color-accent) 50%, var(--color-text-muted) 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── Ornament dynamic opacity via CSS variable ── */
+[style*="--orn-opacity"] {
+  opacity: var(--orn-opacity, 1);
+}
+
+/* ── Case study ghost number ── */
+.ghost-step-number {
+  font-size: clamp(60px, 10vw, 120px);
+  opacity: 0.06;
+  letter-spacing: -0.04em;
+  line-height: 1;
 }
