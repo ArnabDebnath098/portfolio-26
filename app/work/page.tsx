@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Metadata } from "next";
 import fs from "fs";
 import path from "path";
@@ -58,9 +59,11 @@ export default async function WorkPage() {
   }
 
   return (
-    <WorkPageClient
-      sorted={sorted}
-      caseStudyContent={caseStudyContent}
-    />
+    <Suspense>
+      <WorkPageClient
+        sorted={sorted}
+        caseStudyContent={caseStudyContent}
+      />
+    </Suspense>
   );
 }
