@@ -1,4 +1,5 @@
-import { Suspense } from "react";
+export const dynamic = "force-static";
+
 import { Metadata } from "next";
 import fs from "fs";
 import path from "path";
@@ -59,11 +60,9 @@ export default async function WorkPage() {
   }
 
   return (
-    <Suspense>
-      <WorkPageClient
-        sorted={sorted}
-        caseStudyContent={caseStudyContent}
-      />
-    </Suspense>
+    <WorkPageClient
+      sorted={sorted}
+      caseStudyContent={caseStudyContent}
+    />
   );
 }

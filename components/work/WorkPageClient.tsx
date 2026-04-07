@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, ReactNode } from "react";
-import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { FadeUp } from "@/components/animations/FadeUp";
@@ -16,16 +15,16 @@ interface WorkPageClientProps {
 }
 
 export function WorkPageClient({ sorted, caseStudyContent }: WorkPageClientProps) {
-  const searchParams = useSearchParams();
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
 
-  // Auto-open modal from ?open=slug query param
+  // Auto-open modal from ?open=slug query param (client-side only)
   useEffect(() => {
-    const openSlug = searchParams.get("open");
+    const params = new URLSearchParams(window.location.search);
+    const openSlug = params.get("open");
     if (openSlug && caseStudyContent[openSlug]) {
       setActiveSlug(openSlug);
     }
-  }, [searchParams, caseStudyContent]);
+  }, [caseStudyContent]);
 
   return (
     <div data-id="work-page" className="min-h-screen pt-28 pb-32">

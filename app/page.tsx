@@ -1,3 +1,5 @@
+export const dynamic = "force-static";
+
 import fs from "fs";
 import path from "path";
 import { HeroSection } from "@/components/home/HeroSection";
