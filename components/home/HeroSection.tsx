@@ -102,7 +102,6 @@ export function HeroSection() {
         >
           <span data-id="hero-availability" className="inline-flex items-center gap-2 text-xs font-medium tracking-[0.12em] uppercase text-[var(--color-text-muted)]">
             <span data-id="hero-ping" className="relative flex h-1.5 w-1.5">
-              <span data-id="hero-ping-ring" className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
               <span data-id="hero-ping-dot" className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500" />
             </span>
             Available · Bengaluru

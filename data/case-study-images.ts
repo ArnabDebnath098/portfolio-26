@@ -16,28 +16,6 @@ export const caseStudyImages: Record<string, Record<string, SlideImage[]>> = {
         alt: "Current issues with offer UX — scattered formats across EMI cards, UPI options, and issuer offer cards",
       },
     ],
-    "offer card": [
-      {
-        src: "/images/case-studies/offers/offer-cards-variants.png",
-        alt: "Auto-applied offer card vs coupon-based card — two distinct visual treatments",
-      },
-      {
-        src: "/images/case-studies/offers/offer-card-pay.png",
-        alt: "Auto-applied offer card with direct Pay button to reduce memorize-then-navigate loop",
-      },
-    ],
-    "nudges": [
-      {
-        src: "/images/case-studies/offers/payment-nudges.png",
-        alt: "Payment method grid with pill-text offer nudges and selection flows",
-      },
-    ],
-    "evaluation": [
-      {
-        src: "/images/case-studies/offers/auto-applied-detail.png",
-        alt: "Auto-applied offer detail view with expanded card and final payable amount",
-      },
-    ],
   },
 };
 

@@ -79,7 +79,7 @@ export const storyMdxComponents = {
     // eslint-disable-next-line @next/next/no-img-element
     <img
       data-id="story-mdx-img"
-      className="w-full object-contain"
+      className="w-[calc(100%+4rem)] -ml-8 rounded-xl object-contain"
       loading="lazy"
       alt=""
       {...props}

@@ -48,9 +48,14 @@ export function CaseStudyModal({ open, onClose, children }: CaseStudyModalProps)
   if (!mounted) return null;
 
   const modal = (
-    <AnimatePresence>
+    <AnimatePresence mode="wait" onExitComplete={() => {
+      document.body.style.overflow = "";
+      const lenis = (window as unknown as { lenis?: { start: () => void } }).lenis;
+      lenis?.start();
+    }}>
       {open && (
         <motion.div
+          key="casestudy-modal"
           data-id="casestudy-modal-overlay"
           className="fixed inset-0 z-[9999] flex items-end lg:items-center lg:justify-center lg:p-5"
           initial={{ opacity: 0 }}
@@ -77,10 +82,11 @@ export function CaseStudyModal({ open, onClose, children }: CaseStudyModalProps)
               "relative z-10 flex flex-col",
               "bg-[var(--color-bg-base)]",
               "border border-[var(--color-border-default)]",
+              "overflow-hidden",
               // Mobile: bottom sheet
-              "w-full h-[95vh] rounded-t-2xl",
+              "w-full h-[95vh] rounded-t-[24px]",
               // Desktop: centered modal
-              "lg:w-[95vw] lg:h-[95vh] lg:rounded-2xl"
+              "lg:w-[95vw] lg:h-[95vh] lg:rounded-[24px]"
             )}
             // Mobile: slide up from bottom; Desktop: scale in
             initial={{ y: "100%", opacity: 1 }}

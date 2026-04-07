@@ -17,6 +17,7 @@ interface WorkPageClientProps {
 export function WorkPageClient({ sorted, caseStudyContent }: WorkPageClientProps) {
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
 
+
   // Auto-open modal from ?open=slug query param (client-side only)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);

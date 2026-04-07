@@ -235,57 +235,10 @@ export function Footer() {
           <VineRow width={480} color="var(--color-ornament)" opacity={0.25} />
         </div>
 
-        {/* Top: Monogram + tagline */}
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-8 mb-12">
-          <div>
-            <div className="flex items-center gap-3 mb-3">
-              {/* Monogram with ornamental border */}
-              <div className="relative">
-                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden>
-                  <circle cx="20" cy="20" r="18" stroke="var(--color-ornament)" strokeWidth="0.8" opacity="0.4" />
-                  <circle cx="20" cy="20" r="14" stroke="var(--color-ornament)" strokeWidth="0.5" opacity="0.25" />
-                </svg>
-                <span className="absolute inset-0 flex items-center justify-center font-display text-sm text-[var(--color-ornament)]">
-                  AD
-                </span>
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-[var(--color-text-primary)]">Arnab Debnath</p>
-                <p className="text-xs text-[var(--color-text-muted)]">Product Designer · Bengaluru</p>
-              </div>
-            </div>
-            <p className="text-sm text-[var(--color-text-secondary)] max-w-xs leading-relaxed mt-2">
-              The gap between a designer and an engineer
-              is where I do my best work.
-            </p>
-          </div>
-
-          {/* Social links — elegant row */}
-          <div className="flex items-center gap-1.5">
-            {social.map((s) => (
-              <a
-                key={s.href}
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={s.label}
-                className={cn(
-                  "w-9 h-9 rounded-full flex items-center justify-center",
-                  "border border-[var(--color-border-subtle)]",
-                  "text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]",
-                  "transition-all duration-200"
-                )}
-              >
-                {s.icon}
-              </a>
-            ))}
-          </div>
-        </div>
-
         {/* Link columns */}
         <div
           data-id="footer-columns"
-          className="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-8 pb-12"
+          className="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-8 pb-12 px-10"
         >
           {/* Pages */}
           <div>
@@ -293,7 +246,7 @@ export function Footer() {
               <span className="text-[var(--color-ornament)] opacity-50">◆</span>
               Pages
             </p>
-            <div className="space-y-2.5">
+            <div className="space-y-2.5 pl-5">
               {pages.map((link) => (
                 <Link
                   key={link.href}
@@ -313,7 +266,7 @@ export function Footer() {
               <span className="text-[var(--color-ornament)] opacity-50">◆</span>
               Resources
             </p>
-            <div className="space-y-2.5">
+            <div className="space-y-2.5 pl-5">
               {resources.map((link) => (
                 <Link
                   key={link.href}
@@ -336,7 +289,7 @@ export function Footer() {
               <span className="text-[var(--color-ornament)] opacity-50">◆</span>
               Connect
             </p>
-            <div className="space-y-2.5">
+            <div className="space-y-2.5 pl-5">
               {social.map((link) => (
                 <a
                   key={link.href}

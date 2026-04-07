@@ -65,15 +65,15 @@ export const projects: Project[] = [
   {
     slug: "streamlining-checkout",
     title: "Streamlining the Checkout Experience",
-    subtitle: "Checkout UX · Personal Project · Apr 2024",
-    company: "Personal Project",
+    subtitle: "E-commerce Checkout UX · Hackathon Winner · Apr 2024",
+    company: "UX Hackathon",
     year: "2024",
     tags: ["E-commerce", "Conversion", "UX Strategy"],
     thumbnail: "/images/case-studies/checkout.png",
     outcome:
-      "A deep dive into optimizing e-commerce checkout flow to reduce cart abandonment and improve conversion rates.",
+      "Won a UX design hackathon as a solo designer — rethinking e-commerce checkout from cart to confirmation with trust, clarity, and delight.",
     description:
-      "A deep dive into optimizing e-commerce checkout flow to reduce cart abandonment and improve conversion rates.",
+      "Rethinking e-commerce checkout from the ground up. A hackathon-winning case study on reducing abandonment and building trust at every step of the purchase flow.",
     featured: true,
     locked: false,
     order: 5,

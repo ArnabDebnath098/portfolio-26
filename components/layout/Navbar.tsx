@@ -87,7 +87,7 @@ export function Navbar() {
           data-id="navbar-desktop-pill"
           className={cn(
             "flex items-center gap-3 rounded-full pl-6 pr-4",
-            "backdrop-blur-xl nav-pill-shadow",
+            "backdrop-blur-md nav-pill-shadow",
             "bg-[var(--color-nav-bg)]",
             "border border-[var(--color-nav-border)]",
           )}
@@ -202,8 +202,8 @@ export function Navbar() {
         <div
           data-id="navbar-mobile-pill"
           className={cn(
-            "flex items-center justify-between px-2 py-2",
-            "backdrop-blur-xl nav-pill-shadow",
+            "flex items-center justify-between px-2 py-2 rounded-full",
+            "backdrop-blur-md nav-pill-shadow",
             "bg-[var(--color-nav-bg)]",
             "border border-[var(--color-nav-border)]",
           )}
@@ -259,7 +259,7 @@ export function Navbar() {
               transition={{ duration: 0.2 }}
               className={cn(
                 "overflow-hidden",
-                "backdrop-blur-xl nav-pill-shadow",
+                "backdrop-blur-md nav-pill-shadow",
                 "bg-[var(--color-nav-bg)]",
                 "border border-[var(--color-nav-border)]",
               )}

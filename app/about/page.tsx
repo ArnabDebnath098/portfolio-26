@@ -1,9 +1,11 @@
 import { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { FadeUp } from "@/components/animations/FadeUp";
 import { StaggerChildren, StaggerItem } from "@/components/animations/StaggerChildren";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/Button";
+import { BeyondPixels } from "@/components/about/BeyondPixels";
 
 export const metadata: Metadata = {
   title: "About",
@@ -12,22 +14,28 @@ export const metadata: Metadata = {
 
 const timeline = [
   {
-    year: "2023–Now",
+    year: "2022–Present · 4+ yrs",
     role: "Product Designer II",
     company: "JUSPAY",
-    detail: "Designing payment flows at the intersection of trust and speed. Working on checkout UX, embedded finance, and new-to-bank onboarding at scale.",
+    detail: "Designing and scaling AI-driven products that blend intelligent automation with seamless user experiences. Worked across fintech and B2B SaaS — from checkout UX to embedded finance at scale.",
   },
   {
-    year: "2022",
-    role: "Product Designer",
+    year: "Oct 2021–Jan 2022",
+    role: "Product Design Intern",
     company: "AirAsia",
     detail: "Designed for the digital lifestyle ecosystem — travel, food, and fintech all under one product umbrella.",
   },
   {
-    year: "2018–2022",
-    role: "B.Tech, Computer Science",
-    company: "IET, AKTU",
-    detail: "Built the foundation in systems thinking. Learned to read code before I learned to read user research.",
+    year: "Dec 2020–Jun 2021",
+    role: "Frontend Developer Intern",
+    company: "Qualyval",
+    detail: "Built frontend interfaces bridging design and development, sharpening the eye for implementation-aware design.",
+  },
+  {
+    year: "Oct 2019–Jan 2020",
+    role: "Frontend Developer Intern",
+    company: "Webrocode",
+    detail: "First professional experience — learned to ship real code and collaborate in a team environment.",
   },
 ];
 
@@ -49,10 +57,25 @@ export default function AboutPage() {
           </h1>
         </FadeUp>
 
-        <div data-id="about-content-grid" className="max-w-2xl">
+        {/* Profile image + Bio side by side on desktop */}
+        <div data-id="about-content-grid" className="flex flex-col lg:flex-row gap-12 lg:gap-16">
+
+          {/* Profile photo */}
+          <FadeUp delay={0.05} className="shrink-0">
+            <div data-id="about-profile-photo" className="relative w-48 h-48 sm:w-56 sm:h-56 rounded-2xl overflow-hidden border border-[var(--color-border-default)]">
+              <Image
+                data-id="about-profile-img"
+                src="/myprofile.jpg"
+                alt="Arnab Debnath"
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+          </FadeUp>
 
           {/* Bio */}
-          <div data-id="about-bio" className="space-y-6 text-base text-[var(--color-text-secondary)] leading-relaxed">
+          <div data-id="about-bio" className="space-y-6 text-base text-[var(--color-text-secondary)] leading-relaxed max-w-2xl">
             <FadeUp delay={0.1}>
               <p data-id="about-bio-p1">
                 At JUSPAY, that moment is checkout — when someone is deciding whether to trust a product with their money. I&apos;ve spent the last few years making that moment shorter, clearer, and less scary for millions of users.
@@ -147,6 +170,9 @@ export default function AboutPage() {
             ))}
           </StaggerChildren>
         </div>
+
+        {/* Personality / Hobbies */}
+        <BeyondPixels />
 
       </div>
     </div>

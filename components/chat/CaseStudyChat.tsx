@@ -31,35 +31,22 @@ function AIFace({
   const [blinking, setBlinking] = useState(false);
 
   useEffect(() => {
-    const wander = setInterval(
-      () => {
-        if (thinking) {
-          setEyePos({
-            x: (Math.random() - 0.5) * 2,
-            y: -1.5 + Math.random() * -1,
-          });
-        } else {
-          setEyePos({
-            x: (Math.random() - 0.5) * 3,
-            y: (Math.random() - 0.5) * 2,
-          });
-        }
-      },
-      thinking ? 1200 : 1800
-    );
+    const wanderMs = thinking ? 2400 : 3500;
+    const blinkMs = thinking ? 3500 : 5000;
 
-    const blink = setInterval(
-      () => {
-        setBlinking(true);
-        setTimeout(() => setBlinking(false), 150);
-      },
-      thinking ? 1800 : 2500 + Math.random() * 2000
-    );
+    const wander = setInterval(() => {
+      setEyePos(thinking
+        ? { x: (Math.random() - 0.5) * 2, y: -1.5 + Math.random() * -1 }
+        : { x: (Math.random() - 0.5) * 3, y: (Math.random() - 0.5) * 2 }
+      );
+    }, wanderMs);
 
-    return () => {
-      clearInterval(wander);
-      clearInterval(blink);
-    };
+    const blink = setInterval(() => {
+      setBlinking(true);
+      setTimeout(() => setBlinking(false), 150);
+    }, blinkMs);
+
+    return () => { clearInterval(wander); clearInterval(blink); };
   }, [thinking]);
 
   const r = size / 2;
@@ -171,13 +158,14 @@ export function CaseStudyChat() {
     }
   }, [isOpen]);
 
-  // Refresh timestamps every 30s
+  // Refresh timestamps every 60s (only when chat is open with messages)
   const [, setTick] = useState(0);
+  const hasMessages = messages.length > 0;
   useEffect(() => {
-    if (messages.length === 0) return;
-    const interval = setInterval(() => setTick((t) => t + 1), 30000);
+    if (!hasMessages || !isOpen) return;
+    const interval = setInterval(() => setTick((t) => t + 1), 60000);
     return () => clearInterval(interval);
-  }, [messages.length]);
+  }, [hasMessages, isOpen]);
 
   const sendMessage = async (content: string) => {
     if (!content.trim() || isStreaming) return;
@@ -276,24 +264,13 @@ export function CaseStudyChat() {
               "p-3 sm:pl-2.5 sm:pr-5 sm:py-2.5 rounded-full w-fit",
               "flex items-center gap-2",
               "cursor-pointer select-none",
-              "backdrop-blur-md",
               "border border-[var(--color-border-default)]",
-              "bg-[var(--color-bg-elevated)]/80",
+              "bg-[var(--color-bg-elevated)]",
               "shadow-lg hover:shadow-xl",
-              "transition-shadow",
-              "animate-chat-pill-glow"
+              "transition-shadow"
             )}
             aria-label="Ask me anything"
           >
-            <span
-              data-id="chat-trigger-shimmer"
-              className="absolute inset-0 rounded-full overflow-hidden pointer-events-none"
-            >
-              <span
-                data-id="chat-trigger-shimmer-inner"
-                className="absolute inset-0 animate-shimmer chat-shimmer-accent"
-              />
-            </span>
             <AIFace size={22} />
             <span
               data-id="chat-trigger-label"
@@ -402,7 +379,8 @@ export function CaseStudyChat() {
               {/* Messages */}
               <div
                 data-id="chat-messages"
-                className="relative z-10 flex-1 overflow-y-auto scroll-smooth p-5 space-y-4 min-h-[200px]"
+                data-lenis-prevent
+                className="relative z-10 flex-1 overflow-y-auto scroll-smooth p-5 space-y-4 min-h-[200px] overscroll-contain"
               >
                 {messages.length === 0 ? (
                   <div
@@ -470,10 +448,10 @@ export function CaseStudyChat() {
                       <div
                         data-id={`chat-bubble-${msg.role}-${i}`}
                         className={cn(
-                          "max-w-[85%] px-3.5 py-2.5 rounded-2xl",
+                          "max-w-[85%] px-3.5 py-2.5",
                           msg.role === "user"
-                            ? "bg-[var(--color-accent)] text-white rounded-br-sm"
-                            : "bg-[var(--color-bg-surface)]/60 backdrop-blur-sm text-[var(--color-text-primary)] rounded-bl-sm border-l-2 border-l-[var(--color-accent)]/40"
+                            ? "bg-[var(--color-accent)] text-white rounded-2xl rounded-br-sm"
+                            : "bg-[var(--color-bg-surface)]/60 backdrop-blur-sm text-[var(--color-text-primary)] rounded-xl rounded-bl-sm border-l-2 border-l-[var(--color-accent)]/40"
                         )}
                       >
                         {msg.role === "assistant" ? (

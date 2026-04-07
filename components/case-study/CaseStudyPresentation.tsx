@@ -41,9 +41,13 @@ function Sidebar({
     >
       <nav
         data-id="case-study-sidebar-nav"
-        className="flex-1 overflow-y-auto px-3 py-4 scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none]"
+        className="flex-1 overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none]"
       >
-        <ul data-id="case-study-sidebar-sections" className="flex flex-col gap-0.5">
+        <p data-id="case-study-sidebar-nav-header" className="text-[10px] font-medium tracking-[0.14em] uppercase text-[var(--color-text-muted)] px-6 pt-4 pb-3">
+          Table of Contents
+        </p>
+        <div data-id="case-study-sidebar-nav-divider" className="h-px bg-[var(--color-border-default)] mb-3" />
+        <ul data-id="case-study-sidebar-sections" className="flex flex-col gap-0.5 px-3 py-2">
           {headings.map((heading, i) => {
             const isActive = i === activeIndex;
             const isPast = i < activeIndex;

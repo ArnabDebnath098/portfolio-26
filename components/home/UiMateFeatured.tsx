@@ -6,16 +6,16 @@ import { BotanicMark } from "@/components/illustrations/IndianOrnaments";
 
 export function UiMateFeatured() {
   return (
-    <section data-id="uimate-section" className="max-w-5xl mx-auto px-6 pt-16">
+    <section data-id="uimate-section" className="w-[90%] max-w-[80vw] mx-auto px-6 pt-16">
       <motion.div
         data-id="uimate-section-header"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.5 }}
-        className="flex flex-col gap-2 mb-8"
+        className="flex flex-col items-center text-center gap-2 mb-8"
       >
-        <div data-id="uimate-label-row" className="flex items-center gap-3">
+        <div data-id="uimate-label-row" className="flex items-center justify-center gap-3">
           <BotanicMark size={20} color="var(--color-ornament)" opacity={0.7} />
           <p data-id="uimate-label" className="text-[10px] font-medium tracking-[0.14em] uppercase text-[var(--color-ornament)]">
             Currently Building
@@ -73,6 +73,12 @@ export function UiMateFeatured() {
               >
                 The career growth<br />platform for designers
               </p>
+              <p
+                data-id="uimate-featured-subtext"
+                className="text-sm text-[var(--color-text-secondary)] leading-relaxed max-w-lg"
+              >
+                Most platforms let you post work. uiMate actually helps you improve — with AI-powered critiques on your designs, personalised daily challenges, curated resources and tweets from the design world, career trajectory tracking, and a community that gives real feedback, not just likes.
+              </p>
               <div data-id="uimate-featured-cta-wrap" className="pt-2">
                 <span
                   data-id="uimate-featured-cta"
@@ -93,17 +99,18 @@ export function UiMateFeatured() {
             </div>
           </div>
 
-          {/* Right 30% — Gradient shapes */}
+          {/* Right 30% — uiMate preview */}
           <div
             data-id="uimate-featured-right"
             className="flex-[3] relative min-h-[180px] sm:min-h-0 overflow-hidden"
-            aria-hidden
           >
-            {/* Full-width stacked gradient rectangles */}
-            <div data-id="uimate-shape-1" className="absolute inset-x-0 top-0 h-[35%] bg-gradient-to-b from-[var(--color-accent)] to-[var(--color-accent-hover)]" />
-            <div data-id="uimate-shape-2" className="absolute inset-x-0 top-[30%] h-[25%] bg-[var(--color-accent-hover)] opacity-70" />
-            <div data-id="uimate-shape-3" className="absolute inset-x-0 top-[50%] h-[25%] bg-[var(--color-accent)] opacity-40" />
-            <div data-id="uimate-shape-4" className="absolute inset-x-0 top-[70%] h-[30%] bg-[var(--color-accent)] opacity-20" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              data-id="uimate-featured-preview"
+              src="/uimate.svg"
+              alt="uiMate preview"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
           </div>
         </div>
       </motion.a>

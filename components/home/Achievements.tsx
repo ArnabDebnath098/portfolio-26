@@ -202,7 +202,7 @@ export function Achievements() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.15 }}
-                className="group relative border border-[var(--color-border-default)] rounded-2xl overflow-hidden bg-[var(--color-bg-base)] hover:border-[var(--color-ornament)] transition-colors duration-300"
+                className="group relative rounded-2xl overflow-hidden bg-[var(--color-bg-base)] transition-colors duration-300"
               >
                 {/* Image — compact with inner padding and rounded corners */}
                 {item.image && (

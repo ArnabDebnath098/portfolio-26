@@ -32,7 +32,7 @@ export function WipBanner() {
           <div
             data-id="wip-banner"
             className={cn(
-              "relative flex items-start gap-3 px-5 py-4 rounded-2xl",
+              "relative flex items-start gap-3 px-5 py-4 rounded-xl",
               "bg-[var(--color-bg-elevated)]/95 backdrop-blur-xl",
               "border border-[var(--color-border-default)]",
               "shadow-lg"

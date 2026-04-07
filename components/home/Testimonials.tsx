@@ -126,14 +126,18 @@ export function Testimonials() {
     setActive((prev) => prev + dir);
   }, []);
 
-  // Auto-advance every 4s, pause on hover
+  // Auto-advance every 6s, pause on hover or when off-screen
+  const sectionRef = useRef<HTMLElement>(null);
   useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    let visible = false;
+    const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { threshold: 0.1 });
+    io.observe(el);
     const id = setInterval(() => {
-      if (!paused.current) {
-        setActive((prev) => prev + 1);
-      }
-    }, 4000);
-    return () => clearInterval(id);
+      if (!paused.current && visible) setActive((prev) => prev + 1);
+    }, 6000);
+    return () => { clearInterval(id); io.disconnect(); };
   }, []);
 
   const visibleCards = getVisibleCards(active);
@@ -141,20 +145,21 @@ export function Testimonials() {
 
   return (
     <section
+      ref={sectionRef}
       data-id="testimonials"
       className="py-24 overflow-hidden"
       aria-label="Testimonials"
     >
-      <div data-id="testimonials-header" className="max-w-5xl mx-auto px-6 mb-14">
+      <div data-id="testimonials-header" className="w-[90%] max-w-[80vw] mx-auto px-6 mb-14">
         <motion.div
           data-id="testimonials-header-inner"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="flex flex-col gap-3"
+          className="flex flex-col items-center text-center gap-3"
         >
-          <div data-id="testimonials-label-row" className="flex items-center gap-3">
+          <div data-id="testimonials-label-row" className="flex items-center justify-center gap-3">
             <FolkFlowerSprig size={24} color="var(--color-ornament)" opacity={0.65} />
             <p data-id="testimonials-label" className="text-[10px] font-medium tracking-[0.18em] uppercase text-[var(--color-ornament)]">
               What people say
@@ -163,7 +168,7 @@ export function Testimonials() {
           <h2 data-id="testimonials-heading" className="text-3xl md:text-4xl font-display text-[var(--color-text-primary)] leading-tight">
             Voices that matter
           </h2>
-          <p data-id="testimonials-subheading" className="text-sm text-[var(--color-text-muted)] leading-relaxed">
+          <p data-id="testimonials-subheading" className="text-sm text-[var(--color-text-muted)] leading-relaxed max-w-xl">
             From colleagues, managers, and collaborators across JUSPAY, AirAsia, and beyond.
           </p>
         </motion.div>
