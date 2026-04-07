@@ -1,8 +1,28 @@
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
 import { projects } from "@/data/projects";
 import { services } from "@/data/services";
 import { testimonials } from "@/data/testimonials";
 import { experiments } from "@/data/experiments";
-import { caseStudySummaries, caseStudyFull } from "@/lib/case-study-cache";
+
+/* ─── Case study loader ─── */
+
+function loadCaseStudies(): string {
+  const dir = path.join(process.cwd(), "content/case-studies");
+  if (!fs.existsSync(dir)) return "";
+
+  return fs
+    .readdirSync(dir)
+    .filter((f) => f.endsWith(".mdx"))
+    .map((f) => {
+      const raw = fs.readFileSync(path.join(dir, f), "utf-8");
+      const { data, content } = matter(raw);
+      const truncated = content.split(/\s+/).slice(0, 500).join(" ");
+      return `## ${data.title}\n**Company:** ${data.company} | **Year:** ${data.year} | **Role:** ${data.role}\n**Tags:** ${data.tags?.join(", ")}\n**Outcome:** ${data.outcome}\n\n${truncated}`;
+    })
+    .join("\n\n---\n\n");
+}
 
 /* ─── Data formatters ─── */
 
@@ -75,7 +95,7 @@ export function buildChatSystemPrompt(currentPage?: string): string {
 ${formatProjects()}
 
 ## Case Studies (Detailed)
-${caseStudySummaries}
+${loadCaseStudies()}
 
 ## Freelance Services
 ${formatServices()}
@@ -99,25 +119,30 @@ ${formatExperiments()}
 /* ─── Case-study-scoped chat prompt ─── */
 
 export function buildCaseStudyChatPrompt(slug: string): string {
-  const cs = caseStudyFull[slug];
-  if (!cs) return buildChatSystemPrompt();
+  const dir = path.join(process.cwd(), "content/case-studies");
+  const filePath = path.join(dir, `${slug}.mdx`);
 
-  return `You ARE Arnab Debnath, speaking about your case study "${cs.title}". Answer questions about this specific project in first person.
+  if (!fs.existsSync(filePath)) return buildChatSystemPrompt();
+
+  const raw = fs.readFileSync(filePath, "utf-8");
+  const { data, content } = matter(raw);
+
+  return `You ARE Arnab Debnath, speaking about your case study "${data.title}". Answer questions about this specific project in first person.
 
 About you: Product Designer II at JUSPAY, Bengaluru. B.Tech CS + fine arts.
 
 This Case Study:
-## ${cs.title}
-**Company:** ${cs.company} | **Year:** ${cs.year} | **Role:** ${cs.role} | **Duration:** ${cs.duration}
-**Tags:** ${cs.tags.join(", ")}
-**Outcome:** ${cs.outcome}
+## ${data.title}
+**Company:** ${data.company} | **Year:** ${data.year} | **Role:** ${data.role} | **Duration:** ${data.duration}
+**Tags:** ${data.tags?.join(", ")}
+**Outcome:** ${data.outcome}
 
-${cs.content}
+${content}
 
 Rules:
 - Speak as "I" — you ARE Arnab
 - Answer from this case study's content
-- If asked about other projects, redirect warmly: "This chat is focused on ${cs.title}. For other questions, check the main chat on the homepage."
+- If asked about other projects, redirect warmly: "This chat is focused on ${data.title}. For other questions, check the main chat on the homepage."
 - Keep answers under 200 words unless depth is needed
 - Reference specific decisions, constraints, and outcomes
 - Never fabricate facts not in the provided context`;
