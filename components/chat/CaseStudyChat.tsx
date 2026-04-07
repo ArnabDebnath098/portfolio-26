@@ -137,6 +137,7 @@ const SUGGESTIONS = [
 
 export function CaseStudyChat() {
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -146,6 +147,8 @@ export function CaseStudyChat() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const pillRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => setMounted(true), []);
 
   // Show pill after 10s
   useEffect(() => {
@@ -258,22 +261,19 @@ export function CaseStudyChat() {
     sendMessage(input);
   };
 
+  if (!mounted) return null;
+
   return (
     <>
-      {/* ── Whisper Flow Pill ── */}
-      <AnimatePresence>
-        {showPill && !isOpen && (
-          <motion.button
+      {/* ── Floating trigger — fixed like Navbar ── */}
+      {showPill && !isOpen && (
+        <div data-id="chat-trigger-wrapper" className="fixed bottom-6 right-6 z-50">
+          <button
             ref={pillRef}
             data-id="chat-trigger"
             onClick={() => setIsOpen(true)}
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 10, opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className={cn(
-              "fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999]",
-              "pl-2.5 pr-5 py-2.5 rounded-full w-fit",
+              "p-3 sm:pl-2.5 sm:pr-5 sm:py-2.5 rounded-full w-fit",
               "flex items-center gap-2",
               "cursor-pointer select-none",
               "backdrop-blur-md",
@@ -297,13 +297,13 @@ export function CaseStudyChat() {
             <AIFace size={22} />
             <span
               data-id="chat-trigger-label"
-              className="text-xs tracking-wide text-[var(--color-text-secondary)]"
+              className="hidden sm:inline text-xs tracking-wide text-[var(--color-text-secondary)]"
             >
               Ask me anything
             </span>
-          </motion.button>
-        )}
-      </AnimatePresence>
+          </button>
+        </div>
+      )}
 
       {/* ── Modal ── */}
       <AnimatePresence>

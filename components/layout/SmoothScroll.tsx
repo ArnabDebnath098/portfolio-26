@@ -27,6 +27,9 @@ export function SmoothScroll() {
 
     rafId = requestAnimationFrame(raf);
 
+    // Expose on window so the case study modal can pause/resume
+    (window as unknown as { lenis?: Lenis }).lenis = lenis;
+
     /* Pause the RAF loop when tab is hidden — no wasted CPU in background */
     function onVisibilityChange() {
       if (document.hidden) {
@@ -40,6 +43,7 @@ export function SmoothScroll() {
     return () => {
       cancelAnimationFrame(rafId);
       document.removeEventListener("visibilitychange", onVisibilityChange);
+      (window as unknown as { lenis?: Lenis }).lenis = undefined;
       lenis.destroy();
     };
   }, [pathname]);

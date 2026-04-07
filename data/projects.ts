@@ -28,7 +28,7 @@ export const projects: Project[] = [
       "From buses to metros, cabs to bikes—one app for all of Bengaluru's transit needs.",
     featured: true,
     locked: false,
-    order: 1,
+    order: 7,
   },
   {
     slug: "cracking-the-code-of-offers",
@@ -44,7 +44,7 @@ export const projects: Project[] = [
       "Designing for the bargain ninjas—users who'll leap through hoops to uncover the best deals. A case study on simplifying the hunt for discounts and making offers effortless to find, apply, and enjoy.",
     featured: true,
     locked: false,
-    order: 2,
+    order: 1,
   },
   {
     slug: "unlocking-credit-access",
@@ -60,7 +60,7 @@ export const projects: Project[] = [
       "Making credit seamless for high-ticket purchases, bridging the gap for 300M+ Indian shoppers, and transforming the shopping experience.",
     featured: true,
     locked: false,
-    order: 3,
+    order: 4,
   },
   {
     slug: "streamlining-checkout",
@@ -76,23 +76,7 @@ export const projects: Project[] = [
       "A deep dive into optimizing e-commerce checkout flow to reduce cart abandonment and improve conversion rates.",
     featured: true,
     locked: false,
-    order: 4,
-  },
-  {
-    slug: "pay-in-parts",
-    title: "Pay in Parts: Flexible Payments at Checkout",
-    subtitle: "Embedded Finance · JUSPAY · 2024",
-    company: "JUSPAY",
-    year: "2024",
-    tags: ["Fintech", "BNPL", "Checkout UX"],
-    thumbnail: "/images/case-studies/pay-in-parts/cover.jpg",
-    outcome:
-      "Designing split-payment experiences that let users break transactions into manageable installments — right at checkout.",
-    description:
-      "Enabling flexible payment options across merchants by designing intuitive pay-later and EMI flows that increase affordability and boost conversion.",
-    featured: true,
-    locked: false,
-    order: 6,
+    order: 5,
   },
   {
     slug: "mandates",
@@ -108,23 +92,7 @@ export const projects: Project[] = [
       "Designing the end-to-end mandate creation and management experience for UPI and card-based recurring payments across JUSPAY's merchant ecosystem.",
     featured: true,
     locked: false,
-    order: 7,
-  },
-  {
-    slug: "xyne-search",
-    title: "Xyne: AI-Powered Enterprise Search",
-    subtitle: "AI · Enterprise · Xyne · 2025",
-    company: "Xyne",
-    year: "2025",
-    tags: ["AI", "Enterprise", "Search UX"],
-    thumbnail: "/images/case-studies/xyne-search/cover.jpg",
-    outcome:
-      "Designing an intelligent search experience that surfaces the right information across an entire organization — instantly.",
-    description:
-      "Building the search interface for Xyne's AI-powered enterprise search, connecting siloed data sources into one unified, context-aware search experience.",
-    featured: true,
-    locked: false,
-    order: 8,
+    order: 3,
   },
   {
     slug: "ai-investment-manager",
@@ -140,7 +108,7 @@ export const projects: Project[] = [
       "A personal finance tool that consolidates all investments — stocks, mutual funds, crypto, real estate — into one dashboard with AI-powered insights and actionable recommendations.",
     featured: true,
     locked: false,
-    order: 10,
+    order: 2,
   },
   {
     slug: "collaborative-travel-planner",
@@ -156,6 +124,6 @@ export const projects: Project[] = [
       "Planning multi-city vacations with groups is chaotic. Wandr brings shared itineraries, real-time collaboration, and transport coordination into one seamless experience.",
     featured: true,
     locked: false,
-    order: 9,
+    order: 7,
   },
 ];

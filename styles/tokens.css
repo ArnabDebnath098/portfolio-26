@@ -142,7 +142,7 @@
 :root,
 [data-theme="light"] {
   /* Background — warm parchment */
-  --color-bg-base:     var(--primitive-parchment-1);
+  --color-bg-base:     #ffffff;
   --color-bg-surface:  var(--primitive-parchment-2);
   --color-bg-elevated: var(--primitive-parchment-3);
   --color-bg-subtle:   var(--primitive-parchment-4);

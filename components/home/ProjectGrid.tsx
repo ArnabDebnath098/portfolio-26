@@ -11,7 +11,7 @@ import { BotanicMark } from "@/components/illustrations/IndianOrnaments";
 function ProjectCard({ project }: { project: Project }) {
   return (
     <StaggerItem>
-      <Link data-id={`project-card-link-${project.slug}`} href={`/work/${project.slug}`} className="group block h-full">
+      <Link data-id={`project-card-link-${project.slug}`} href={`/work?open=${project.slug}`} className="group block h-full">
         <div
           data-id={`project-card-${project.slug}`}
           className="h-full border border-[var(--color-border-default)] rounded-2xl overflow-hidden bg-[var(--color-bg-base)] hover:border-[var(--color-ornament)] transition-colors duration-300"
@@ -118,16 +118,48 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
           </div>
       </motion.div>
 
-      {/* Grid */}
+      {/* Grid — first 4 only */}
       <StaggerChildren
         className="grid grid-cols-1 sm:grid-cols-2 gap-5"
         delay={0.1}
         stagger={0.1}
       >
-        {projects.map((project) => (
+        {projects.slice(0, 4).map((project) => (
           <ProjectCard key={project.slug} project={project} />
         ))}
       </StaggerChildren>
+
+      {/* View more */}
+      {projects.length > 4 && (
+        <motion.div
+          data-id="project-grid-view-more"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.4 }}
+          className="flex justify-center"
+        >
+          <Link
+            data-id="project-grid-view-more-link"
+            href="/work"
+            className={cn(
+              "inline-flex items-center gap-2 px-6 py-2.5",
+              "text-sm font-medium tracking-wide",
+              "border border-[var(--color-border-default)]",
+              "rounded-full",
+              "text-[var(--color-text-secondary)]",
+              "hover:border-[var(--color-border-strong)]",
+              "hover:text-[var(--color-text-primary)]",
+              "transition-colors duration-200"
+            )}
+          >
+            View all work
+            <svg data-id="project-grid-view-more-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </Link>
+        </motion.div>
+      )}
     </section>
   );
 }

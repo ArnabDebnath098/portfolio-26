@@ -6,6 +6,7 @@ import { ProjectGrid } from "@/components/home/ProjectGrid";
 import { Testimonials } from "@/components/home/Testimonials";
 import { Achievements } from "@/components/home/Achievements";
 import { JaliDivider } from "@/components/illustrations/JaliDivider";
+import { WipBanner } from "@/components/home/WipBanner";
 import { projects } from "@/data/projects";
 
 export default function Home() {
@@ -21,6 +22,7 @@ export default function Home() {
 
   return (
     <>
+      <WipBanner />
       <HeroSection />
       <UiMateFeatured />
       <ProjectGrid projects={featured} />

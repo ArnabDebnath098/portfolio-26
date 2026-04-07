@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState, useEffect, ReactNode } from "react";
-import { motion } from "motion/react";
+import { useRef, useState, useEffect, ReactNode, useCallback } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 import type { CaseStudyFrontmatter } from "@/lib/mdx";
 import { getSlideImages, type SlideImage } from "@/data/case-study-images";
@@ -34,7 +34,7 @@ function Sidebar({
       data-id="case-study-sidebar"
       className={cn(
         "hidden lg:flex flex-col w-[240px] min-w-[240px]",
-        "sticky top-0 h-dvh",
+        "sticky top-0 h-[95vh] max-h-full",
         "border-r border-[var(--color-border-default)]",
         "bg-[var(--color-bg-base)]"
       )}
@@ -105,40 +105,186 @@ function Sidebar({
 }
 
 /* ═══════════════════════════════════════════════════════
-   MOBILE NAV — fixed bottom bar on small screens
+   MOBILE NAV — floating pill + bottom sheet menu
 ═══════════════════════════════════════════════════════ */
 function MobileNav({
   headings,
   activeIndex,
   total,
+  onSectionClick,
 }: {
   headings: (string | null)[];
   activeIndex: number;
   total: number;
+  onSectionClick: (index: number) => void;
 }) {
+  const [sheetOpen, setSheetOpen] = useState(false);
+
+  const handleSelect = useCallback(
+    (index: number) => {
+      onSectionClick(index);
+      setSheetOpen(false);
+    },
+    [onSectionClick]
+  );
+
   return (
-    <div
-      data-id="case-study-mobile-nav"
-      className={cn(
-        "lg:hidden fixed bottom-0 left-0 right-0 z-40",
-        "bg-[var(--color-bg-base)]/90 backdrop-blur-md",
-        "border-t border-[var(--color-border-default)]",
-        "px-4 py-3 flex items-center justify-between"
-      )}
-    >
-      <span
-        data-id="case-study-mobile-nav-heading"
-        className="text-xs text-[var(--color-text-secondary)] truncate max-w-[60%]"
+    <>
+      {/* Floating pill */}
+      <div
+        data-id="case-study-mobile-nav"
+        className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50"
       >
-        {headings[activeIndex] || `Section ${activeIndex + 1}`}
-      </span>
-      <span
-        data-id="case-study-mobile-nav-counter"
-        className="font-datatype text-[10px] text-[var(--color-text-muted)] tabular-nums"
-      >
-        {String(activeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-      </span>
-    </div>
+        <button
+          data-id="case-study-mobile-nav-pill"
+          onClick={() => setSheetOpen(true)}
+          className={cn(
+            "flex items-center gap-3 px-5 py-3 rounded-full",
+            "bg-[var(--color-bg-elevated)]/90 backdrop-blur-md",
+            "border border-[var(--color-border-default)]",
+            "shadow-lg cursor-pointer",
+            "transition-shadow hover:shadow-xl"
+          )}
+        >
+          <span
+            data-id="case-study-mobile-nav-counter"
+            className="font-datatype text-[10px] text-[var(--color-accent)] tabular-nums font-semibold"
+          >
+            {String(activeIndex + 1).padStart(2, "0")}/{String(total).padStart(2, "0")}
+          </span>
+          <span
+            data-id="case-study-mobile-nav-heading"
+            className="text-xs text-[var(--color-text-secondary)] truncate max-w-[180px]"
+          >
+            {headings[activeIndex] || `Section ${activeIndex + 1}`}
+          </span>
+          <svg
+            data-id="case-study-mobile-nav-chevron"
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-[var(--color-text-muted)]"
+          >
+            <path d="M18 15l-6-6-6 6" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Bottom sheet */}
+      <AnimatePresence>
+        {sheetOpen && (
+          <>
+            <motion.div
+              data-id="case-study-mobile-sheet-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setSheetOpen(false)}
+              className="lg:hidden fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm"
+            />
+            <motion.div
+              data-id="case-study-mobile-sheet"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 350 }}
+              className={cn(
+                "lg:hidden fixed bottom-0 left-0 right-0 z-[61]",
+                "bg-[var(--color-bg-base)]",
+                "border-t border-[var(--color-border-default)]",
+                "rounded-t-2xl",
+                "max-h-[70vh] overflow-y-auto",
+                "pb-[env(safe-area-inset-bottom,16px)]"
+              )}
+            >
+              {/* Handle */}
+              <div data-id="case-study-mobile-sheet-handle-wrap" className="flex justify-center pt-3 pb-2">
+                <div
+                  data-id="case-study-mobile-sheet-handle"
+                  className="w-10 h-1 rounded-full bg-[var(--color-border-strong)]"
+                />
+              </div>
+
+              {/* Title */}
+              <div data-id="case-study-mobile-sheet-title-wrap" className="px-5 pb-3 border-b border-[var(--color-border-default)]">
+                <p
+                  data-id="case-study-mobile-sheet-title"
+                  className="text-xs font-semibold tracking-[0.12em] uppercase text-[var(--color-text-muted)]"
+                >
+                  Sections
+                </p>
+              </div>
+
+              {/* Section list */}
+              <nav data-id="case-study-mobile-sheet-nav" className="px-3 py-2">
+                <ul data-id="case-study-mobile-sheet-list" className="flex flex-col gap-0.5">
+                  {headings.map((heading, i) => {
+                    const isActive = i === activeIndex;
+                    const isPast = i < activeIndex;
+                    const label = heading || `Section ${i + 1}`;
+                    return (
+                      <li key={i} data-id={`case-study-mobile-sheet-item-${i}`}>
+                        <button
+                          data-id={`case-study-mobile-sheet-btn-${i}`}
+                          onClick={() => handleSelect(i)}
+                          className={cn(
+                            "w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-left",
+                            "cursor-pointer transition-colors duration-150",
+                            isActive
+                              ? "bg-[var(--color-accent-subtle)]"
+                              : "hover:bg-[var(--color-bg-surface)]"
+                          )}
+                        >
+                          <span
+                            data-id={`case-study-mobile-sheet-num-${i}`}
+                            className={cn(
+                              "font-datatype text-[11px] tabular-nums flex-shrink-0 w-6",
+                              isActive
+                                ? "text-[var(--color-accent)] font-semibold"
+                                : isPast
+                                  ? "text-[var(--color-text-muted)]"
+                                  : "text-[var(--color-text-muted)] opacity-50"
+                            )}
+                          >
+                            {String(i + 1).padStart(2, "0")}
+                          </span>
+                          <span
+                            data-id={`case-study-mobile-sheet-label-${i}`}
+                            className={cn(
+                              "text-sm leading-snug",
+                              isActive
+                                ? "text-[var(--color-accent)] font-medium"
+                                : isPast
+                                  ? "text-[var(--color-text-secondary)]"
+                                  : "text-[var(--color-text-muted)]"
+                            )}
+                          >
+                            {label}
+                          </span>
+                          {isActive && (
+                            <span data-id={`case-study-mobile-sheet-active-${i}`} className="ml-auto">
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M20 6L9 17l-5-5" />
+                              </svg>
+                            </span>
+                          )}
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </nav>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
@@ -149,7 +295,7 @@ function CoverSection({ frontmatter }: { frontmatter: CaseStudyFrontmatter }) {
   return (
     <section
       data-id="case-study-cover"
-      className="min-h-dvh flex flex-col justify-center items-center text-center px-6 sm:px-12 py-20"
+      className="min-h-[80vh] flex flex-col justify-center items-center text-center px-6 sm:px-12 py-20"
     >
       {/* Tags */}
       <motion.div
@@ -203,7 +349,7 @@ function CoverSection({ frontmatter }: { frontmatter: CaseStudyFrontmatter }) {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.5 }}
-        className="flex w-full max-w-[800px] justify-between gap-12 px-4"
+        className="grid grid-cols-2 sm:flex w-full max-w-[800px] sm:justify-between gap-6 sm:gap-12 px-4"
       >
         {[
           { label: "Company", value: frontmatter.company },
@@ -394,8 +540,12 @@ export function CaseStudyPresentation({
   const [activeSection, setActiveSection] = useState(0);
 
   // Track which section is in view via IntersectionObserver
+  // Find the nearest scrollable ancestor (modal scroll container) for root
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
+
+    // Find the modal scroll container if we're inside one
+    const scrollRoot = contentRef.current?.closest("[data-id='casestudy-modal-content']") as Element | null;
 
     sectionRefs.current.forEach((el, i) => {
       if (!el) return;
@@ -408,6 +558,7 @@ export function CaseStudyPresentation({
           });
         },
         {
+          root: scrollRoot || null,
           rootMargin: "-20% 0px -60% 0px",
           threshold: 0,
         }
@@ -421,7 +572,15 @@ export function CaseStudyPresentation({
 
   function scrollToSection(index: number) {
     const el = sectionRefs.current[index];
-    if (el) {
+    if (!el) return;
+
+    // If inside a modal, scroll the modal container instead of the page
+    const scrollContainer = el.closest("[data-id='casestudy-modal-content']");
+    if (scrollContainer) {
+      const containerTop = scrollContainer.getBoundingClientRect().top;
+      const elTop = el.getBoundingClientRect().top;
+      scrollContainer.scrollBy({ top: elTop - containerTop, behavior: "smooth" });
+    } else {
       el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
@@ -433,7 +592,7 @@ export function CaseStudyPresentation({
   }
 
   return (
-    <div data-id="case-study-presentation" className="flex min-h-screen">
+    <div data-id="case-study-presentation" className="flex min-h-full">
       {/* Sidebar — desktop only */}
       <Sidebar
         headings={sectionHeadings}
@@ -455,7 +614,7 @@ export function CaseStudyPresentation({
         {/* Story sections */}
         <div
           data-id="case-study-sections"
-          className="max-w-[1000px] mx-auto pb-32 lg:pb-20 flex flex-col gap-0"
+          className="max-w-[1000px] mx-auto px-5 sm:px-8 lg:px-6 pb-32 lg:pb-20 flex flex-col gap-0"
         >
           {sections.map((sectionContent, i) => (
             <StorySection
@@ -471,11 +630,12 @@ export function CaseStudyPresentation({
         </div>
       </main>
 
-      {/* Mobile bottom nav */}
+      {/* Mobile floating pill + bottom sheet */}
       <MobileNav
         headings={sectionHeadings}
         activeIndex={activeSection}
         total={sectionHeadings.length}
+        onSectionClick={scrollToSection}
       />
     </div>
   );

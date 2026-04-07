@@ -39,68 +39,71 @@ export function UiMateFeatured() {
           className={cn(
             "relative overflow-hidden rounded-2xl",
             "border border-[var(--color-border-default)]",
-            "bg-gradient-to-br from-[var(--color-bg-elevated)] to-[var(--color-bg-subtle)]",
-            "p-8 sm:p-10",
-            "transition-colors duration-300"
+            "bg-[var(--color-bg-base)]",
+            "flex flex-col sm:flex-row"
           )}
         >
-          {/* Badges */}
-          <div data-id="uimate-featured-label-row" className="flex items-center gap-2 mb-6">
-            <span
-              data-id="uimate-featured-badge"
-              className={cn(
-                "px-2.5 py-1 text-[10px] font-semibold tracking-wider uppercase rounded-full",
-                "bg-[var(--color-accent)] text-[var(--color-bg-base)]"
-              )}
-            >
-              Founding
-            </span>
-            <span
-              data-id="uimate-featured-live-badge"
-              className={cn(
-                "px-2.5 py-1 text-[10px] font-medium tracking-wider uppercase rounded-full",
-                "border border-emerald-500/40 text-emerald-500"
-              )}
-            >
-              Live
-            </span>
-          </div>
+          {/* Left 70% — Content */}
+          <div data-id="uimate-featured-left" className="flex-[7] flex flex-col justify-between p-8 sm:p-10 lg:p-12 gap-12 sm:gap-16">
+            {/* Brand */}
+            <div data-id="uimate-featured-brand" className="flex items-center gap-2 text-[var(--color-text-primary)]">
+              <svg data-id="uimate-featured-logo" width="24" height="24" viewBox="0 0 32 32" fill="none" aria-hidden>
+                <path fillRule="evenodd" clipRule="evenodd" d="M16 0C24.8366 0 32.0003 7.16341 32.0003 16C32.0003 24.8366 24.8366 32 16 32C7.16349 31.9999 3.14011e-05 24.8365 0 16C0 7.16345 7.16347 7.32606e-05 16 0ZM12.2608 8.40729C10.8759 8.41547 9.60457 9.17517 8.94115 10.3909L6.85652 14.2103C6.22856 15.3611 6.23701 16.7542 6.87852 17.8975L9.00777 21.6921C9.6855 22.8999 10.9657 23.6446 12.3507 23.6364L19.7395 23.5927C21.1244 23.5845 22.3957 22.8248 23.0592 21.6091L25.1438 17.7897C25.7717 16.6389 25.7633 15.2458 25.1218 14.1025L22.9925 10.3079C22.3148 9.10005 21.0346 8.35542 19.6496 8.3636L12.2608 8.40729Z" fill="currentColor"/>
+                <path fillRule="evenodd" clipRule="evenodd" d="M15.8418 9.77262C15.8626 9.70268 15.927 9.65441 16.0002 9.65441C16.0733 9.65441 16.1377 9.70268 16.1585 9.77262C16.1585 9.77262 16.4484 10.7443 16.7591 11.7866C17.2542 13.447 18.5531 14.7459 20.2136 15.241C21.2558 15.5517 22.2275 15.8416 22.2275 15.8416C22.2975 15.8624 22.3457 15.9269 22.3457 16C22.3457 16.0731 22.2975 16.1376 22.2275 16.1584C22.2275 16.1584 21.2558 16.4483 20.2136 16.759C18.5531 17.2541 17.2542 18.553 16.7591 20.2134C16.4484 21.2557 16.1585 22.2274 16.1585 22.2274C16.1377 22.2973 16.0733 22.3456 16.0002 22.3456C15.927 22.3456 15.8626 22.2973 15.8418 22.2274C15.8418 22.2274 15.5519 21.2557 15.2412 20.2134C14.7461 18.553 13.4472 17.2541 11.7867 16.759C10.7445 16.4483 9.77277 16.1584 9.77277 16.1584C9.70283 16.1376 9.65456 16.0731 9.65456 16C9.65456 15.9269 9.70283 15.8624 9.77277 15.8416C9.77277 15.8416 10.7445 15.5517 11.7867 15.241C13.4472 14.7459 14.7461 13.447 15.2412 11.7866C15.5519 10.7443 15.8418 9.77262 15.8418 9.77262Z" fill="currentColor"/>
+              </svg>
+              <h2
+                data-id="uimate-featured-title"
+                className="text-lg font-bold tracking-[-0.02em]"
+              >
+                uiMate
+              </h2>
+            </div>
 
-          <div data-id="uimate-featured-content" className="flex flex-col gap-4 max-w-2xl">
-            <h2
-              data-id="uimate-featured-title"
-              className={cn(
-                "text-3xl sm:text-4xl font-bold tracking-[-0.04em]",
-                "text-[var(--color-text-primary)]"
-              )}
-            >
-              UI Mate
-            </h2>
-            <p data-id="uimate-featured-description" className="text-base sm:text-lg text-[var(--color-text-secondary)] leading-relaxed">
-              Building from scratch &mdash; a design tool I&apos;m founding and shipping. Live at uimate.in.
-            </p>
-            <div data-id="uimate-featured-tags" className="flex flex-wrap gap-2 pt-1">
-              {["Founder", "Product Design", "Full-Stack", "SaaS"].map((tag) => (
+            {/* Bottom — Kicker + Headline + Button */}
+            <div data-id="uimate-featured-bottom" className="flex flex-col gap-4">
+              <p
+                data-id="uimate-featured-kicker"
+                className="text-[10px] font-medium tracking-[0.14em] uppercase text-[var(--color-text-muted)]"
+              >
+                Founding
+              </p>
+              <p
+                data-id="uimate-featured-headline"
+                className="text-2xl sm:text-3xl lg:text-[2.25rem] font-display text-[var(--color-text-primary)] leading-[1.15] tracking-[-0.02em]"
+              >
+                The career growth<br />platform for designers
+              </p>
+              <div data-id="uimate-featured-cta-wrap" className="pt-2">
                 <span
-                  key={tag}
-                  data-id={`uimate-featured-tag-${tag.toLowerCase().replace(/\s/g, "-")}`}
+                  data-id="uimate-featured-cta"
                   className={cn(
-                    "px-2.5 py-0.5 text-[10px] font-medium tracking-wide",
-                    "bg-[var(--color-bg-base)]",
-                    "border border-[var(--color-border-default)]",
-                    "text-[var(--color-text-muted)]"
+                    "inline-flex items-center gap-2 px-5 py-2.5",
+                    "text-xs font-semibold tracking-wide",
+                    "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)]",
+                    "rounded-full",
+                    "group-hover:bg-[var(--color-accent)] transition-colors duration-200"
                   )}
                 >
-                  {tag}
+                  Visit uimate.in
+                  <svg data-id="uimate-cta-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M7 17L17 7M7 7h10v10" />
+                  </svg>
                 </span>
-              ))}
+              </div>
             </div>
-            <div data-id="uimate-featured-cta" className="flex items-center gap-2 pt-2 text-sm font-medium text-[var(--color-accent)] group-hover:gap-3 transition-all duration-200">
-              <span data-id="uimate-featured-cta-text">Visit uimate.in</span>
-              <svg data-id="uimate-featured-cta-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M7 17L17 7M7 7h10v10" />
-              </svg>
-            </div>
+          </div>
+
+          {/* Right 30% — Gradient shapes */}
+          <div
+            data-id="uimate-featured-right"
+            className="flex-[3] relative min-h-[180px] sm:min-h-0 overflow-hidden"
+            aria-hidden
+          >
+            {/* Full-width stacked gradient rectangles */}
+            <div data-id="uimate-shape-1" className="absolute inset-x-0 top-0 h-[35%] bg-gradient-to-b from-[var(--color-accent)] to-[var(--color-accent-hover)]" />
+            <div data-id="uimate-shape-2" className="absolute inset-x-0 top-[30%] h-[25%] bg-[var(--color-accent-hover)] opacity-70" />
+            <div data-id="uimate-shape-3" className="absolute inset-x-0 top-[50%] h-[25%] bg-[var(--color-accent)] opacity-40" />
+            <div data-id="uimate-shape-4" className="absolute inset-x-0 top-[70%] h-[30%] bg-[var(--color-accent)] opacity-20" />
           </div>
         </div>
       </motion.a>

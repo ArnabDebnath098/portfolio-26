@@ -212,13 +212,17 @@ export function Navbar() {
           <Link
             data-id="navbar-logo-mobile"
             href="/"
-            className={cn(
-              "w-8 h-8 flex items-center justify-center shrink-0",
-              "bg-[var(--color-accent)] text-white",
-              "text-xs font-black"
-            )}
+            aria-label="Arnab Debnath"
+            className="flex items-center pl-2 transition-opacity duration-200 hover:opacity-70"
           >
-            A
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo.svg"
+              alt="Arnab Debnath"
+              width={42}
+              height={20}
+              className="logo-themed"
+            />
           </Link>
 
           <div data-id="navbar-mobile-actions" className="flex items-center gap-1">
