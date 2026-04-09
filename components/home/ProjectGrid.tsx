@@ -77,7 +77,7 @@ function ProjectCard({
         >
           {project.title}
         </h3>
-        <p data-id={`project-card-outcome-${project.slug}`} className="text-sm text-[var(--color-text-secondary)] leading-relaxed line-clamp-2">
+        <p data-id={`project-card-outcome-${project.slug}`} className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
           {project.outcome}
         </p>
 

@@ -17,6 +17,7 @@ import { IntroAnimation } from "@/components/animations/IntroAnimation";
 import { CaseStudyChat } from "@/components/chat/CaseStudyChat";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://arnabdebnath.in"),
   title: {
     default: "Arnab Debnath — Product Designer",
     template: "%s · Arnab Debnath",

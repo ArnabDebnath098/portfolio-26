@@ -310,8 +310,8 @@ export function CaseStudyChat() {
               className={cn(
                 "fixed z-[9999]",
                 "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
-                "w-[min(50vw,calc(100vw-32px))]",
-                "h-[70vh] max-h-[70vh]",
+                "w-[calc(100vw-32px)] sm:w-[min(50vw,560px)]",
+                "h-[75vh] max-h-[75vh] sm:h-[70vh] sm:max-h-[70vh]",
                 "border border-[var(--color-border-default)]",
                 "rounded-2xl shadow-2xl",
                 "flex flex-col overflow-hidden",

@@ -121,7 +121,7 @@ export function WorkPageClient({ sorted, caseStudyContent }: WorkPageClientProps
                       </h2>
 
                       {/* Description */}
-                      <p data-id={`work-project-outcome-${project.slug}`} className="text-sm text-[var(--color-text-secondary)] leading-relaxed max-w-lg">
+                      <p data-id={`work-project-outcome-${project.slug}`} className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
                         {project.outcome}
                       </p>
 

@@ -92,7 +92,7 @@ export const projects: Project[] = [
       "Designing the end-to-end mandate creation and management experience for UPI and card-based recurring payments across JUSPAY's merchant ecosystem.",
     featured: true,
     locked: false,
-    order: 3,
+    order: 6,
   },
   {
     slug: "ai-investment-manager",
@@ -109,6 +109,22 @@ export const projects: Project[] = [
     featured: true,
     locked: false,
     order: 2,
+  },
+  {
+    slug: "payment-page-design-system",
+    title: "Payment Page Design System",
+    subtitle: "Design System · JUSPAY · 2025 (Ongoing)",
+    company: "JUSPAY",
+    year: "2025",
+    tags: ["Design System", "Fintech", "Component Library", "Vibe Coding"],
+    thumbnail: "/images/case-studies/designsystem.png",
+    outcome:
+      "Building a scalable design system for JUSPAY's payment page — currently scaling demos and prototypes through vibe coding, with extensive testing before merchant rollout.",
+    description:
+      "An evolving design system powering JUSPAY's payment page. We're actively building demos and prototypes using vibe coding, rigorously testing each component before releasing to merchants — scaling the system one validated pattern at a time.",
+    featured: true,
+    locked: false,
+    order: 3,
   },
   {
     slug: "collaborative-travel-planner",

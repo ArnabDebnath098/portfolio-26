@@ -157,8 +157,8 @@ export function HeroSection() {
         >
           Product Designer II at{" "}
           <span data-id="hero-company" className="text-[var(--color-text-primary)] font-semibold">JUSPAY</span>.{" "}
-          CS background. Designing payment flows used by millions —
-          and occasionally shipping the prototype myself.
+          Building AI surfaces for payments, scaling the design system,
+          and new AI-first product initiatives.
         </motion.p>
 
         <motion.div

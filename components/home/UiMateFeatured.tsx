@@ -6,7 +6,7 @@ import { BotanicMark } from "@/components/illustrations/IndianOrnaments";
 
 export function UiMateFeatured() {
   return (
-    <section data-id="uimate-section" className="w-[90%] max-w-[80vw] mx-auto px-6 pt-16">
+    <section data-id="uimate-section" className="w-full px-5 sm:w-[90%] sm:max-w-[80vw] sm:mx-auto sm:px-6 pt-16">
       <motion.div
         data-id="uimate-section-header"
         initial={{ opacity: 0, y: 20 }}
