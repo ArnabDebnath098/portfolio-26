@@ -17,7 +17,7 @@ import { IntroAnimation } from "@/components/animations/IntroAnimation";
 import { CaseStudyChat } from "@/components/chat/CaseStudyChat";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://arnabdebnath.in"),
+  metadataBase: new URL(process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "https://arnabdebnath.vercel.app"),
   title: {
     default: "Arnab Debnath — Product Designer",
     template: "%s · Arnab Debnath",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     siteName: "Arnab Debnath",
     title: "Arnab Debnath — Product Designer",
     description:
-      "Product Designer II at JUSPAY. Designing payment flows used by millions.",
+      "Product Designer II at JUSPAY. Building AI surfaces for payments and scaling the design system.",
   },
   twitter: {
     card: "summary_large_image",

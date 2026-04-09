@@ -10,24 +10,23 @@ import { cn } from "@/lib/utils";
 import { BotanicMark } from "@/components/illustrations/IndianOrnaments";
 import { CaseStudyModal } from "@/components/work/CaseStudyModal";
 
-function ProjectCard({
-  project,
-  hasContent,
-  onOpen,
-}: {
-  project: Project;
-  hasContent: boolean;
-  onOpen: () => void;
-}) {
-  const card = (
+const ORNAMENT_DOT = (
+  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+    <circle cx="6" cy="6" r="4" stroke="var(--color-ornament)" strokeWidth="0.6" />
+    <circle cx="6" cy="6" r="1.5" fill="var(--color-ornament)" opacity="0.5" />
+  </svg>
+);
+
+function CardBody({ project }: { project: Project }) {
+  return (
     <div
       data-id={`project-card-${project.slug}`}
       className="flex flex-col gap-4 p-6"
     >
-      {/* Thumbnail — big, open, no card wrapper */}
+      {/* Thumbnail */}
       <div
         data-id={`project-card-thumb-${project.slug}`}
-        className="relative aspect-[3/2] overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-bg-elevated)] to-[var(--color-bg-subtle)] transition-transform duration-500 group-hover:scale-[1.01]"
+        className="relative aspect-[3/2] overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-bg-elevated)] to-[var(--color-bg-subtle)]"
       >
         {project.thumbnail && (
           <Image
@@ -35,11 +34,10 @@ function ProjectCard({
             src={project.thumbnail}
             alt={project.title}
             fill
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            className="object-cover will-change-transform transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
             sizes="(max-width: 640px) 100vw, 50vw"
           />
         )}
-        {/* Tags floating on image */}
         <div data-id={`project-card-thumb-tags-${project.slug}`} className="absolute bottom-3 left-3 flex flex-wrap gap-1.5">
           {project.tags.slice(0, 2).map((tag) => (
             <span
@@ -53,19 +51,12 @@ function ProjectCard({
         </div>
       </div>
 
-      {/* Text — sits directly below, no border or background */}
+      {/* Content */}
       <div data-id={`project-card-content-${project.slug}`} className="flex flex-col gap-3 px-1">
-        {/* Ornamental divider */}
         <div data-id={`project-card-divider-${project.slug}`} className="flex items-center gap-2" aria-hidden>
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <circle cx="6" cy="6" r="4" stroke="var(--color-ornament)" strokeWidth="0.6" />
-            <circle cx="6" cy="6" r="1.5" fill="var(--color-ornament)" opacity="0.5" />
-          </svg>
+          {ORNAMENT_DOT}
           <div data-id={`project-card-divider-line-${project.slug}`} className="flex-1 h-px bg-[var(--color-ornament)] opacity-15" />
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <circle cx="6" cy="6" r="4" stroke="var(--color-ornament)" strokeWidth="0.6" />
-            <circle cx="6" cy="6" r="1.5" fill="var(--color-ornament)" opacity="0.5" />
-          </svg>
+          {ORNAMENT_DOT}
         </div>
 
         <p data-id={`project-card-meta-${project.slug}`} className="text-[11px] font-medium tracking-wide uppercase text-[var(--color-ornament)]">
@@ -73,7 +64,7 @@ function ProjectCard({
         </p>
         <h3
           data-id={`project-card-title-${project.slug}`}
-          className="text-lg md:text-xl font-display text-[var(--color-text-primary)] leading-snug group-hover:text-[var(--color-accent)] transition-colors duration-200"
+          className="text-lg md:text-xl font-display text-[var(--color-text-primary)] leading-snug transition-colors duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:text-[var(--color-accent)]"
         >
           {project.title}
         </h3>
@@ -81,7 +72,6 @@ function ProjectCard({
           {project.outcome}
         </p>
 
-        {/* Bottom flourish */}
         <div data-id={`project-card-flourish-${project.slug}`} aria-hidden className="flex justify-center pt-2 opacity-25">
           <svg width="48" height="8" viewBox="0 0 48 8" fill="none">
             <path d="M0 4 Q6 0 12 4 Q18 8 24 4 Q30 0 36 4 Q42 8 48 4" stroke="var(--color-ornament)" strokeWidth="0.8" fill="none" />
@@ -90,26 +80,32 @@ function ProjectCard({
       </div>
     </div>
   );
+}
 
-  if (hasContent) {
-    return (
-      <StaggerItem>
+function ProjectCard({
+  project,
+  hasContent,
+  onOpen,
+}: {
+  project: Project;
+  hasContent: boolean;
+  onOpen: () => void;
+}) {
+  return (
+    <StaggerItem>
+      {hasContent ? (
         <button
           data-id={`project-card-link-${project.slug}`}
           onClick={onOpen}
           className="group block h-full w-full text-left cursor-pointer"
         >
-          {card}
+          <CardBody project={project} />
         </button>
-      </StaggerItem>
-    );
-  }
-
-  return (
-    <StaggerItem>
-      <Link data-id={`project-card-link-${project.slug}`} href={`/work?open=${project.slug}`} className="group block h-full">
-        {card}
-      </Link>
+      ) : (
+        <Link data-id={`project-card-link-${project.slug}`} href={`/work?open=${project.slug}`} className="group block h-full">
+          <CardBody project={project} />
+        </Link>
+      )}
     </StaggerItem>
   );
 }

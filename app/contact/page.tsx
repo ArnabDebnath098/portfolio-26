@@ -1,54 +1,33 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { FadeUp } from "@/components/animations/FadeUp";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/Button";
+import {
+  EnvelopeSimple,
+  LinkedinLogo,
+  XLogo,
+  DribbbleLogo,
+  Copy,
+  Check,
+  CaretRight,
+} from "@phosphor-icons/react";
 
-const schema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email"),
-  type: z.enum(["freelance", "fulltime", "collab", "other"]),
-  message: z.string().min(20, "Message must be at least 20 characters"),
-});
-
-type FormData = z.infer<typeof schema>;
-
-const inputClass = cn(
-  "w-full px-4 py-3 text-sm",
-  "bg-[var(--color-bg-surface)]",
-  "border border-[var(--color-border-default)]",
-  "text-[var(--color-text-primary)]",
-  "placeholder:text-[var(--color-text-muted)]",
-  "focus:outline-none focus:border-[var(--color-accent)]",
-  "transition-colors duration-200"
-);
+const EMAIL = "iamarnab998@gmail.com";
 
 const links = [
-  { label: "arnabdebnath07@gmail.com", href: "mailto:arnabdebnath07@gmail.com", icon: "✉" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/arnabdebnath07/", icon: "in" },
-  { label: "Twitter / X", href: "https://x.com/arnab_design", icon: "𝕏" },
-  { label: "Dribbble", href: "https://dribbble.com/arnab_design", icon: "●" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/arnabdebnath07/", icon: LinkedinLogo },
+  { label: "Twitter / X", href: "https://x.com/arnab_design", icon: XLogo },
+  { label: "Dribbble", href: "https://dribbble.com/arnab_design", icon: DribbbleLogo },
 ];
 
 export default function ContactPage() {
-  const [sent, setSent] = useState(false);
-  const [sending, setSending] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
-    resolver: zodResolver(schema),
-  });
-
-  async function onSubmit(data: FormData) {
-    setSending(true);
-    // TODO: wire up Resend API route
-    await new Promise((r) => setTimeout(r, 1200));
-    console.log("Form data:", data);
-    setSending(false);
-    setSent(true);
+  function copyEmail() {
+    navigator.clipboard.writeText(EMAIL);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   }
 
   return (
@@ -71,138 +50,74 @@ export default function ContactPage() {
           </p>
         </FadeUp>
 
-        <div data-id="contact-grid" className="grid lg:grid-cols-[1fr_300px] gap-12">
+        {/* Links + Response time */}
+        <FadeUp delay={0.1}>
+          <div data-id="contact-links-grid" className="max-w-lg space-y-4">
+            <div data-id="contact-links-card" className={cn(
+              "border border-[var(--color-border-default)]",
+              "bg-[var(--color-bg-surface)] p-5 flex flex-col gap-3"
+            )}>
+              <p data-id="contact-links-label" className="text-[10px] font-medium text-[var(--color-text-muted)] uppercase tracking-[0.14em]">
+                Get in touch
+              </p>
 
-          {/* Form */}
-          <FadeUp delay={0.1}>
-            {sent ? (
-              <div data-id="contact-success" className={cn(
-                "border border-[var(--color-border-default)]",
-                "bg-[var(--color-bg-surface)] p-10 text-center space-y-3"
-              )}>
-                <div data-id="contact-success-icon" className="font-datatype text-3xl text-[var(--color-accent)]">✓</div>
-                <h2 data-id="contact-success-heading" className="text-lg font-semibold text-[var(--color-text-primary)]">Message sent.</h2>
-                <p data-id="contact-success-message" className="text-sm text-[var(--color-text-secondary)]">
-                  I typically reply within 24–48 hours.
-                </p>
-              </div>
-            ) : (
-              <form data-id="contact-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                {/* Name + Email */}
-                <div data-id="contact-form-row-1" className="grid sm:grid-cols-2 gap-4">
-                  <div data-id="contact-name-field" className="space-y-1">
-                    <input
-                      data-id="contact-input-name"
-                      {...register("name")}
-                      placeholder="Your name"
-                      className={inputClass}
-                    />
-                    {errors.name && (
-                      <p data-id="contact-error-name" className="font-datatype text-xs text-[var(--color-accent)]">{errors.name.message}</p>
-                    )}
-                  </div>
-                  <div data-id="contact-email-field" className="space-y-1">
-                    <input
-                      data-id="contact-input-email"
-                      {...register("email")}
-                      type="email"
-                      placeholder="your@email.com"
-                      className={inputClass}
-                    />
-                    {errors.email && (
-                      <p data-id="contact-error-email" className="font-datatype text-xs text-[var(--color-accent)]">{errors.email.message}</p>
-                    )}
-                  </div>
-                </div>
+              {/* Email row with copy */}
+              <button
+                data-id="contact-link-email"
+                onClick={copyEmail}
+                className={cn(
+                  "flex items-center gap-3 px-3 py-2.5 w-full",
+                  "hover:bg-[var(--color-bg-elevated)]",
+                  "transition-colors duration-200 group cursor-pointer"
+                )}
+              >
+                <EnvelopeSimple data-id="contact-link-icon-email" size={18} weight="regular" className="flex-shrink-0 text-[var(--color-text-muted)]" />
+                <span data-id="contact-link-label-email" className="text-sm text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)] transition-colors duration-200 flex-1 text-left">
+                  {EMAIL}
+                </span>
+                {copied ? (
+                  <Check data-id="contact-email-check" size={16} weight="bold" className="flex-shrink-0 text-green-500" />
+                ) : (
+                  <Copy data-id="contact-email-copy" size={16} weight="regular" className="flex-shrink-0 text-[var(--color-text-muted)] opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                )}
+              </button>
 
-                {/* Type */}
-                <div data-id="contact-type-field" className="space-y-1">
-                  <select data-id="contact-select-type" {...register("type")} className={cn(inputClass, "cursor-pointer")}>
-                    <option value="" disabled>What&apos;s this about?</option>
-                    <option value="freelance">Freelance project</option>
-                    <option value="fulltime">Full-time role</option>
-                    <option value="collab">Collaboration / collab</option>
-                    <option value="other">Just saying hi</option>
-                  </select>
-                  {errors.type && (
-                    <p data-id="contact-error-type" className="font-datatype text-xs text-[var(--color-accent)]">{errors.type.message}</p>
+              {/* Social links with chevron */}
+              {links.map((link) => (
+                <a
+                  key={link.label}
+                  data-id={`contact-link-${link.label.toLowerCase().replace(/[\s/@.]/g, "-")}`}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    "flex items-center gap-3 px-3 py-2.5",
+                    "hover:bg-[var(--color-bg-elevated)]",
+                    "transition-colors duration-200 group"
                   )}
-                </div>
-
-                {/* Message */}
-                <div data-id="contact-message-field" className="space-y-1">
-                  <textarea
-                    data-id="contact-textarea-message"
-                    {...register("message")}
-                    placeholder="Tell me what you're working on, what you need, and any context that's helpful..."
-                    rows={5}
-                    className={cn(inputClass, "resize-none")}
-                  />
-                  {errors.message && (
-                    <p data-id="contact-error-message" className="font-datatype text-xs text-[var(--color-accent)]">{errors.message.message}</p>
-                  )}
-                </div>
-
-                {/* Submit */}
-                <Button
-                  data-id="contact-submit"
-                  type="submit"
-                  disabled={sending}
-                  size="full"
                 >
-                  {sending ? "Sending..." : "Send message →"}
-                </Button>
-              </form>
-            )}
-          </FadeUp>
-
-          {/* Sidebar */}
-          <FadeUp delay={0.2}>
-            <div data-id="contact-sidebar" className="space-y-4">
-              <div data-id="contact-links-card" className={cn(
-                "border border-[var(--color-border-default)]",
-                "bg-[var(--color-bg-surface)] p-5 flex flex-col gap-3"
-              )}>
-                <p data-id="contact-links-label" className="text-[10px] font-medium text-[var(--color-text-muted)] uppercase tracking-[0.14em]">
-                  Direct links
-                </p>
-                {links.map((link) => (
-                  <a
-                    key={link.label}
-                    data-id={`contact-link-${link.label.toLowerCase().replace(/[\s/@.]/g, "-")}`}
-                    href={link.href}
-                    target={link.href.startsWith("mailto") ? undefined : "_blank"}
-                    rel="noopener noreferrer"
-                    className={cn(
-                      "flex items-center gap-3 px-3 py-2.5",
-                      "hover:bg-[var(--color-bg-elevated)]",
-                      "transition-colors duration-200 group"
-                    )}
-                  >
-                    <span data-id={`contact-link-icon-${link.label.toLowerCase().replace(/[\s/@.]/g, "-")}`} className="font-datatype w-6 text-center text-sm text-[var(--color-text-muted)]">
-                      {link.icon}
-                    </span>
-                    <span data-id={`contact-link-label-${link.label.toLowerCase().replace(/[\s/@.]/g, "-")}`} className="text-sm text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)] transition-colors duration-200">
-                      {link.label}
-                    </span>
-                  </a>
-                ))}
-              </div>
-
-              <div data-id="contact-response-card" className={cn(
-                "border border-[var(--color-border-default)]",
-                "bg-[var(--color-bg-surface)] p-5 flex flex-col gap-2"
-              )}>
-                <p data-id="contact-response-label" className="text-[10px] font-medium text-[var(--color-text-muted)] uppercase tracking-[0.14em]">
-                  Response time
-                </p>
-                <p data-id="contact-response-text" className="text-sm text-[var(--color-text-secondary)]">
-                  Usually within 24–48 hours. Faster for urgent freelance enquiries.
-                </p>
-              </div>
+                  <link.icon data-id={`contact-link-icon-${link.label.toLowerCase().replace(/[\s/@.]/g, "-")}`} size={18} weight="regular" className="flex-shrink-0 text-[var(--color-text-muted)]" />
+                  <span data-id={`contact-link-label-${link.label.toLowerCase().replace(/[\s/@.]/g, "-")}`} className="text-sm text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)] transition-colors duration-200 flex-1">
+                    {link.label}
+                  </span>
+                  <CaretRight data-id={`contact-link-chevron-${link.label.toLowerCase().replace(/[\s/@.]/g, "-")}`} size={14} weight="bold" className="flex-shrink-0 text-[var(--color-text-muted)] opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                </a>
+              ))}
             </div>
-          </FadeUp>
-        </div>
+
+            <div data-id="contact-response-card" className={cn(
+              "border border-[var(--color-border-default)]",
+              "bg-[var(--color-bg-surface)] p-5 flex flex-col gap-2"
+            )}>
+              <p data-id="contact-response-label" className="text-[10px] font-medium text-[var(--color-text-muted)] uppercase tracking-[0.14em]">
+                Response time
+              </p>
+              <p data-id="contact-response-text" className="text-sm text-[var(--color-text-secondary)]">
+                Usually within 24–48 hours. Faster for urgent freelance enquiries.
+              </p>
+            </div>
+          </div>
+        </FadeUp>
       </div>
     </div>
   );

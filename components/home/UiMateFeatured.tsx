@@ -87,7 +87,7 @@ export function UiMateFeatured() {
                     "text-xs font-semibold tracking-wide",
                     "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)]",
                     "rounded-full",
-                    "group-hover:bg-[var(--color-accent)] transition-colors duration-200"
+                    "group-hover:bg-[var(--color-accent)] group-hover:text-white transition-colors duration-200"
                   )}
                 >
                   Visit uimate.in
