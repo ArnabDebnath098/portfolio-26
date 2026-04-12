@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
     qualities: [75, 90],
     minimumCacheTTL: 31536000,
   },
+  experimental: {
+    optimizePackageImports: ["@phosphor-icons/react"],
+  },
 };
 
 export default nextConfig;
