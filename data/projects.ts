@@ -96,7 +96,7 @@ export const projects: Project[] = [
   },
   {
     slug: "ai-investment-manager",
-    title: "Wealth Lens: AI-Powered Investment Manager",
+    title: "Fynra — AI-Powered Investment Manager",
     subtitle: "Fintech · AI · Personal Project · 2025",
     company: "Personal Project",
     year: "2025",

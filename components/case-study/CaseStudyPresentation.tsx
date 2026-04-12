@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect, ReactNode, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import type { CaseStudyFrontmatter } from "@/lib/mdx";
 import { getSlideImages, type SlideImage } from "@/data/case-study-images";
@@ -497,35 +498,35 @@ function StorySection({
           <div data-id={`case-study-section-images-${index}`} className="flex flex-col gap-4">
             {images.map((img, i) => (
               /* eslint-disable-next-line @next/next/no-img-element */
-              <motion.img
+              <motion.div
                 key={i}
                 data-id={`case-study-section-image-${index}-${i}`}
-                src={img.src}
-                alt={img.alt}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="w-full rounded-xl border border-[var(--color-border-default)] bg-[var(--color-bg-surface)] object-contain"
-                loading="lazy"
-              />
+              >
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  width={1200}
+                  height={900}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 75vw, 1000px"
+                  quality={90}
+                  className={cn(
+                    "rounded-xl bg-[var(--color-bg-surface)]",
+                    img.fullWidth
+                      ? "w-full h-auto block"
+                      : "w-full object-contain"
+                  )}
+                  loading="lazy"
+                />
+              </motion.div>
             ))}
           </div>
         )}
       </div>
 
-      {/* Section divider */}
-      <div
-        data-id={`case-study-section-divider-${index}`}
-        className="mt-16 sm:mt-20 lg:mt-28 flex items-center gap-3"
-      >
-        <div data-id={`case-study-section-divider-left-${index}`} className="flex-1 h-px bg-[var(--color-border-default)]" />
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
-          <circle cx="6" cy="6" r="4" stroke="var(--color-ornament)" strokeWidth="0.6" />
-          <circle cx="6" cy="6" r="1.5" fill="var(--color-ornament)" opacity="0.5" />
-        </svg>
-        <div data-id={`case-study-section-divider-right-${index}`} className="flex-1 h-px bg-[var(--color-border-default)]" />
-      </div>
     </section>
   );
 }

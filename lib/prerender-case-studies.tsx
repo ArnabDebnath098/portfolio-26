@@ -6,7 +6,7 @@ import { storyMdxComponents } from "@/components/case-study/slideMdxComponents";
 import { CaseStudyPresentation } from "@/components/case-study/CaseStudyPresentation";
 
 /** Slugs that have full case study content available */
-export const MODAL_SLUGS = ["cracking-the-code-of-offers", "streamlining-checkout", "mandates"];
+export const MODAL_SLUGS = ["cracking-the-code-of-offers", "streamlining-checkout", "mandates", "ai-investment-manager"];
 
 /** Pre-render case study MDX content on the server */
 export async function prerenderCaseStudies(): Promise<Record<string, React.ReactNode>> {

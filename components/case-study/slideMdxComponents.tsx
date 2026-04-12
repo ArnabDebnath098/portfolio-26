@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { MandatesBento } from "@/components/case-study/MandatesBento";
 
@@ -19,12 +20,12 @@ export const storyMdxComponents = {
     />
   ),
   ul: (props: React.HTMLAttributes<HTMLUListElement>) => (
-    <ul data-id="story-mdx-ul" className="flex flex-col gap-3 w-full" {...props} />
+    <ul data-id="story-mdx-ul" className="list-disc pl-6 space-y-3 w-full" {...props} />
   ),
   li: (props: React.HTMLAttributes<HTMLLIElement>) => (
     <li
       data-id="story-mdx-li"
-      className="text-sm sm:text-base text-[var(--color-text-secondary)] leading-relaxed list-disc list-outside"
+      className="text-sm sm:text-base text-[var(--color-text-secondary)] leading-relaxed"
       {...props}
     />
   ),
@@ -74,17 +75,22 @@ export const storyMdxComponents = {
       {...props}
     />
   ),
-  // eslint-disable-next-line @next/next/no-img-element
-  img: (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      data-id="story-mdx-img"
-      className="w-[calc(100%+4rem)] -ml-8 rounded-xl object-contain"
-      loading="lazy"
-      alt=""
-      {...props}
-    />
-  ),
+  img: ({ src, alt, ...props }: React.ImgHTMLAttributes<HTMLImageElement>) => {
+    if (!src || typeof src !== "string") return null;
+    return (
+      <Image
+        data-id="story-mdx-img"
+        src={src}
+        alt={alt ?? ""}
+        width={1200}
+        height={900}
+        className="block mx-auto w-auto max-w-full max-h-[844px] rounded-xl object-contain"
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 75vw, 800px"
+        quality={90}
+        loading="lazy"
+      />
+    );
+  },
   hr: () => null,
   strong: (props: React.HTMLAttributes<HTMLElement>) => (
     <strong

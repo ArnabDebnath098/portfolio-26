@@ -1,6 +1,7 @@
 export type SlideImage = {
   src: string;
   alt: string;
+  fullWidth?: boolean;
 };
 
 /**
@@ -12,8 +13,9 @@ export const caseStudyImages: Record<string, Record<string, SlideImage[]>> = {
   "cracking-the-code-of-offers": {
     "problem": [
       {
-        src: "/images/case-studies/offers/current-issues.webp",
+        src: "/images/case-studies/offers/current-issues.png",
         alt: "Current issues with offer UX — scattered formats across EMI cards, UPI options, and issuer offer cards",
+        fullWidth: true,
       },
     ],
   },

@@ -12,236 +12,265 @@ featured: true
 order: 1
 ---
 
-## TL;DR
+## Overview
 
-Offers on Juspay's payment page were broken at every layer — unclear cards, opaque eligibility rules, and scattered discounts. Users couldn't answer the simplest question: *"What's the best deal I can get right now?"* I redesigned the entire offers experience — entry points, listing, card design, application flow, and payment nudges — for a system serving 500+ merchants and 100M+ daily sessions.
+Offers on Juspay's payment page were **broken at every layer** — unclear cards, opaque eligibility, scattered discounts. Users couldn't answer one basic question: *"What's the best deal I can get right now?"*
 
-**Problem:** Offers were a frustrating maze instead of a conversion lever
+I redesigned the entire offers experience — **entry points, listing, card design, application flow, and payment nudges** — for a system serving **500+ merchants** and **100M+ daily sessions**.
+
+**Problem:** Offers felt like a frustrating maze instead of a conversion lever
 **Scope:** Android, iOS, Mobile Web — consumer checkout UX
 
 ---
 
-## Context
+## Problem
 
-Over the years, offers and coupons have transformed from simple discount codes into strategic instruments. Merchants use them to reinforce brand loyalty, increase average order values, attract fresh customers, and strategically move inventory. Issuers — banks, NBFCs, wallet providers, pay-later services, UPI apps — collaborate with merchants to offer targeted discounts that help them acquire new users and drive platform engagement.
+The offers experience on HyperCheckout **already existed** — entry points, cards, a listing page. It wasn't built from zero. But UX and UI expectations had moved on, and the existing design hadn't kept up. Merchant feedback was coming in, internal teams were flagging inconsistencies, and when we spoke to real users across different checkout contexts, the gaps were hard to ignore.
 
-Juspay's payment page (HyperCheckout SDK) is highly customizable and renders natively inside merchant apps. This means the offers experience needs to work across wildly different merchant contexts — from quick-commerce (Zepto, BigBasket) to travel (Ixigo) to e-commerce (Meesho) — while staying consistent and intuitive for end users.
+Before touching any designs, I wanted to **define the problem properly** — understand what was actually broken, who was feeling it, and why it mattered at Juspay's scale.
 
-> **The core tension:** What should be a straightforward bonus for the customer often turns into a frustrating maze. Terms, conditions, and complex interfaces undermine the very goal of these offers.
+Conversations with merchants surfaced configuration pain points. Discussions with internal teams and user-facing PMs revealed patterns in drop-offs and confusion. And looking at the existing UI with fresh eyes made it clear: the offer experience wasn't bad because of one decision — it was **the accumulation of many small gaps** that made the whole feel unreliable.
 
----
+> What should be a straightforward bonus had become a **trust problem**. Users weren't sure what they were getting, why some offers didn't apply, or which payment method they actually needed.
 
-## Defining the Problem
+The friction showed up in a few consistent ways:
 
-When I audited the existing offers experience across multiple merchant integrations, the problems weren't subtle. Offer cards lacked clarity, eligibility rules were opaque, and payment method discounts were scattered. Users couldn't answer the simplest question — *"What's the best deal I can get right now?"*
+- **No clarity on the best deal** — Users couldn't quickly identify which offer gave maximum savings
+- **Opaque eligibility** — Users saw "HDFC" and assumed any HDFC card worked — only to discover it was locked to one specific instrument. The gap between *perceived* and *actual* eligibility erodes trust
+- **Auto-apply vs. coupon confusion** — Users didn't know the difference, and missed savings because of it
+- **Vague messaging** — "Offer Available" told users nothing about the actual discount value
+- **Poor offer visibility** — Better deals were buried, reducing the effectiveness of merchant promotions entirely
 
-### Key Pain Points
+Two archetypes. Two completely different needs.
 
-- **Lack of clarity in offer selection** — Users struggle to determine which deal provides maximum savings, leading to confusion and suboptimal choices.
-- **Unclear eligibility explanations** — Users don't understand why certain offers don't apply to their orders, causing frustration and missed opportunities.
-- **Auto-applied vs. coupon confusion** — Users fail to differentiate between automatically applied discounts and manual coupon codes, often missing better savings.
-- **Generic offer messaging** — Vague "Offer Available" labels lack details, leaving users uncertain about the actual discount value.
-- **Limited visibility of additional savings** — Users overlook better deals due to poor offer presentation, reducing the effectiveness of promotions.
+**The Deal Hunter** — Will compare every offer before paying. Won't check out until they've found the best deal. Needs: comprehensive visibility, easy comparison, clear eligibility.
 
----
+**The Straight-to-Pay User** — Already committed. Speed is everything. Will take a deal if it's effortless — but won't hunt for one. Needs: zero friction, auto-applied savings, no decision paralysis.
 
-## Understanding Users
-
-Research revealed two distinct user archetypes arriving at the payment page with fundamentally different mindsets:
-
-### The Deal Hunter
-
-Actively seeks out every possible discount. Will compare offers across payment methods. Won't check out until they're confident they have the best deal. Needs: comprehensive offer visibility, easy comparison, clear eligibility.
-
-### The Straight-to-Pay User
-
-Prioritizes speed and simplicity. Already committed to paying — offers aren't top-of-mind, but they'll take a deal if it's effortless. Needs: zero friction, auto-applied savings, no decision paralysis.
-
-> **The design constraint:** We need an experience that is seamless, intuitive, and efficient — making offer discovery effortless for Deal Hunters while ensuring a stress-free payment process for Straight-to-Pay users. Serving one at the expense of the other was not acceptable.
+> The design had to serve both — seamlessly. Optimising for one at the expense of the other was not an option.
 
 ---
 
-## Research & Design Process
+## Approach
 
-Since Juspay's payment page is highly customizable to meet diverse merchant requirements, designs had to be **adaptable yet structured**. Allowing flexibility while defining design boundaries to ensure consistency, clarity, and usability — that was the balancing act throughout.
+Since HyperCheckout is **highly configurable** per merchant, designs had to be flexible yet structured — consistent enough for users, customisable enough for merchants.
 
-### What I studied
-
-I mapped the existing offers journey across multiple merchant integrations to identify pattern breaks, inconsistencies, and friction points. I audited how different payment categories (cards, UPI, wallets, EMI, pay-later) surfaced their specific offers — and found that the information architecture varied wildly with no unifying logic.
-
-### Auto-Applied Offers vs. Coupons
-
-A critical distinction driving the entire UX architecture:
+The most critical distinction underpinning the entire UX architecture:
 
 | | Auto-Applied | Coupon-Based |
 |---|---|---|
 | **User action** | None required | Must manually select & apply |
-| **Trigger** | Activates when a specific payment method is selected | User enters or picks a code |
-| **Visibility** | Always visible; discount appears in price summary instantly | Visible (offers page) or hidden (SMS/email campaigns) |
-| **Feedback needed** | No "Apply" button — seamless | Clear validation feedback & confirmation required |
-| **Who benefits** | Issuers & merchants wanting frictionless experience | Users hunting for specific deals |
+| **Trigger** | Activates on payment method selection | User enters or picks a code |
+| **Visibility** | Always visible | Visible or hidden (SMS/email) |
+| **Feedback** | No Apply button — seamless | Needs validation + confirmation |
 
-### Design goals
-
-- **Visually captivating** — Offers should grab attention instantly, without disrupting checkout flow.
-- **Instantly understandable** — Users should immediately understand the deal without squinting or second-guessing.
-- **Turn curiosity into conversions** — Transform offer discovery into clicks, clicks into savings, savings into successful checkouts.
-- **Merchant-configurable** — Every entry point, card format, and nudge had to work within Juspay's customizable SDK framework.
-
-### Designing for customization & consistency
-
-The goal wasn't just to make offers look better — they had to be engaging and effortless. Visually captivating enough to grab attention like a neon SALE sign. But beyond aesthetics, the system had to be intuitive — so clear that users immediately understand the deal without second-guessing. The mission: turn curiosity into clicks, clicks into savings, and savings into successful checkouts.
+**Design goals:** Surface offers without disrupting checkout. Make eligibility immediately clear. Let merchants configure what shows — without breaking the user experience.
 
 ---
 
-## Solution — Entry Points on the Payment Page
+## Entry Points
 
-When users reach the payment page, their mindset varies — some are laser-focused on completing the transaction, others are still deciding. The fundamental question: *How do we surface relevant offers without disrupting the flow?*
+**Pain point:** Offers were buried. Users who weren't actively looking missed discounts entirely — even when they were applicable.
 
-We're dealing with two distinct intents: the **High-Intent Payer** (already committed, will take a deal if effortless) and the **Low-Intent Explorer** (still on the fence, a well-placed discount could be the final nudge).
+Users arrive at the payment page with different mindsets. The **High-Intent Payer** will take a deal if it's effortless. The **Low-Intent Explorer** might convert if the right offer appears at the right moment.
 
-Instead of burying discounts where users won't naturally look, I designed three flexible entry point variants that merchants can configure based on their priorities:
+I designed **three configurable entry point variants** — merchants choose based on their priorities:
 
-### Variant A — Static Banner + Bank Logos
+<div data-id="offers-entry-point-variants" className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full py-10">
+  <div data-id="offers-variant-static" className="flex flex-col gap-3">
+    <img data-id="offers-variant-static-img" src="/images/case-studies/offers/Static%20-%20Boxed.png" alt="Variant A — Static Banner" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="offers-variant-static-caption">
+      <p data-id="offers-variant-static-title" className="text-sm font-semibold text-[var(--color-text-primary)]">Variant A — Static Banner</p>
+      <p data-id="offers-variant-static-desc" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Compact bar with partner bank logos and a chevron. Minimal footprint, high density. Best for high-intent users on a clean checkout.</p>
+    </div>
+  </div>
+  <div data-id="offers-variant-highlight" className="flex flex-col gap-3">
+    <img data-id="offers-variant-highlight-img" src="/images/case-studies/offers/higlighting%20-%20Boxed.png" alt="Variant B — Dynamic Green Banner" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="offers-variant-highlight-caption">
+      <p data-id="offers-variant-highlight-title" className="text-sm font-semibold text-[var(--color-text-primary)]">Variant B — Dynamic Banner</p>
+      <p data-id="offers-variant-highlight-desc" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Prominent coloured banner surfacing available discount count with issuer logos. Creates urgency. Best for deal-heavy categories driving offer engagement.</p>
+    </div>
+  </div>
+  <div data-id="offers-variant-carousel" className="flex flex-col gap-3">
+    <img data-id="offers-variant-carousel-img" src="/images/case-studies/offers/Carousel%20-%20Boxed.png" alt="Variant C — Inline Carousel Card" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="offers-variant-carousel-caption">
+      <p data-id="offers-variant-carousel-title" className="text-sm font-semibold text-[var(--color-text-primary)]">Variant C — Inline Carousel</p>
+      <p data-id="offers-variant-carousel-desc" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">"Offers & Coupons" header + "View All" link with a swipeable top-offer card. Best for maximum offer visibility without a separate page.</p>
+    </div>
+  </div>
+</div>
 
-Compact bar: "Offers & Coupons - Get up to 60% off" with partner bank logos and a chevron. Minimal footprint, high density. Best for: high-intent users, clean checkout.
+### Carousel Card — Variants Deep Dive
 
-![Variant A — Static Banner + Bank Logos](/images/case-studies/offers/static-banner+bank-logos.png)
+Each carousel card variant surfaces the **discount amount upfront** — so users know what they can save before picking a payment method. When an offer isn't applicable, the card explains exactly why: minimum not met, ineligible items, quota exhausted. **No guessing, no dead ends.**
 
-### Variant B — Dynamic Green Banner
-
-Prominent colored banner: "26 discount options available" with issuer logos. Creates urgency and curiosity. Best for: deal-heavy categories, merchants driving offer engagement.
-
-![Variant B — Dynamic Green Banner](/images/case-studies/offers/dynamic-green-banner.png)
-
-### Variant C — Inline Carousel Card
-
-"Offers & Coupons" header + "View All" link, plus a swipeable card showing the top offer with bank name and Apply button. Best for: maximum offer visibility without a separate page.
-
-![Variant C — Inline Carousel Card](/images/case-studies/offers/Inline%20Carousel%20Card.png)
-
-> **Strategic flexibility:** Offer entry points aren't just about visibility — they're a strategic tool. Merchants can shift from static banners to dynamic carousels: personalized discounts upfront, boosted payment partner visibility, instant offer comparison, or hybrid static banner with dynamic bank logos.
-
-### Annotated rationale (Variant C deep-dive)
-
-- A clear "View All" entry point directs users to a dedicated offers page, making it easier to quickly find the best deals upfront.
-- The card shows the bank name + specific payment instrument the user needs to select — addressing the common struggle in identifying the correct payment option.
-- Emphasizes top discounts on the payment page to enhance visibility and promote the respective merchants.
-
-![Annotated rationale — Variant C deep-dive](/images/case-studies/offers/Annotated%20rationale%20(Variant%20C%20deep-dive)%20.png)
-
----
-
-## Solution — Offer Card Design
-
-The offer card is the atomic unit of the entire system. It needs to communicate offer value, eligible payment method, terms, and action — all in a scannable format.
-
-### Information hierarchy
-
-**1. Offer title first** — "Upto ₹100 cashback with RuPay Credit Card" — ensures users quickly identify the discount.
-
-**2. Payment instrument highlighted** — Specific method required — card type (debit/credit), card category (Visa Platinum, RuPay Select, MasterCard World), transaction type (EMI, No-Cost EMI, UPI). Reduces confusion when multiple options exist under the same issuer.
-
-**3. Description as supporting info** — Additional details for users who want to learn more — remains secondary to title and method.
-
-**4. Benefits & eligibility front-and-center** — Discount/cashback in green. Ineligibility reason in red (min value not met, ineligible items, quota exhausted).
-
-### Two card variants
-
-- **Auto-Applied** — Yellow banner, no Apply button. "Automatically applied on selecting the payment method." Clear upfront message. Variation with "Pay" CTA lets users jump directly to the correct payment instrument — reducing the memorize-then-navigate loop.
-- **Coupon-Based** — Coupon code + Apply button. Shows code prominently (e.g., "RUPAY100"), payment method, description, blue "Apply" button. Benefits section shows savings. "Read More" expands to full T&C in bottom sheet.
-
-> **Reducing cognitive load:** A key friction with auto-applied offers is memorizing the eligible payment method and navigating to it. By providing a direct "Pay" option within the offers card, users seamlessly jump to the correct instrument without back-and-forth.
-
-![Offer Card Design — Auto-Applied and Coupon-Based variants](/images/case-studies/offers/offercards.png)
+![Carousel card variants](/images/case-studies/offers/carousel-card-variants.png)
 
 ---
 
-## Solution — Offer Listing Page
+## Offer Cards
 
-When a user clicks on an offer entry point, they expect a clear way to find the best discount. But when there are 20+ auto-applied offers across multiple payment methods, it quickly becomes overwhelming.
+**Pain point:** Users saw an offer card but couldn't tell which payment instrument they needed, or whether the discount actually applied to them.
 
-### Problems I needed to solve
+The offer card is the **atomic unit** of the entire system. Every piece of information has a job:
 
-- **Finding the best discount quickly** — Users should instantly see the highest savings without sifting through options.
-- **Avoiding inapplicable offers** — Some discounts require cart modifications — these need explanation, not just hiding.
-- **Comparing net discounts at a glance** — Quick scan and compare across applicable offers.
-- **Filtering by payment method** — Easily find relevant coupons (All, UPI, Cards, Wallets, PayLater, Netbanking).
-- **Clarity in discount types** — Auto-applied (no Apply button) vs. coupon-based (with Apply button) must be visually distinct.
+**1. Offer title first** — Users identify the discount instantly before reading anything else
 
-### The page architecture
+**2. Payment instrument highlighted** — Exact card type, category, and transaction type required. Removes the ambiguity of "which HDFC card counts"
 
-**1. Manual coupon input at the top** — Text field for hidden/exclusive codes — always accessible for users arriving with a code from SMS, email, or push.
+**3. Description secondary** — Supporting detail for curious users — never the first thing they see
 
-**2. Payment method filter tabs** — All, UPI, Cards, Wallets, PayLater, Netbanking — instantly narrow down to preferred method. Critical when merchants have 30+ configured offers.
+**4. Benefit & eligibility upfront** — For applicable offers, the green amount shows the **exact discount the user gets** — calculated based on that offer's criteria (cart value, payment method, coupon type). No vague "up to X%" — the number reflects their actual saving. For ineligible offers, we show precisely why it doesn't apply — minimum cart value not met, item ineligible, quota exhausted — so the user knows what's blocking them and can act on it
 
-**3. Available offers (sorted by savings)** — Applicable offers first with clear benefit amounts. Auto-applied offers get a yellow banner: "Automatically applied on selecting the payment method." Coupons get an "Apply" button.
-
-**4. Unavailable offers with reasons** — Separated section showing ineligible offers with specific reasons: "Add ₹92 to avail this offer", "Ineligible items in the cart", "Offer quota exhausted". Disabled Apply button highlights the inactive state.
-
-> **Why show unavailable offers?** If an offer isn't applicable, we provide the reason upfront, allowing users to quickly understand why and take steps to secure the discount (e.g., increasing cart value). This turns a dead-end into a nudge toward conversion.
-
-![Offer Listing Page](/images/case-studies/offers/Offer%20Listing%20Page.png)
-
----
-
-## Solution — Application & Confirmation Flow
-
-### Read More — Transparency
-
-Curious users often explore "Read More", especially when a coupon is ineligible, to understand why. The bottom sheet provides a holistic view — offer title, payment method details, terms & conditions — ensuring full transparency.
-
-### Apply — Reward moment
-
-For applicable coupons, users apply instantly, triggering a success modal with a rewarding animation. This reinforces confidence by clearly displaying the discount amount, validating the effort in finding the best offer, and creating a positive checkout experience.
-
-![Apply reward moment flow](/images/case-studies/offers/Solution%20%E2%80%94%20Application%20%26%20Confirmation%20Flow-2.png)
-
-### Payment method locking
-
-Once a coupon is applied, the payment method is locked to prevent accidental selection of an ineligible option. Users can remove the coupon to regain flexibility — maintaining control over their transaction.
-
-![Payment method locking](/images/case-studies/offers/Solution%20%E2%80%94%20Application%20%26%20Confirmation%20Flow-1.png)
-
-> **The psychology:** Once a discount is applied — whether instant reduction or cashback — the user experiences achievement, reinforcing the decision to complete payment. This transforms checkout from a routine step into a rewarding moment, reducing hesitation and driving conversions. By designing for certainty and exclusivity, users feel they've made a smart choice.
+<div data-id="offers-card-variants" className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full py-10 items-end">
+  <div data-id="offers-card-variant-offer" className="flex flex-col gap-3">
+    <img data-id="offers-card-variant-offer-img" src="/images/case-studies/offers/offer.png" alt="Auto-Applied offer card" className="w-full rounded-[12px] object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="offers-card-variant-offer-caption">
+      <p data-id="offers-card-variant-offer-title" className="text-sm font-semibold text-[var(--color-text-primary)]">Auto-Applied</p>
+      <p data-id="offers-card-variant-offer-desc" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Yellow banner, no Apply button. Discount activates automatically when the eligible payment method is selected — zero extra steps.</p>
+    </div>
+  </div>
+  <div data-id="offers-card-variant-pay" className="flex flex-col gap-3">
+    <img data-id="offers-card-variant-pay-img" src="/images/case-studies/offers/offer%20with%20pay.png" alt="Auto-Applied offer card with Pay CTA" className="w-full rounded-[12px] object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="offers-card-variant-pay-caption">
+      <p data-id="offers-card-variant-pay-title" className="text-sm font-semibold text-[var(--color-text-primary)]">Auto-Applied + Pay</p>
+      <p data-id="offers-card-variant-pay-desc" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Direct "Pay" CTA jumps the user straight to the correct instrument — eliminating the memorise-then-navigate loop.</p>
+    </div>
+  </div>
+  <div data-id="offers-card-variant-coupon" className="flex flex-col gap-3">
+    <img data-id="offers-card-variant-coupon-img" src="/images/case-studies/offers/coupon.png" alt="Coupon-Based offer card" className="w-full rounded-[12px] object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="offers-card-variant-coupon-caption">
+      <p data-id="offers-card-variant-coupon-title" className="text-sm font-semibold text-[var(--color-text-primary)]">Coupon-Based</p>
+      <p data-id="offers-card-variant-coupon-desc" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Code shown prominently with a blue Apply button. Benefits shown upfront; "Read More" expands full T&C in a bottom sheet.</p>
+    </div>
+  </div>
+</div>
 
 ---
 
-## Solution — Payment Method Nudges
+## Offer Listing
 
-With a dedicated offer section in place, the next focus: **offer nudges for payment methods directly on the payment page**. These serve as incentives, encouraging users to choose a specific payment method by highlighting additional savings.
+**Pain point:** With 20+ offers across multiple payment methods, users had no way to quickly find the best deal — or understand why some offers weren't available to them.
 
-### What I designed
+The listing page is structured to **surface the highest value, most actionable offers first:**
 
-- **Pill-text nudges in grid items** — Small "offer" pills next to payment method icons to highlight discounts at a glance.
-- **Redesigned selection flow** — Handles both single and multiple offers per method, giving better visibility and a quick confirmation step.
-- **No extra friction** — The nudge is informational, not blocking. Users who don't care about offers proceed without interacting.
+- **Manual coupon input at top** — always accessible for users arriving with a code from SMS or email
+- **Filter tabs by payment method** — All, UPI, Cards, Wallets, PayLater, Netbanking — critical when merchants have 30+ offers configured
+- **Available offers sorted by savings** — Offers linked to saved cards surface first (one tap away), then ranked by max savings
+- **Unavailable offers with reasons** — "Add ₹92 to avail", "Ineligible items", "Quota exhausted" — a dead-end becomes a nudge toward conversion
+
+<div data-id="offers-listing-screens" className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full py-10 items-start">
+  <div data-id="offers-listing-screen-all" className="flex flex-col gap-3">
+    <img data-id="offers-listing-all-img" src="/images/case-studies/offers/all-offers.png" alt="All offers listing" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="offers-listing-all-caption">
+      <p data-id="offers-listing-all-title" className="text-sm font-semibold text-[var(--color-text-primary)]">All Offers</p>
+      <p data-id="offers-listing-all-desc" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Available and unavailable offers in one view — with eligibility reasons so users know exactly what's claimable and what's blocking them.</p>
+    </div>
+  </div>
+  <div data-id="offers-listing-screen-upi" className="flex flex-col gap-3">
+    <img data-id="offers-listing-upi-img" src="/images/case-studies/offers/switched-to-upi.png" alt="Switched to UPI payment method" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="offers-listing-upi-caption">
+      <p data-id="offers-listing-upi-title" className="text-sm font-semibold text-[var(--color-text-primary)]">Switched to UPI</p>
+      <p data-id="offers-listing-upi-desc" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Selecting an offer switches the payment method automatically — no back-navigation needed.</p>
+    </div>
+  </div>
+  <div data-id="offers-listing-screen-coupon" className="flex flex-col gap-3">
+    <img data-id="offers-listing-coupon-img" src="/images/case-studies/offers/entered-coupon-code.png" alt="Entered coupon code" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="offers-listing-coupon-caption">
+      <p data-id="offers-listing-coupon-title" className="text-sm font-semibold text-[var(--color-text-primary)]">Entered Coupon Code</p>
+      <p data-id="offers-listing-coupon-desc" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Inline validation with instant eligibility feedback — users know if their code works before they commit.</p>
+    </div>
+  </div>
+</div>
+
+---
+
+## Apply Flow
+
+**Pain point:** Users were uncertain about offer terms and hesitant to apply without fully understanding what they were committing to.
+
+Once a user taps **"Read More"**, a bottom sheet surfaces the full offer breakdown — title, payment method, and T&C — clearing any confusion. If they're confident, they apply the coupon directly from there, **locking in the discount** before heading to payment.
+
+<div data-id="offers-confirmation-screens" className="grid grid-cols-1 sm:grid-cols-2 gap-6 py-10 items-start max-w-[620px] mx-auto">
+  <div data-id="offers-confirmation-terms" className="flex flex-col gap-3">
+    <img data-id="offers-confirmation-terms-img" src="/images/case-studies/offers/terms&conditions.png" alt="Terms and conditions bottom sheet" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="offers-confirmation-terms-caption">
+      <p data-id="offers-confirmation-terms-title" className="text-sm font-semibold text-[var(--color-text-primary)]">Read More — Full Transparency</p>
+      <p data-id="offers-confirmation-terms-desc" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Bottom sheet with complete offer details — title, required payment method, and T&C — so users can apply with confidence.</p>
+    </div>
+  </div>
+  <div data-id="offers-confirmation-applied" className="flex flex-col gap-3">
+    <img data-id="offers-confirmation-applied-img" src="/images/case-studies/offers/offer-applied.png" alt="Offer applied success state" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="offers-confirmation-applied-caption">
+      <p data-id="offers-confirmation-applied-title" className="text-sm font-semibold text-[var(--color-text-primary)]">Apply — Reward Moment</p>
+      <p data-id="offers-confirmation-applied-desc" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Success modal confirms the discount — turning a routine checkout step into a rewarding moment that reinforces the decision to pay.</p>
+    </div>
+  </div>
+</div>
+
+### Payment Method Locking
+
+Once applied, the **payment method locks** — preventing accidental selection of an ineligible option. Users can remove the coupon anytime to regain flexibility.
+
+<div data-id="offers-payment-locking" className="flex justify-center py-10">
+  <div data-id="offers-payment-locking-card" className="flex flex-col gap-3 max-w-[310px] w-full">
+    <img data-id="offers-payment-locking-img" src="/images/case-studies/offers/payment-locking.png" alt="Payment method locking" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="offers-payment-locking-caption">
+      <p data-id="offers-payment-locking-title" className="text-sm font-semibold text-[var(--color-text-primary)]">Payment Method Locked</p>
+      <p data-id="offers-payment-locking-desc" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Locks the method to the applied offer — prevents accidental invalidation. Removable anytime.</p>
+    </div>
+  </div>
+</div>
+
+### Inline Offer Details — Payment Method Grid
+
+**Pain point:** We already showed a nudge text above the payment method icon — but it didn't tell the user the actual discount amount or what they'd get. To find out, they had to select the method, go all the way to the UPI app or card CVV screen, and only then see the offer detail. By that point, they couldn't make a conscious, informed decision before committing. The nudge existed, but it wasn't doing its job.
+
+For UPI, wallets, and cards, **offer details now surface inline within the payment grid** — discount amount, eligibility, and a direct apply action — visible before the user taps, so they can decide with full context.
+
+<div data-id="offers-inline-screens" className="grid grid-cols-1 sm:grid-cols-2 gap-6 py-10 items-start max-w-[620px] mx-auto">
+  <div data-id="offers-inline-screen-1" className="flex flex-col gap-3">
+    <img data-id="offers-inline-img-1" src="/images/case-studies/offers/inline%20offers.png" alt="Inline offers on payment method grid" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="offers-inline-caption-1">
+      <p data-id="offers-inline-title-1" className="text-sm font-semibold text-[var(--color-text-primary)]">Inline Offer Tag</p>
+      <p data-id="offers-inline-desc-1" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Discount visible directly on the payment method — users see what they save for UPI, wallet, or card before making a selection.</p>
+    </div>
+  </div>
+  <div data-id="offers-inline-screen-2" className="flex flex-col gap-3">
+    <img data-id="offers-inline-img-2" src="/images/case-studies/offers/inline%20offers%202.png" alt="Inline offers expanded state" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="offers-inline-caption-2">
+      <p data-id="offers-inline-title-2" className="text-sm font-semibold text-[var(--color-text-primary)]">Expanded Inline Detail</p>
+      <p data-id="offers-inline-desc-2" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Tapping expands the full offer context inline — amount, eligibility, and a direct apply action — without breaking the payment flow.</p>
+    </div>
+  </div>
+</div>
+
+---
+
+## Payment Page
+
+Every nudge, hook, and entry point lives somewhere on this page. **It's up to the merchant** to decide which to activate, where to place them, and how aggressively to surface discounts — based on their category, user base, and business priorities.
+
+<div data-id="offers-finalpp-wrap" className="flex justify-center py-10">
+  <img data-id="offers-finalpp-img" src="/images/case-studies/offers/finalpp.png" alt="Final payment page overview" className="w-full max-w-[310px] rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+</div>
+
+---
+
+## Payment Nudges
+
+**Pain point:** Users chose payment methods without knowing a specific one had an additional offer — leaving savings on the table.
+
+Offer nudges appear **directly on payment method tiles** in the grid — pill labels, discount callouts, and quick confirmation states — so users see the incentive before they commit to an instrument.
 
 ![Payment Method Nudges](/images/case-studies/offers/paymentmethodnudges.png)
 
 ---
 
-## Evaluation & Reflection
+## Reflection
 
-The offers system works as interconnected surfaces — entry points, listing page, offer cards, application flow, and payment method nudges — all configurable by merchants but governed by consistent design principles.
+The offers system works as **interconnected surfaces** — entry points, listing, cards, application flow, and payment nudges — all merchant-configurable but governed by consistent design principles.
 
-### Design principles that held
-
-- **Show, don't hide** — Even ineligible offers are surfaced with clear reasons. Transparency builds trust and nudges cart modifications.
-- **Match user intent** — Deal Hunters get comparison tools. Straight-to-Pay users get auto-applied savings with zero friction.
-- **Reduce cognitive load** — Payment method always visible on cards. Direct "Pay" buttons eliminate memorize-then-navigate loops.
-
-### How we evaluated
-
-- **Internal design reviews** — Validated information hierarchy and card readability across different offer densities (3 offers vs. 30+).
-- **Merchant configuration testing** — Ensured all three entry point variants work within the customizable SDK across different merchant brands.
-- **Edge case mapping** — Tested: no offers available, all ineligible, single offer, hidden coupon + auto-apply overlap, offer expiry mid-session.
-- **Visual language consistency** — Yellow = auto-applied, blue = apply action, red = ineligible, green = benefit — held across all surfaces and screen sizes.
-
-### What I'd iterate on next
-
-Opportunities remain for smarter offer ranking (ML-based, factoring in user payment history), richer animations on the reward moment, and deeper integration with the Euler Dashboard so merchants can preview exactly how configured offers render on different SDK variants before going live.
-
-> **The bigger picture:** Designing an intuitive offers experience on a payment page is a nuanced challenge — balancing user needs (find the best deal fast) with merchant needs (promote specific payment methods, manage complexity). This system gives both sides what they need: Deal Hunters get clarity, Straight-to-Pay users get speed, and merchants get configurable flexibility. Offers stop feeling like a treasure hunt and start feeling like a reward.
-
-![Final Overview](/images/case-studies/offers/final.png)
+- **Show, don't hide** — Even ineligible offers are surfaced with reasons. Transparency builds trust and nudges cart modifications
+- **Match user intent** — Deal Hunters get comparison tools. Straight-to-Pay users get auto-applied savings with zero friction
+- **Reduce cognitive load** — Payment method always visible on cards. Direct "Pay" buttons cut the memorise-then-navigate loop

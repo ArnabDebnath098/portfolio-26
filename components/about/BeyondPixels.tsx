@@ -28,25 +28,11 @@ const passions = [
     span: "",
   },
   {
-    emoji: "💻",
-    title: "Coding",
-    description: "Not just prototypes — I ship real things. This portfolio, coded from scratch. If a design can't survive implementation, it wasn't done.",
-    accent: "var(--color-accent)",
-    span: "sm:col-span-2",
-  },
-  {
-    emoji: "🧩",
-    title: "Problem Solving",
-    description: "I chase the 'aha' moment. Whether it's a payment flow edge case or a puzzle game — the satisfaction of a clean solution is the same.",
-    accent: "var(--color-indigo)",
-    span: "",
-  },
-  {
     emoji: "🔨",
     title: "Building",
     description: "Side projects, tools, experiments. I'm founding uiMate — a career growth platform for designers. If it doesn't exist yet, maybe I should make it.",
     accent: "var(--color-ornament)",
-    span: "",
+    span: "sm:col-span-2",
   },
 ];
 
@@ -80,7 +66,7 @@ export function BeyondPixels() {
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.45, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
             className={cn(
-              "group relative overflow-hidden rounded-2xl p-6",
+              "group relative overflow-hidden rounded-lg p-6",
               "border border-[var(--color-border-default)]",
               "bg-[var(--color-bg-base)]",
               "hover:border-[var(--color-border-strong)]",
@@ -96,8 +82,7 @@ export function BeyondPixels() {
             />
 
             <div data-id={`beyond-pixels-card-inner-${i}`} className="relative z-10 flex flex-col gap-3">
-              <div data-id={`beyond-pixels-card-top-${i}`} className="flex items-center gap-3">
-                <span data-id={`beyond-pixels-emoji-${i}`} className="text-2xl leading-none">{item.emoji}</span>
+              <div data-id={`beyond-pixels-card-top-${i}`} className="flex items-center">
                 <h3
                   data-id={`beyond-pixels-title-${i}`}
                   className="text-base font-semibold text-[var(--color-text-primary)] tracking-[-0.01em]"
