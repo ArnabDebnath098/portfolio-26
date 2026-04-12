@@ -70,7 +70,7 @@ export default function AboutPage() {
                 fill
                 sizes="(min-width: 640px) 224px, 192px"
                 className="object-cover"
-                priority
+                preload
               />
             </div>
           </FadeUp>

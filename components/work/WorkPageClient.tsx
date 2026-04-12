@@ -2,7 +2,6 @@
 
 import { useState, useEffect, ReactNode } from "react";
 import Image from "next/image";
-import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { FadeUp } from "@/components/animations/FadeUp";
 import { StaggerChildren, StaggerItem } from "@/components/animations/StaggerChildren";
@@ -15,24 +14,16 @@ interface WorkPageClientProps {
   caseStudyContent: Record<string, ReactNode>;
 }
 
-const DARK_TAG_COLORS = [
-  "bg-indigo-600 text-white",
-  "bg-amber-400 text-amber-950",
-  "bg-emerald-500 text-white",
-  "bg-rose-500 text-white",
-];
-const LIGHT_TAG_COLORS = [
-  "bg-indigo-100 text-indigo-700",
-  "bg-amber-100 text-amber-800",
-  "bg-emerald-100 text-emerald-700",
-  "bg-rose-100 text-rose-700",
+const TAG_COLORS = [
+  "bg-indigo-100 text-indigo-700 dark:bg-indigo-600 dark:text-white",
+  "bg-amber-100 text-amber-800 dark:bg-amber-400 dark:text-amber-950",
+  "bg-emerald-100 text-emerald-700 dark:bg-emerald-500 dark:text-white",
+  "bg-rose-100 text-rose-700 dark:bg-rose-500 dark:text-white",
 ];
 
 export function WorkPageClient({ sorted, caseStudyContent }: WorkPageClientProps) {
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
-  const { resolvedTheme } = useTheme();
-  const tagColor = (idx: number) =>
-    (resolvedTheme === "dark" ? DARK_TAG_COLORS : LIGHT_TAG_COLORS)[idx % 4];
+  const tagColor = (idx: number) => TAG_COLORS[idx % 4];
 
 
   // Auto-open modal from ?open=slug query param (client-side only)
@@ -103,7 +94,7 @@ export function WorkPageClient({ sorted, caseStudyContent }: WorkPageClientProps
                         fill
                         className="object-cover"
                         sizes="(max-width: 640px) 100vw, 960px"
-                        {...(i < 5 ? { priority: true } : {})}
+                        {...(i < 5 ? { preload: true } : {})}
                       />
                     ) : (
                       <div

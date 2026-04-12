@@ -24,7 +24,7 @@ const ORNAMENT_DOT = (
   </svg>
 );
 
-function CardBody({ project }: { project: Project }) {
+function CardBody({ project, eager }: { project: Project; eager?: boolean }) {
   const tagColor = (idx: number) => TAG_COLORS[idx % 4];
   return (
     <div
@@ -44,6 +44,7 @@ function CardBody({ project }: { project: Project }) {
             fill
             className="object-cover will-change-transform transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
             sizes="(max-width: 640px) 100vw, 50vw"
+            {...(eager ? { preload: true } : {})}
           />
         )}
         <div data-id={`project-card-thumb-tags-${project.slug}`} className="absolute bottom-3 left-3 flex flex-wrap gap-1.5">
@@ -97,10 +98,12 @@ function ProjectCard({
   project,
   hasContent,
   onOpen,
+  eager,
 }: {
   project: Project;
   hasContent: boolean;
   onOpen: () => void;
+  eager?: boolean;
 }) {
   return (
     <StaggerItem>
@@ -112,7 +115,7 @@ function ProjectCard({
           rel="noopener noreferrer"
           className="group block h-full"
         >
-          <CardBody project={project} />
+          <CardBody project={project} eager={eager} />
         </a>
       ) : hasContent ? (
         <button
@@ -120,11 +123,11 @@ function ProjectCard({
           onClick={onOpen}
           className="group block h-full w-full text-left cursor-pointer"
         >
-          <CardBody project={project} />
+          <CardBody project={project} eager={eager} />
         </button>
       ) : (
         <Link data-id={`project-card-link-${project.slug}`} href={`/work?open=${project.slug}`} className="group block h-full">
-          <CardBody project={project} />
+          <CardBody project={project} eager={eager} />
         </Link>
       )}
     </StaggerItem>
@@ -168,12 +171,13 @@ export function ProjectGrid({ projects, caseStudyContent = {} }: ProjectGridProp
         delay={0.1}
         stagger={0.1}
       >
-        {projects.slice(0, 4).map((project) => (
+        {projects.slice(0, 4).map((project, i) => (
           <ProjectCard
             key={project.slug}
             project={project}
             hasContent={!!caseStudyContent[project.slug]}
             onOpen={() => setActiveSlug(project.slug)}
+            eager={i < 4}
           />
         ))}
       </StaggerChildren>
