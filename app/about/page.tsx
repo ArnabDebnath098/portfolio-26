@@ -68,6 +68,7 @@ export default function AboutPage() {
                 src="/myprofile.jpg"
                 alt="Arnab Debnath"
                 fill
+                sizes="(min-width: 640px) 224px, 192px"
                 className="object-cover"
                 priority
               />

@@ -7,7 +7,8 @@ import { cn } from "@/lib/utils";
 import type { Exploration } from "@/data/explorations";
 
 function ImageCard({ item, index }: { item: Exploration; index: number }) {
-  const [loaded, setLoaded] = useState(false);
+  const isPriority = index < 4;
+  const [loaded, setLoaded] = useState(isPriority);
 
   return (
     <div
@@ -32,7 +33,7 @@ function ImageCard({ item, index }: { item: Exploration; index: number }) {
         )}
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         onLoad={() => setLoaded(true)}
-        {...(index < 4 ? { priority: true } : {})}
+        {...(isPriority ? { priority: true } : {})}
       />
     </div>
   );

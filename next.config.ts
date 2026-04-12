@@ -11,6 +11,17 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["@phosphor-icons/react"],
   },
+  outputFileTracingExcludes: {
+    "*": [
+      "public/images/**",
+      "public/**/*.png",
+      "public/**/*.jpg",
+      "public/**/*.jpeg",
+      "public/**/*.webp",
+      "public/**/*.avif",
+      "public/**/*.svg",
+    ],
+  },
 };
 
 export default nextConfig;
