@@ -10,6 +10,13 @@ import { cn } from "@/lib/utils";
 import { BotanicMark } from "@/components/illustrations/IndianOrnaments";
 import { CaseStudyModal } from "@/components/work/CaseStudyModal";
 
+const TAG_COLORS = [
+  "bg-indigo-100 text-indigo-700 dark:bg-indigo-600 dark:text-white",
+  "bg-amber-100 text-amber-800 dark:bg-amber-400 dark:text-amber-950",
+  "bg-emerald-100 text-emerald-700 dark:bg-emerald-500 dark:text-white",
+  "bg-rose-100 text-rose-700 dark:bg-rose-500 dark:text-white",
+];
+
 const ORNAMENT_DOT = (
   <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
     <circle cx="6" cy="6" r="4" stroke="var(--color-ornament)" strokeWidth="0.6" />
@@ -18,6 +25,7 @@ const ORNAMENT_DOT = (
 );
 
 function CardBody({ project }: { project: Project }) {
+  const tagColor = (idx: number) => TAG_COLORS[idx % 4];
   return (
     <div
       data-id={`project-card-${project.slug}`}
@@ -39,11 +47,14 @@ function CardBody({ project }: { project: Project }) {
           />
         )}
         <div data-id={`project-card-thumb-tags-${project.slug}`} className="absolute bottom-3 left-3 flex flex-wrap gap-1.5">
-          {project.tags.slice(0, 2).map((tag) => (
+          {project.tags.slice(0, 2).map((tag, idx) => (
             <span
               key={tag}
               data-id={`project-card-tag-${project.slug}-${tag.toLowerCase().replace(/\s/g, "-")}`}
-              className="px-2.5 py-1 text-[10px] font-medium tracking-wide rounded-full bg-[var(--color-bg-base)]/85 backdrop-blur-sm text-[var(--color-text-muted)]"
+              className={cn(
+                "px-2.5 py-1 text-[10px] font-semibold tracking-wide rounded-full",
+                tagColor(idx)
+              )}
             >
               {tag}
             </span>
@@ -93,7 +104,17 @@ function ProjectCard({
 }) {
   return (
     <StaggerItem>
-      {hasContent ? (
+      {project.externalLink ? (
+        <a
+          data-id={`project-card-link-${project.slug}`}
+          href={project.externalLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group block h-full"
+        >
+          <CardBody project={project} />
+        </a>
+      ) : hasContent ? (
         <button
           data-id={`project-card-link-${project.slug}`}
           onClick={onOpen}

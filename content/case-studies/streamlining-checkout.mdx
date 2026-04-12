@@ -22,7 +22,7 @@ I was the only solo designer competing against teams of talented designers. And 
 
 ## The Problem
 
-In today's digital landscape, we encounter numerous e-commerce platforms offering diverse products tailored to various user demographics. Each platform has its unique approach to meeting user needs. For me, online shopping has become heavily reliant on trust. Sometimes, there are issues like receiving the wrong product, poor quality items, or dealing with complex return processes.
+Back in 2024, when I took on this hackathon brief, the e-commerce landscape was crowded with platforms offering diverse products tailored to every kind of user. Each one had its own approach, but as a shopper, I'd noticed online buying had become heavily reliant on trust. I'd dealt with the usual frustrations — receiving the wrong product, poor quality items, and complicated return processes — and it shaped how I approached this problem.
 
 The issues I faced as a user:
 
@@ -44,129 +44,213 @@ Create a delightful experience that improves conversion rate and lets users comp
 
 ## Cart Page
 
-The cart is where users make their final decisions. Instead of overwhelming them, I designed it as a calm, focused space — with address display alongside delivery times, Open Box Delivery for trust, smart upselling, upfront offers and coupons, a transparent order summary, and delivery instructions.
+A calm, focused space where every element earns its place — address with delivery times up top, trust signals built in, offers surfaced upfront, and a transparent bill breakdown.
 
-One of the issues I encounter on e-commerce platforms is accidentally selecting the wrong address during checkout. Since I spend a lot of time on the cart page reviewing details, it would be helpful to have the address displayed. Also, with items having different delivery times, I find it cumbersome to scroll through the list. Therefore, I thought of incorporating delivery times alongside the address.
+**Problems I set out to fix:**
 
-To build user confidence and prevent fraud, Open Box Delivery ensures users receive their items without defects or errors, eliminating the hassle of returns and refunds.
+- **Wrong address selected by accident** — addresses sit far from where users review items, so mistakes only surface after payment
+- **Mixed delivery dates buried inside the list** — users have to scroll to learn when each item actually arrives
+- **No safety net against fraud or damaged goods** — once it's delivered, the burden of returns is on the customer
+- **Hidden offers and coupons** — discounts live behind unclear entry points, so users pay full price unaware
+- **Opaque bill breakdowns** — surprise charges at the final step erode trust right before the tap to pay
+- **No way to leave delivery instructions** — gate codes, drop-off notes, and timing live in WhatsApp threads instead of the order
 
-In the cart section, upselling can boost average order value and improve the shopping experience. Additionally, users may be reminded of related items they forgot to purchase.
-
-Customers feel thrilled to receive discounts or cashback on their purchases, as it gives them a sense of saving money. Therefore, it's crucial to present offers upfront and clearly, allowing users to apply coupons easily without searching extensively.
-
-Hidden charges and unclear bill breakdowns can leave users confused about the exact costs. Providing a clear and transparent bill breakdown is essential to instill confidence and trust in the platform.
-
-Working individuals often need to communicate specific delivery instructions to ensure proper receipt of their packages. By allowing users to provide these instructions upfront on the platform, it simplifies the process for both the delivery partner and the customer.
-
-A friendly reminder to double-check your address and cart items to prevent cancellations.
-
-![Cart Page — Full annotated flow](/images/case-studies/streamlining-checkout/section-1.png)
-
----
-
-## Cart Page Details
-
-### Open Box Delivery
-
-Open Box Delivery allows customers to inspect their products upon delivery, ensuring confidence and top-notch quality by enabling them to verify the condition before accepting.
-
-### Remove Items from Cart
-
-Swipe cards to either delete items or save them for later, to purchase whenever you're ready.
-
-### Offers & Coupons
-
-To maintain user excitement and encourage conversions, offers CTAs are placed upfront, allowing users to easily navigate to the offer section and apply discounts they might have forgotten.
-
-![Cart Details — Open Box Delivery, Remove Items, Offers](/images/case-studies/streamlining-checkout/section-2.png)
+<div data-id="cartpage-screens" className="grid grid-cols-3 gap-6 w-full py-10 items-start">
+  <div data-id="cartpage-screen-1" className="flex flex-col gap-3 max-w-[390px] w-full mx-auto">
+    <img data-id="cartpage-img-1" src="/images/case-studies/streamlining-checkout/cartpage-1.png" alt="Cart page overview" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="cartpage-caption-1">
+      <p data-id="cartpage-title-1" className="text-sm font-semibold text-[var(--color-text-primary)]">One screen, every decision</p>
+      <p data-id="cartpage-sub-1" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Address, delivery time, items, offers, and order summary — all in reach without hunting.</p>
+    </div>
+  </div>
+  <div data-id="cartpage-screen-2" className="flex flex-col gap-3 max-w-[390px] w-full mx-auto">
+    <img data-id="cartpage-img-2" src="/images/case-studies/streamlining-checkout/cartpage-2.png" alt="Open Box Delivery details expanded" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="cartpage-caption-2">
+      <p data-id="cartpage-title-2" className="text-sm font-semibold text-[var(--color-text-primary)]">Open Box Delivery, expanded</p>
+      <p data-id="cartpage-sub-2" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Tap to see exactly how it works — inspect before you accept. Trust earned where the decision happens.</p>
+    </div>
+  </div>
+  <div data-id="cartpage-screen-3" className="flex flex-col gap-3 max-w-[390px] w-full mx-auto">
+    <img data-id="cartpage-img-3" src="/images/case-studies/streamlining-checkout/cartpage-3.png" alt="Cart page upsell and instructions" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="cartpage-caption-3">
+      <p data-id="cartpage-title-3" className="text-sm font-semibold text-[var(--color-text-primary)]">Smart nudges, not noise</p>
+      <p data-id="cartpage-sub-3" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Upselling, coupons, and delivery instructions sit alongside the order — discoverable when wanted, quiet when not.</p>
+    </div>
+  </div>
+</div>
 
 ---
 
 ## Cart Item Cards
 
-Users can seamlessly switch between different versions of products with just a click, facilitating quick comparison and selection. The card handles multiple states:
+**Pain points I'm solving:** Most cart cards dump every product detail into one cramped block, hide stock and sale information in tiny grey text, and leave users guessing whether an item will actually ship. People discover "out of stock" only after tapping pay, miss expiring offers because the timer lives elsewhere, and tap the wrong variant because switching means leaving the cart entirely.
 
-- **Default state** — Product image, name, price, delivery time, rating, and quantity controls
-- **Urgency state** — "Hurry! Only 10 pairs left in stock. Don't miss out!" or "Hurry! Sale ends in 02:58 min"
-- **Out of stock state** — "Out of stock. Slide to remove" with clear visual treatment
+One card, four purposeful states — default, limited stock, sale ending, and out of stock — each surfacing the one piece of information that decides the next action.
 
-![Cart Item Cards — States and Variants](/images/case-studies/streamlining-checkout/section-3.png)
+<div data-id="cartitem-cards" className="grid grid-cols-2 gap-6 w-full py-10 items-start">
+  <div data-id="cartitem-card-default" className="flex flex-col gap-3 max-w-[390px] w-full mx-auto">
+    <img data-id="cartitem-img-default" src="/images/case-studies/streamlining-checkout/cartitem-default.png" alt="Default cart item card" className="w-full rounded-[8px] object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="cartitem-caption-default">
+      <p data-id="cartitem-title-default" className="text-sm font-semibold text-[var(--color-text-primary)]">Default</p>
+      <p data-id="cartitem-sub-default" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Image, name, price, delivery time, and quantity controls — everything needed to confirm or tweak the purchase.</p>
+    </div>
+  </div>
+  <div data-id="cartitem-card-limited" className="flex flex-col gap-3 max-w-[390px] w-full mx-auto">
+    <img data-id="cartitem-img-limited" src="/images/case-studies/streamlining-checkout/cartitem-limited-stock.png" alt="Limited stock cart item card" className="w-full rounded-[8px] object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="cartitem-caption-limited">
+      <p data-id="cartitem-title-limited" className="text-sm font-semibold text-[var(--color-text-primary)]">Limited Stock</p>
+      <p data-id="cartitem-sub-limited" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">"Only a few left" nudge surfaces honest scarcity — pushing decisive users to act without dark patterns.</p>
+    </div>
+  </div>
+  <div data-id="cartitem-card-sale" className="flex flex-col gap-3 max-w-[390px] w-full mx-auto">
+    <img data-id="cartitem-img-sale" src="/images/case-studies/streamlining-checkout/cartitem-sale-ends.png" alt="Sale ending cart item card" className="w-full rounded-[8px] object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="cartitem-caption-sale">
+      <p data-id="cartitem-title-sale" className="text-sm font-semibold text-[var(--color-text-primary)]">Sale Ending</p>
+      <p data-id="cartitem-sub-sale" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Live countdown on the offer about to expire — so users don't lose a discount they already earned.</p>
+    </div>
+  </div>
+  <div data-id="cartitem-card-oos" className="flex flex-col gap-3 max-w-[390px] w-full mx-auto">
+    <img data-id="cartitem-img-oos" src="/images/case-studies/streamlining-checkout/cartitem-out-of-stock.png" alt="Out of stock cart item card" className="w-full rounded-[8px] object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="cartitem-caption-oos">
+      <p data-id="cartitem-title-oos" className="text-sm font-semibold text-[var(--color-text-primary)]">Out of Stock</p>
+      <p data-id="cartitem-sub-oos" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Clearly muted with a swipe-to-remove cue — blocks the user from paying for something that won't ship.</p>
+    </div>
+  </div>
+</div>
 
 ---
 
 ## Cart Confirm & Review Order
 
-After adding your favorite items to your cart, if you have an account with a saved address, you can easily select it or add a new one or edit the current address seamlessly.
+**Pain points I'm solving:** Wrong-address deliveries are one of the biggest sources of failed orders, and most apps bury saved addresses behind two extra taps. Users also lose confidence at the final step because pricing, discounts, and shipping live on different screens — so the total feels arbitrary, and any mistake means restarting the flow.
 
-After reviewing your order, the "Review Order" option allows you to double-check and avoid any mistakes before confirming your purchase — delivery details, itemized pricing, discount breakdown, shipping charges, and total amount all in one clear summary.
+Two quick checkpoints between the cart and payment — pick the right address, then sanity-check the full order in one place before money moves.
 
-![Address Selection & Order Review](/images/case-studies/streamlining-checkout/section-4.png)
+<div data-id="confirm-screens" className="grid grid-cols-2 gap-6 w-full py-10 items-start">
+  <div data-id="confirm-screen-address" className="flex flex-col gap-3 max-w-[390px] w-full mx-auto">
+    <img data-id="confirm-img-address" src="/images/case-studies/streamlining-checkout/address-selection.png" alt="Address selection screen" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="confirm-caption-address">
+      <p data-id="confirm-title-address" className="text-sm font-semibold text-[var(--color-text-primary)]">Address Selection</p>
+      <p data-id="confirm-sub-address" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Saved addresses surface first with edit and add-new in reach — no detours, no wrong-doorstep deliveries.</p>
+    </div>
+  </div>
+  <div data-id="confirm-screen-review" className="flex flex-col gap-3 max-w-[390px] w-full mx-auto">
+    <img data-id="confirm-img-review" src="/images/case-studies/streamlining-checkout/review-order.png" alt="Review order screen" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="confirm-caption-review">
+      <p data-id="confirm-title-review" className="text-sm font-semibold text-[var(--color-text-primary)]">Review Order</p>
+      <p data-id="confirm-sub-review" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Delivery details, itemised pricing, discounts, and total in one clean summary — last chance to catch a mistake.</p>
+    </div>
+  </div>
+</div>
 
 ---
 
 ## Guest Checkout
 
-For new users without an account:
+**Pain points I'm solving:** Forced sign-up walls are the single biggest first-time drop-off in checkout. New users abandon when asked to create an account, set a password, and verify an email — all before placing a single order. On the flip side, totally anonymous checkouts cause failed deliveries from typo'd numbers and addresses, which cost the platform money in returns.
 
-### Phone & Name
+A four-step path for new users without an account — phone, OTP, address, review — each step doing exactly one job, with verification light enough to feel frictionless but strong enough to prevent bad data from reaching the warehouse.
 
-To facilitate order notifications and streamline communication with the delivery partner, customer's phone number and name is required.
-
-### OTP Verification
-
-Implementing OTP verification helps ensure user authenticity, reducing delivery failures caused by incorrect phone numbers. This minimizes returns but also saves on delivery costs, optimizing operational efficiency.
-
-### Address Entry
-
-To simplify address entry, users can utilize their current location for accurate identification. If ordering for someone else, they can toggle to manually enter every detail, including pincode, exact address, landmark, etc., for better delivery precision.
-
-### Review Order
-
-After reviewing everything, users can confirm all details at once in a single place before proceeding to payment.
-
-![Guest Checkout — OTP, Address Entry, Review](/images/case-studies/streamlining-checkout/section-5.png)
+<div data-id="guest-screens" className="grid grid-cols-4 gap-6 w-full py-10 items-start">
+  <div data-id="guest-screen-mobile" className="flex flex-col gap-3 max-w-[390px] w-full mx-auto">
+    <img data-id="guest-img-mobile" src="/images/case-studies/streamlining-checkout/guest-checkout-mobilenumber.png" alt="Guest checkout — mobile number" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="guest-caption-mobile">
+      <p data-id="guest-title-mobile" className="text-sm font-semibold text-[var(--color-text-primary)]">Phone &amp; Name</p>
+      <p data-id="guest-sub-mobile" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Just the essentials needed to notify the user and reach them on delivery — nothing more.</p>
+    </div>
+  </div>
+  <div data-id="guest-screen-otp" className="flex flex-col gap-3 max-w-[390px] w-full mx-auto">
+    <img data-id="guest-img-otp" src="/images/case-studies/streamlining-checkout/Guest-checkout-otp.png" alt="Guest checkout — OTP verification" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="guest-caption-otp">
+      <p data-id="guest-title-otp" className="text-sm font-semibold text-[var(--color-text-primary)]">OTP Verification</p>
+      <p data-id="guest-sub-otp" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Confirms a real, reachable number — cuts down on failed deliveries from typos and fake digits.</p>
+    </div>
+  </div>
+  <div data-id="guest-screen-address" className="flex flex-col gap-3 max-w-[390px] w-full mx-auto">
+    <img data-id="guest-img-address" src="/images/case-studies/streamlining-checkout/Guest-checkout-add-address.png" alt="Guest checkout — add address" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="guest-caption-address">
+      <p data-id="guest-title-address" className="text-sm font-semibold text-[var(--color-text-primary)]">Address Entry</p>
+      <p data-id="guest-sub-address" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Use current location in a tap, or switch to manual entry when ordering for someone else.</p>
+    </div>
+  </div>
+  <div data-id="guest-screen-review" className="flex flex-col gap-3 max-w-[390px] w-full mx-auto">
+    <img data-id="guest-img-review" src="/images/case-studies/streamlining-checkout/Guest-checkout-review-order.png" alt="Guest checkout — review order" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="guest-caption-review">
+      <p data-id="guest-title-review" className="text-sm font-semibold text-[var(--color-text-primary)]">Review Order</p>
+      <p data-id="guest-sub-review" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">One last look at items, address, and total before payment — no surprises on the next screen.</p>
+    </div>
+  </div>
+</div>
 
 ---
 
 ## Select Payment Method
 
-This is where trust matters most. Users are about to commit their money.
+**Pain points I'm solving:** Payment is where trust collapses fastest. Returning users have to re-pick the same method every single time. New users face an unranked wall of UPI, cards, wallets, EMI, pay-later, and COD with no idea which one offers the best discount. Hidden charges appear at the last second, and offer-eligible methods don't surface their savings until after selection — so users routinely overpay and lose faith in the platform.
 
-Displaying the last-used payment methods upfront ensures a seamless payment experience, sparing users the need to remember and navigate to off-set.
+### Quick Checkout
 
-When the total due is high, subtly promoting EMI options below payment methods ensures users aren't forced to availability, making after it easy and inviting. The page is simple with only a credit card like card and few confirmation fields in reach.
+For returning users, picking a payment method again is wasted effort. The last-used method surfaces upfront with the exact amount on a single tappable button — no tabs, no re-entry, no second-guessing.
 
-The payment page groups all options clearly — UPI apps with familiar branding, credit and debit cards with auto-formatting, wallets, pay-later options, and COD. Coupons can be applied directly, offer-eligible methods surface with savings tags, and the summary updates in real-time.
+<div data-id="payment-quick" className="flex flex-col gap-3 max-w-[390px] w-full mx-auto py-10">
+  <img data-id="payment-quick-img" src="/images/case-studies/streamlining-checkout/quick-checkout.png" alt="Quick checkout — last used payment method" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+  <div data-id="payment-quick-caption">
+    <p data-id="payment-quick-title" className="text-sm font-semibold text-[var(--color-text-primary)]">Quick Checkout</p>
+    <p data-id="payment-quick-sub" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Last-used method front and centre — one tap to pay for users who already trust the flow.</p>
+  </div>
+</div>
 
-For processes with smart wallets, Gpay, PhonePe, or wallets and mobile payments, the experience is designed to be seamless. The pay-now button always shows the exact amount with a clear confirmation.
+### Full Payment Page
 
-![Payment Experience — Methods, Cards, UPI, Wallets, Coupons](/images/case-studies/streamlining-checkout/section-6.png)
+For users who want a different method, most checkout pages fall apart — endless lists, no offer transparency, and savings hidden until you commit. The full page groups every option clearly with familiar logos, surfaces offer-eligible methods with live savings tags, and updates the total in real time so users always know what they're actually paying.
+
+<div data-id="payment-full" className="flex flex-col gap-3 max-w-[390px] w-full mx-auto py-10">
+  <img data-id="payment-full-img" src="/images/case-studies/streamlining-checkout/full-checkout-page.png" alt="Full payment page with all methods" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+  <div data-id="payment-full-caption">
+    <p data-id="payment-full-title" className="text-sm font-semibold text-[var(--color-text-primary)]">Full Payment Page</p>
+    <p data-id="payment-full-sub" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Every method grouped clearly with offer tags and live totals — discoverable without overwhelming the default flow.</p>
+  </div>
+</div>
 
 ---
 
 ## Order Tracking
 
-After successful payment, users see a satisfying confirmation with order details, delivery timeline, and a clear tracking interface. The post-payment screen isn't just a receipt — it's a celebration and a reassurance that everything went through correctly.
+**Pain points I'm solving:** The moment after payment is where confidence wobbles most. Users worry the payment didn't go through, can't tell whether the order is actually moving, and have to dig through emails or call support to find out where their package is. Most apps treat this screen as a static receipt instead of an active reassurance loop.
+
+After payment, users get a clear confirmation, a stage-by-stage live tracker, and a single delivery details view with everything they'd need if something goes wrong — turning the post-payment screen from a dead-end into a trust-building moment.
+
+<div data-id="tracking-screens" className="grid grid-cols-3 gap-6 w-full py-10 items-start">
+  <div data-id="tracking-screen-1" className="flex flex-col gap-3 max-w-[390px] w-full mx-auto">
+    <img data-id="tracking-img-1" src="/images/case-studies/streamlining-checkout/order-tracking-1.png" alt="Order confirmation screen" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="tracking-caption-1">
+      <p data-id="tracking-title-1" className="text-sm font-semibold text-[var(--color-text-primary)]">Order Confirmed</p>
+      <p data-id="tracking-sub-1" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">A clear, celebratory confirmation the moment payment goes through — reassurance that the order is locked in.</p>
+    </div>
+  </div>
+  <div data-id="tracking-screen-2" className="flex flex-col gap-3 max-w-[390px] w-full mx-auto">
+    <img data-id="tracking-img-2" src="/images/case-studies/streamlining-checkout/order-tracking-2.png" alt="Live order tracking screen" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="tracking-caption-2">
+      <p data-id="tracking-title-2" className="text-sm font-semibold text-[var(--color-text-primary)]">Live Tracking</p>
+      <p data-id="tracking-sub-2" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Stage-by-stage progress with timestamps — users know exactly where the package is without refreshing.</p>
+    </div>
+  </div>
+  <div data-id="tracking-screen-3" className="flex flex-col gap-3 max-w-[390px] w-full mx-auto">
+    <img data-id="tracking-img-3" src="/images/case-studies/streamlining-checkout/order-tracking-3.png" alt="Delivery details screen" className="w-full rounded-xl object-contain shadow-[0_0_24px_rgba(0,0,0,0.10)]" loading="lazy" />
+    <div data-id="tracking-caption-3">
+      <p data-id="tracking-title-3" className="text-sm font-semibold text-[var(--color-text-primary)]">Delivery Details</p>
+      <p data-id="tracking-sub-3" className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-0.5">Itemised summary, partner info, and support in one place — everything needed if anything goes sideways.</p>
+    </div>
+  </div>
+</div>
 
 ---
 
 ## Got New Ideas — Code to Get Address
 
-During the design process, I explored the idea of using delivery partner codes as an alternative to traditional addresses. Instead of typing full addresses, users could generate a unique code that delivery partners scan or enter — simplifying the last-mile delivery problem entirely.
+**Pain points I'm solving:** Address entry is one of the most error-prone steps in checkout. Users mistype pincodes, skip landmarks, or paste incomplete addresses — and delivery partners spend hours calling, retyping into their own apps, or marking orders as "address not found". On the customer side, sharing a home address with strangers also feels risky for women, solo renters, and anyone in shared housing.
 
----
-
-## Things I Designed
-
-Throughout this hackathon, I designed the complete checkout system from scratch:
-
-- **Cart page** with inline editing, upselling, and transparent pricing
-- **Product card system** with multiple states (default, urgency, out of stock)
-- **Address selection** flow for both returning and new users
-- **Guest checkout** with OTP verification and location-based address
-- **Payment method selection** with intelligent ranking and offer integration
-- **Order confirmation** and tracking experience
-- **Design system components** — buttons, cards, inputs, modals, and interaction patterns
+During the design process, I explored using short, scannable delivery codes as an alternative to typing full addresses. Users would generate a unique code tied to their saved location — delivery partners scan or enter it on arrival, skipping the entire address-typing loop and removing a source of failed deliveries and privacy friction in one move.
 
 ---
 

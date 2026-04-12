@@ -205,9 +205,9 @@
 
   /* Text */
   --color-text-primary:   var(--primitive-white);
-  --color-text-secondary: var(--primitive-gray-5);
-  --color-text-muted:     var(--primitive-gray-3);
-  --color-text-disabled:  var(--primitive-gray-2);
+  --color-text-secondary: var(--primitive-gray-8);
+  --color-text-muted:     var(--primitive-gray-6);
+  --color-text-disabled:  var(--primitive-gray-4);
   --color-text-inverse:   var(--primitive-black);
   --color-text-on-accent: var(--primitive-white);
 

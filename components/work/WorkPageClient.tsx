@@ -2,6 +2,7 @@
 
 import { useState, useEffect, ReactNode } from "react";
 import Image from "next/image";
+import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { FadeUp } from "@/components/animations/FadeUp";
 import { StaggerChildren, StaggerItem } from "@/components/animations/StaggerChildren";
@@ -14,8 +15,24 @@ interface WorkPageClientProps {
   caseStudyContent: Record<string, ReactNode>;
 }
 
+const DARK_TAG_COLORS = [
+  "bg-indigo-600 text-white",
+  "bg-amber-400 text-amber-950",
+  "bg-emerald-500 text-white",
+  "bg-rose-500 text-white",
+];
+const LIGHT_TAG_COLORS = [
+  "bg-indigo-100 text-indigo-700",
+  "bg-amber-100 text-amber-800",
+  "bg-emerald-100 text-emerald-700",
+  "bg-rose-100 text-rose-700",
+];
+
 export function WorkPageClient({ sorted, caseStudyContent }: WorkPageClientProps) {
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
+  const { resolvedTheme } = useTheme();
+  const tagColor = (idx: number) =>
+    (resolvedTheme === "dark" ? DARK_TAG_COLORS : LIGHT_TAG_COLORS)[idx % 4];
 
 
   // Auto-open modal from ?open=slug query param (client-side only)
@@ -56,13 +73,15 @@ export function WorkPageClient({ sorted, caseStudyContent }: WorkPageClientProps
               <button
                 data-id={`work-project-link-${project.slug}`}
                 onClick={() => {
-                  if (caseStudyContent[project.slug]) {
+                  if (project.externalLink) {
+                    window.open(project.externalLink, "_blank", "noopener,noreferrer");
+                  } else if (caseStudyContent[project.slug]) {
                     setActiveSlug(project.slug);
                   }
                 }}
                 className={cn(
                   "group block w-full text-left",
-                  caseStudyContent[project.slug] ? "cursor-pointer" : "cursor-default"
+                  (project.externalLink || caseStudyContent[project.slug]) ? "cursor-pointer" : "cursor-default"
                 )}
               >
                 <div data-id={`work-project-row-${project.slug}`} className={cn(
@@ -84,7 +103,7 @@ export function WorkPageClient({ sorted, caseStudyContent }: WorkPageClientProps
                         fill
                         className="object-cover"
                         sizes="(max-width: 640px) 100vw, 960px"
-                        {...(i < 3 ? { priority: true } : {})}
+                        {...(i < 5 ? { priority: true } : {})}
                       />
                     ) : (
                       <div
@@ -127,15 +146,13 @@ export function WorkPageClient({ sorted, caseStudyContent }: WorkPageClientProps
 
                       {/* Tags */}
                       <div data-id={`work-project-tags-${project.slug}`} className="flex flex-wrap gap-2 pt-1">
-                        {project.tags.map((tag) => (
+                        {project.tags.map((tag, idx) => (
                           <span
                             key={tag}
                             data-id={`work-project-tag-${project.slug}-${tag.toLowerCase().replace(/\s/g, "-")}`}
                             className={cn(
-                              "px-2.5 py-0.5 text-[10px] font-medium tracking-wide",
-                              "bg-[var(--color-bg-elevated)]",
-                              "border border-[var(--color-border-default)]",
-                              "text-[var(--color-text-muted)]"
+                              "px-2.5 py-0.5 text-[10px] font-semibold tracking-wide rounded-full",
+                              tagColor(idx)
                             )}
                           >
                             {tag}
@@ -144,21 +161,32 @@ export function WorkPageClient({ sorted, caseStudyContent }: WorkPageClientProps
                       </div>
                     </div>
 
-                    {/* Arrow */}
+                    {/* Arrow / Lock */}
                     <div data-id={`work-project-arrow-${project.slug}`} className={cn(
                       "hidden sm:flex items-center justify-center",
                       "w-10 h-10",
                       "border border-[var(--color-border-default)]",
                       "text-[var(--color-text-muted)]",
-                      "group-hover:border-[var(--color-accent)]",
-                      "group-hover:text-[var(--color-accent)]",
-                      "group-hover:bg-[var(--color-accent-subtle)]",
                       "transition-all duration-300",
-                      "group-hover:translate-x-1 group-hover:-translate-y-1"
+                      project.locked
+                        ? "cursor-not-allowed"
+                        : [
+                            "group-hover:border-[var(--color-accent)]",
+                            "group-hover:text-[var(--color-accent)]",
+                            "group-hover:bg-[var(--color-accent-subtle)]",
+                            "group-hover:translate-x-1 group-hover:-translate-y-1",
+                          ]
                     )}>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M7 17L17 7M7 7h10v10" />
-                      </svg>
+                      {project.locked ? (
+                        <svg data-id={`work-project-lock-${project.slug}`} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                        </svg>
+                      ) : (
+                        <svg data-id={`work-project-arrow-icon-${project.slug}`} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M7 17L17 7M7 7h10v10" />
+                        </svg>
+                      )}
                     </div>
                   </div>
                 </div>

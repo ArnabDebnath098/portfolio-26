@@ -2,8 +2,6 @@ import { Metadata } from "next";
 import fs from "fs";
 import path from "path";
 import { FadeUp } from "@/components/animations/FadeUp";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/Button";
 import { explorations } from "@/data/explorations";
 import { MasonryGrid } from "@/components/lab/MasonryGrid";
 
@@ -50,33 +48,6 @@ export default function LabPage() {
           <MasonryGrid items={explorations} hasImages={hasImages} />
         </div>
 
-        {/* GitHub nudge */}
-        <FadeUp delay={0.2}>
-          <div data-id="lab-github-nudge" className={cn(
-            "flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4",
-            "p-5",
-            "border border-[var(--color-border-default)]",
-            "bg-[var(--color-bg-surface)]"
-          )}>
-            <div data-id="lab-github-text" className="flex flex-col gap-0.5">
-              <p data-id="lab-github-heading" className="text-sm font-semibold text-[var(--color-text-primary)]">
-                Want to see the code behind this site?
-              </p>
-              <p data-id="lab-github-sub" className="text-xs text-[var(--color-text-muted)]">
-                Built with Next.js 15, Tailwind v4, Motion, and Lenis
-              </p>
-            </div>
-            <a
-              data-id="lab-github-link"
-              href="https://github.com/ArnabDebnath098"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={buttonVariants({ variant: "secondary", size: "sm", className: "shrink-0" })}
-            >
-              GitHub →
-            </a>
-          </div>
-        </FadeUp>
 
       </div>
     </div>

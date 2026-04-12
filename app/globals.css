@@ -3,6 +3,8 @@
 @import "../styles/tokens.css";
 @import "../styles/animations.css";
 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 /* ── Animatable aurora gradient properties ── */
 @property --aurora-1 {
   syntax: "<color>";

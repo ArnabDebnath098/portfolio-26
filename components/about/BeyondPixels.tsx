@@ -7,34 +7,81 @@ import { BotanicMark } from "@/components/illustrations/IndianOrnaments";
 
 const passions = [
   {
+    emoji: "🔨",
+    title: "Building",
+    description: "Side projects, tools, experiments. I'm founding uiMate — a career growth platform for designers. If it doesn't exist yet, maybe I should make it.",
+    accent: "var(--color-ornament)",
+    image: "/images/github.png",
+    imageAlt: "GitHub contribution graph",
+    extendedDescription: "Recently I've been coding a lot more — not just prototypes, but actual production contributions. It started as a way to better understand interactions and animations, and turned into a habit. Understanding implementation constraints firsthand makes my design decisions sharper.",
+  },
+  {
     emoji: "🎨",
     title: "Painting",
     description: "Fine arts trained. I still paint when I need to think without words — acrylics, ink, sometimes just charcoal on brown paper.",
     accent: "var(--color-accent)",
-    span: "sm:col-span-2",
+    images: [
+      "/images/painting/painting-1.png",
+      "/images/painting/painting-2.png",
+      "/images/painting/painting-3.png",
+      "/images/painting/painting-4.png",
+    ],
   },
   {
     emoji: "🎮",
     title: "Gaming",
     description: "Story-driven games are my design school after hours. Every menu, every onboarding, every micro-interaction — I notice them all.",
     accent: "var(--color-indigo)",
-    span: "",
   },
   {
     emoji: "✈️",
     title: "Travelling",
     description: "New cities reset my creative palette. I collect wayfinding systems and street typography the way others collect magnets.",
     accent: "var(--color-ornament)",
-    span: "",
-  },
-  {
-    emoji: "🔨",
-    title: "Building",
-    description: "Side projects, tools, experiments. I'm founding uiMate — a career growth platform for designers. If it doesn't exist yet, maybe I should make it.",
-    accent: "var(--color-ornament)",
-    span: "sm:col-span-2",
+    bento: true,
+    images: [
+      // Row 1: landscape(2) + portrait(1) = 3
+      "/images/travel/landscape-1.png",
+      "/images/travel/potrait-1.png",
+      // Row 2: portrait(1) + square(1) + portrait(1) = 3
+      "/images/travel/potrait-2.png",
+      "/images/travel/sqaure-1.png",
+      "/images/travel/potrait-3.png",
+      // Row 3: portrait(1) + landscape(2) = 3
+      "/images/travel/potrait-4.png",
+      "/images/travel/landscape-2.png",
+    ],
   },
 ];
+
+function getImageType(src: string): "landscape" | "portrait" | "square" {
+  if (src.includes("landscape")) return "landscape";
+  if (src.includes("potrait") || src.includes("portrait")) return "portrait";
+  return "square";
+}
+
+function TravelBento({ images }: { images: string[] }) {
+  return (
+    <div data-id="beyond-pixels-travel-bento" className="grid grid-cols-3 gap-2 items-start">
+      {images.map((src, idx) => {
+        const type = getImageType(src);
+        return (
+          <div
+            key={idx}
+            data-id={`beyond-pixels-travel-bento-${idx}`}
+            className={cn(
+              "overflow-hidden rounded-md",
+              type === "landscape" ? "col-span-2" : "col-span-1"
+            )}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={src} alt={`Travel ${idx + 1}`} className="w-full h-auto" />
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 export function BeyondPixels() {
   return (
@@ -56,7 +103,7 @@ export function BeyondPixels() {
         </div>
       </FadeUp>
 
-      <div data-id="beyond-pixels-grid" className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div data-id="beyond-pixels-list" className="flex flex-col gap-4">
         {passions.map((item, i) => (
           <motion.div
             key={item.title}
@@ -70,8 +117,7 @@ export function BeyondPixels() {
               "border border-[var(--color-border-default)]",
               "bg-[var(--color-bg-base)]",
               "hover:border-[var(--color-border-strong)]",
-              "transition-colors duration-300",
-              item.span
+              "transition-colors duration-300"
             )}
           >
             {/* Subtle gradient glow on hover */}
@@ -81,21 +127,70 @@ export function BeyondPixels() {
               style={{ background: `radial-gradient(circle at 30% 30%, color-mix(in srgb, ${item.accent} 8%, transparent), transparent 70%)` } as React.CSSProperties}
             />
 
-            <div data-id={`beyond-pixels-card-inner-${i}`} className="relative z-10 flex flex-col gap-3">
-              <div data-id={`beyond-pixels-card-top-${i}`} className="flex items-center">
-                <h3
-                  data-id={`beyond-pixels-title-${i}`}
-                  className="text-base font-semibold text-[var(--color-text-primary)] tracking-[-0.01em]"
+            <div
+              data-id={`beyond-pixels-card-inner-${i}`}
+              className={cn("relative z-10 flex gap-5", item.image ? "flex-row items-stretch" : "flex-col gap-3")}
+            >
+              {/* Building — github image on the left */}
+              {item.image && (
+                <div data-id={`beyond-pixels-card-img-wrap-${i}`} className="flex-shrink-0 self-stretch rounded-lg overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    data-id={`beyond-pixels-card-img-${i}`}
+                    src={item.image}
+                    alt={item.imageAlt ?? ""}
+                    className="h-full w-auto object-contain rounded-lg"
+                  />
+                </div>
+              )}
+
+              {/* Painting — equal columns, natural aspect ratio */}
+              {item.images && !item.bento && (
+                <div
+                  data-id={`beyond-pixels-card-images-${i}`}
+                  className="grid gap-2"
+                  style={{ gridTemplateColumns: `repeat(${item.images.length}, minmax(0, 1fr))` } as React.CSSProperties}
                 >
-                  {item.title}
-                </h3>
+                  {item.images.map((src, idx) => (
+                    <div key={idx} data-id={`beyond-pixels-img-${item.title.toLowerCase()}-${idx}`} className="overflow-hidden rounded-md">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={src}
+                        alt={`${item.title} ${idx + 1}`}
+                        className="w-full h-auto"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Travelling — bento grid */}
+              {item.bento && item.images && <TravelBento images={item.images} />}
+
+              <div data-id={`beyond-pixels-card-text-${i}`} className="flex flex-col gap-2">
+                <div data-id={`beyond-pixels-card-top-${i}`} className="flex items-center">
+                  <h3
+                    data-id={`beyond-pixels-title-${i}`}
+                    className="text-base font-semibold text-[var(--color-text-primary)] tracking-[-0.01em]"
+                  >
+                    {item.title}
+                  </h3>
+                </div>
+                <p
+                  data-id={`beyond-pixels-desc-${i}`}
+                  className="text-sm text-[var(--color-text-secondary)] leading-relaxed"
+                >
+                  {item.description}
+                </p>
+                {item.extendedDescription && (
+                  <p
+                    data-id={`beyond-pixels-ext-desc-${i}`}
+                    className="text-sm text-[var(--color-text-muted)] leading-relaxed"
+                  >
+                    {item.extendedDescription}
+                  </p>
+                )}
               </div>
-              <p
-                data-id={`beyond-pixels-desc-${i}`}
-                className="text-sm text-[var(--color-text-secondary)] leading-relaxed"
-              >
-                {item.description}
-              </p>
             </div>
           </motion.div>
         ))}

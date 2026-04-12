@@ -11,6 +11,7 @@ export type Project = {
   featured: boolean;
   locked: boolean;
   order: number;
+  externalLink?: string;
 };
 
 export const projects: Project[] = [
@@ -29,6 +30,7 @@ export const projects: Project[] = [
     featured: true,
     locked: false,
     order: 7,
+    externalLink: "https://medium.com/@Arnab_Debnath/designing-a-stand-alone-public-transport-app-that-seamlessly-integrates-all-modes-of-transportation-16d7d6614d3a",
   },
   {
     slug: "cracking-the-code-of-offers",
@@ -60,7 +62,8 @@ export const projects: Project[] = [
       "Making credit seamless for high-ticket purchases, bridging the gap for 300M+ Indian shoppers, and transforming the shopping experience.",
     featured: true,
     locked: false,
-    order: 4,
+    order: 999,
+    externalLink: "https://medium.com/@Arnab_Debnath/designing-a-stand-alone-public-transport-app-that-seamlessly-integrates-all-modes-of-transportation-16d7d6614d3a",
   },
   {
     slug: "streamlining-checkout",
@@ -91,7 +94,7 @@ export const projects: Project[] = [
     description:
       "Designing the end-to-end mandate creation and management experience for UPI and card-based recurring payments across JUSPAY's merchant ecosystem.",
     featured: true,
-    locked: false,
+    locked: true,
     order: 6,
   },
   {
@@ -123,7 +126,7 @@ export const projects: Project[] = [
     description:
       "An evolving design system powering JUSPAY's payment page. We're actively building demos and prototypes using vibe coding, rigorously testing each component before releasing to merchants — scaling the system one validated pattern at a time.",
     featured: true,
-    locked: false,
+    locked: true,
     order: 3,
   },
   {
@@ -139,7 +142,7 @@ export const projects: Project[] = [
     description:
       "Planning multi-city vacations with groups is chaotic. Wandr brings shared itineraries, real-time collaboration, and transport coordination into one seamless experience.",
     featured: true,
-    locked: false,
+    locked: true,
     order: 7,
   },
 ];

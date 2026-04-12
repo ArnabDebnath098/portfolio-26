@@ -2,6 +2,16 @@
    ANIMATIONS — Custom Keyframes
    ============================================ */
 
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 80s linear infinite;
+  transform-origin: center center;
+}
+
 @keyframes fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }
@@ -202,6 +212,44 @@
 /* ── AI face eye transition ── */
 .ai-face-eye {
   transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── CTA shimmer sweep ── */
+@keyframes cta-shimmer-sweep {
+  0%        { transform: translateX(-150%) skewX(-20deg); }
+  50%, 100% { transform: translateX(250%)  skewX(-20deg); }
+}
+.animate-cta-shimmer {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.animate-cta-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 30%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 70%,
+    transparent 100%
+  );
+  animation: cta-shimmer-sweep 6s ease-in-out infinite;
+  will-change: transform;
+  z-index: 1;
+}
+
+/* ── Chat trigger background pulse ── */
+@keyframes chat-trigger-bg-pulse {
+  0%, 100% { background-color: var(--color-bg-elevated); }
+  50%      { background-color: var(--color-accent-subtle); }
+}
+.animate-chat-trigger-pulse {
+  animation: chat-trigger-bg-pulse 2.4s ease-in-out infinite;
+  will-change: background-color;
 }
 
 /* ── Card hover effect ── */

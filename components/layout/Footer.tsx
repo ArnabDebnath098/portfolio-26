@@ -145,14 +145,19 @@ export function Footer() {
           )}
         >
           {/* Mandala art — desktop only, right side */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            data-id="footer-cta-mandala"
-            src="/mandal-2.svg"
-            alt=""
-            aria-hidden
-            className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/3 w-[660px] h-[660px] opacity-[0.08] pointer-events-none select-none [filter:brightness(0)_invert(1)]"
-          />
+          <div
+            data-id="footer-cta-mandala-wrap"
+            className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/3 w-[660px] h-[660px] pointer-events-none select-none"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              data-id="footer-cta-mandala"
+              src="/mandal-2.svg"
+              alt=""
+              aria-hidden
+              className="w-full h-full opacity-[0.08] [filter:brightness(0)_invert(1)] animate-spin-slow"
+            />
+          </div>
 
           {/* Content */}
           <div data-id="footer-cta-content" className="relative z-10 max-w-lg">

@@ -267,7 +267,8 @@ export function CaseStudyChat() {
               "border border-[var(--color-border-default)]",
               "bg-[var(--color-bg-elevated)]",
               "shadow-lg hover:shadow-xl",
-              "transition-shadow"
+              "transition-shadow",
+              "animate-chat-trigger-pulse"
             )}
             aria-label="Ask me anything"
           >
@@ -319,8 +320,6 @@ export function CaseStudyChat() {
                 "bg-[var(--color-bg-base)]"
               )}
             >
-              <div data-id="chat-aurora-bg" className="chat-aurora" />
-
               {/* Header */}
               <div
                 data-id="chat-header"
@@ -334,7 +333,7 @@ export function CaseStudyChat() {
                   <div data-id="chat-header-info">
                     <p
                       data-id="chat-header-title"
-                      className="text-sm font-semibold text-[var(--color-text-primary)]"
+                      className="text-sm font-semibold text-[var(--color-text-primary)] font-display"
                     >
                       Hey, I&apos;m Arnab
                     </p>
@@ -385,27 +384,9 @@ export function CaseStudyChat() {
                 {messages.length === 0 ? (
                   <div
                     data-id="chat-empty"
-                    className="flex flex-col items-center justify-center gap-5 h-full"
+                    className="flex flex-col items-center justify-center gap-6 h-full"
                   >
                     <AIFace size={48} />
-                    <div
-                      data-id="chat-empty-text"
-                      className="text-center space-y-1"
-                    >
-                      <p
-                        data-id="chat-empty-greeting"
-                        className="text-sm font-medium text-[var(--color-text-primary)] font-[family-name:var(--font-display)]"
-                      >
-                        Hey, I&apos;m Arnab.
-                      </p>
-                      <p
-                        data-id="chat-empty-hint"
-                        className="text-xs text-[var(--color-text-muted)] max-w-[280px]"
-                      >
-                        Ask me about my work, design process, case studies, or
-                        anything else.
-                      </p>
-                    </div>
                     <div
                       data-id="chat-suggestions"
                       className="flex flex-wrap justify-center gap-2 w-full max-w-[360px]"
@@ -417,9 +398,10 @@ export function CaseStudyChat() {
                           onClick={() => sendMessage(s)}
                           className={cn(
                             "text-xs px-4 py-2 rounded-full text-center",
-                            "border border-[var(--color-accent)]",
-                            "text-[var(--color-accent)]",
-                            "hover:bg-[var(--color-accent)] hover:text-white",
+                            "border border-[var(--color-accent)]/40",
+                            "text-[var(--color-text-primary)]",
+                            "bg-[var(--color-bg-elevated)]",
+                            "hover:bg-[var(--color-accent-subtle)] hover:border-[var(--color-accent)]",
                             "transition-colors cursor-pointer",
                             "leading-snug"
                           )}
@@ -450,8 +432,8 @@ export function CaseStudyChat() {
                         className={cn(
                           "max-w-[85%] px-3.5 py-2.5",
                           msg.role === "user"
-                            ? "bg-[var(--color-accent)] text-white rounded-2xl rounded-br-sm"
-                            : "bg-[var(--color-bg-surface)]/60 backdrop-blur-sm text-[var(--color-text-primary)] rounded-xl rounded-bl-sm border-l-2 border-l-[var(--color-accent)]/40"
+                            ? "bg-[var(--color-accent-subtle)] text-[var(--color-text-primary)] rounded-[12px] rounded-br-sm"
+                            : "bg-[var(--color-bg-elevated)] text-[var(--color-text-primary)] rounded-[12px] rounded-bl-sm"
                         )}
                       >
                         {msg.role === "assistant" ? (
