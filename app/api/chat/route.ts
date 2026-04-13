@@ -2,9 +2,36 @@ import { NextRequest } from "next/server";
 import { buildChatSystemPrompt, buildCaseStudyChatPrompt } from "@/lib/ai";
 
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
-const MODEL = "llama-3.3-70b-versatile";
+const MODEL = "llama-3.1-8b-instant";
+
+// Simple in-memory rate limit: 8 requests per IP per minute
+const ipHits = new Map<string, { count: number; reset: number }>();
+const RATE_LIMIT = 8;
+const WINDOW_MS = 60_000;
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = ipHits.get(ip);
+  if (!entry || now > entry.reset) {
+    ipHits.set(ip, { count: 1, reset: now + WINDOW_MS });
+    return true;
+  }
+  if (entry.count >= RATE_LIMIT) return false;
+  entry.count++;
+  return true;
+}
 
 export async function POST(req: NextRequest) {
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+
+  if (!checkRateLimit(ip)) {
+    return Response.json(
+      { error: "Too many requests. Please wait a moment." },
+      { status: 429 }
+    );
+  }
+
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey || apiKey === "your_groq_api_key_here") {
     return Response.json(
@@ -25,7 +52,7 @@ export async function POST(req: NextRequest) {
 
   const groqMessages = [
     { role: "system", content: systemPrompt },
-    ...messages.slice(-10),
+    ...messages.slice(-6),
   ];
 
   const response = await fetch(GROQ_API_URL, {
@@ -38,7 +65,7 @@ export async function POST(req: NextRequest) {
       model: MODEL,
       messages: groqMessages,
       temperature: 0.75,
-      max_tokens: 800,
+      max_tokens: 500,
       stream: true,
     }),
   });

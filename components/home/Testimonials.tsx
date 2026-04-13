@@ -12,7 +12,7 @@ function useCardWidth() {
   const [width, setWidth] = useState(720);
   useEffect(() => {
     function update() {
-      setWidth(window.innerWidth < 640 ? Math.min(window.innerWidth - 48, 360) : 720);
+      setWidth(window.innerWidth < 640 ? Math.min(window.innerWidth - 64, 340) : 720);
     }
     update();
     window.addEventListener("resize", update);
@@ -69,7 +69,7 @@ function TestimonialCard({
     >
       <div
         data-id={`testimonial-card-inner-${t.id}`}
-        className="w-[var(--card-w)] rounded-2xl border border-[var(--color-border-default)] bg-[var(--color-bg-surface)] p-5 sm:p-7 flex flex-col gap-4 sm:gap-5 shadow-sm h-[360px] sm:h-[400px]"
+        className="w-[var(--card-w)] rounded-2xl border border-[var(--color-border-default)] bg-[var(--color-bg-surface)] p-5 sm:p-7 flex flex-col gap-4 sm:gap-5 shadow-sm h-[360px] sm:h-[400px] overflow-hidden"
       >
         {/* Folk flower accent */}
         <div data-id={`testimonial-flower-${t.id}`} aria-hidden className="-mb-1">
@@ -177,7 +177,7 @@ export function Testimonials() {
       {/* Carousel */}
       <div
         data-id="testimonials-carousel"
-        className="relative max-w-7xl mx-auto px-6"
+        className="relative max-w-7xl mx-auto px-6 overflow-hidden"
         onMouseEnter={() => { paused.current = true; }}
         onMouseLeave={() => { paused.current = false; }}
       >

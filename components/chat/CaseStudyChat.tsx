@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 import { ChatMarkdown } from "./ChatMarkdown";
+import { WalkingHumans } from "@/components/fun/WalkingHumans";
 
 /* ═══════════════════════════════════════════════════════
    TYPES
@@ -199,6 +200,9 @@ export function CaseStudyChat() {
         }),
       });
 
+      if (response.status === 429) {
+        throw new Error("rate_limited");
+      }
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
@@ -227,13 +231,16 @@ export function CaseStudyChat() {
           return updated;
         });
       }
-    } catch {
+    } catch (err) {
       setIsThinking(false);
+      const isRateLimited = err instanceof Error && err.message === "rate_limited";
       setMessages((prev) => {
         const updated = [...prev];
         updated[updated.length - 1] = {
           role: "assistant",
-          content: "Sorry, I couldn't connect right now. Please try again.",
+          content: isRateLimited
+            ? "You're sending messages a bit fast — give it a moment and try again."
+            : "Sorry, I couldn't connect right now. Please try again.",
           timestamp: Date.now(),
         };
         return updated;
@@ -256,6 +263,12 @@ export function CaseStudyChat() {
       {/* ── Floating trigger — fixed like Navbar ── */}
       {showPill && !isOpen && (
         <div data-id="chat-trigger-wrapper" className="fixed bottom-6 right-6 z-50">
+          <div
+            data-id="chat-trigger-humans-strip"
+            className="hidden md:block absolute bottom-full left-0 right-0"
+          >
+            <WalkingHumans />
+          </div>
           <button
             ref={pillRef}
             data-id="chat-trigger"
@@ -532,7 +545,7 @@ export function CaseStudyChat() {
                     data-id="chat-input-model"
                     className="text-[10px] text-[var(--color-text-muted)] tracking-wide"
                   >
-                    Groq · llama-3.3-70b
+                    Groq · llama-3.1-8b
                   </span>
 
                   {/* Right — actions */}

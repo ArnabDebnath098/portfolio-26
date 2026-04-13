@@ -74,8 +74,8 @@ export function LikeButton() {
           "border transition-all duration-200 cursor-pointer select-none",
           "shadow-lg hover:shadow-xl",
           liked
-            ? "border-fuchsia-400/60 bg-fuchsia-50 dark:bg-fuchsia-950/30"
-            : "border-[var(--color-border-default)] bg-[var(--color-bg-elevated)] hover:border-fuchsia-400/60"
+            ? "border-[var(--color-accent)]/60 bg-[var(--color-accent-subtle)]"
+            : "border-[var(--color-border-default)] bg-[var(--color-bg-elevated)] hover:border-[var(--color-accent)]/60"
         )}
         aria-label={liked ? "You liked this portfolio" : "Like this portfolio"}
       >
@@ -88,7 +88,7 @@ export function LikeButton() {
           <Heart
             size={18}
             weight={liked ? "fill" : "regular"}
-            className={liked ? "text-fuchsia-500" : "text-fuchsia-400"}
+            className={liked ? "text-[var(--color-accent)]" : "text-[var(--color-accent)]/70"}
           />
         </span>
 
@@ -97,7 +97,7 @@ export function LikeButton() {
           className={cn(
             "text-xs font-medium tabular-nums min-w-[1ch]",
             liked
-              ? "text-fuchsia-500"
+              ? "text-[var(--color-accent)]"
               : "text-[var(--color-text-secondary)]"
           )}
         >

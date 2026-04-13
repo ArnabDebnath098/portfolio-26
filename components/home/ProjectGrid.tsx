@@ -167,7 +167,7 @@ export function ProjectGrid({ projects, caseStudyContent = {} }: ProjectGridProp
 
       {/* Grid — first 4 only */}
       <StaggerChildren
-        className="grid grid-cols-1 sm:grid-cols-2 gap-10"
+        className="grid grid-cols-1 sm:grid-cols-2 gap-10 items-start"
         delay={0.1}
         stagger={0.1}
       >
