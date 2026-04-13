@@ -15,6 +15,7 @@ import { Footer } from "@/components/layout/Footer";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { IntroAnimation } from "@/components/animations/IntroAnimation";
 import { CaseStudyChat } from "@/components/chat/CaseStudyChat";
+import { LikeButton } from "@/components/ui/LikeButton";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://arnabdebnath.in"),
@@ -202,6 +203,7 @@ export default function RootLayout({
           <main data-id="root-main" className="flex-1">{children}</main>
           <Footer />
           <CaseStudyChat />
+          <LikeButton />
         </Providers>
       </body>
     </html>
