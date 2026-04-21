@@ -190,6 +190,13 @@
   --color-nav-bg:          rgba(253, 249, 243, 0.90);
   --color-nav-border:      rgba(180, 160, 130, 0.15);
   --color-nav-pill-shadow: 0 4px 24px rgba(120, 80, 40, 0.10), 0 1px 3px rgba(0, 0, 0, 0.04);
+
+  /* GitHub contribution graph — light */
+  --gh-lvl-0: #ebedf0;
+  --gh-lvl-1: #9be9a8;
+  --gh-lvl-2: #40c463;
+  --gh-lvl-3: #30a14e;
+  --gh-lvl-4: #216e39;
 }
 
 /* ============================================
@@ -250,4 +257,11 @@
   --aurora-1: #7a240e;
   --aurora-2: #2d3070;
   --aurora-3: #a67820;
+
+  /* GitHub contribution graph — dark */
+  --gh-lvl-0: #161b22;
+  --gh-lvl-1: #0e4429;
+  --gh-lvl-2: #006d32;
+  --gh-lvl-3: #26a641;
+  --gh-lvl-4: #39d353;
 }

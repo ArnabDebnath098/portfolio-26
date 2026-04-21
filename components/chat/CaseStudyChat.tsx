@@ -265,7 +265,7 @@ export function CaseStudyChat() {
         <div data-id="chat-trigger-wrapper" className="fixed bottom-6 right-6 z-50">
           <div
             data-id="chat-trigger-humans-strip"
-            className="hidden md:block absolute bottom-full left-0 right-0"
+            className="hidden md:block absolute bottom-full left-0 right-0 h-14 pointer-events-none"
           >
             <WalkingHumans />
           </div>

@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { FadeUp } from "@/components/animations/FadeUp";
 import { BotanicMark } from "@/components/illustrations/IndianOrnaments";
+import { GithubContributionGraph } from "@/components/about/GithubContributionGraph";
 
 const passions = [
   {
@@ -11,8 +12,7 @@ const passions = [
     title: "Building",
     description: "Side projects, tools, experiments. I'm founding uiMate — a career growth platform for designers. If it doesn't exist yet, maybe I should make it.",
     accent: "var(--color-ornament)",
-    image: "/images/github.png",
-    imageAlt: "GitHub contribution graph",
+    githubGraph: true,
     extendedDescription: "Recently I've been coding a lot more — not just prototypes, but actual production contributions. It started as a way to better understand interactions and animations, and turned into a habit. Understanding implementation constraints firsthand makes my design decisions sharper.",
   },
   {
@@ -129,18 +129,12 @@ export function BeyondPixels() {
 
             <div
               data-id={`beyond-pixels-card-inner-${i}`}
-              className={cn("relative z-10 flex gap-5", item.image ? "flex-row items-stretch" : "flex-col gap-3")}
+              className="relative z-10 flex flex-col gap-3"
             >
-              {/* Building — github image on the left */}
-              {item.image && (
-                <div data-id={`beyond-pixels-card-img-wrap-${i}`} className="flex-shrink-0 self-stretch rounded-lg overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    data-id={`beyond-pixels-card-img-${i}`}
-                    src={item.image}
-                    alt={item.imageAlt ?? ""}
-                    className="h-full w-auto object-contain rounded-lg"
-                  />
+              {/* Building — live GitHub contributions */}
+              {item.githubGraph && (
+                <div data-id={`beyond-pixels-card-graph-wrap-${i}`} className="w-full">
+                  <GithubContributionGraph username="ArnabDebnath098" />
                 </div>
               )}
 

@@ -134,21 +134,23 @@ export function WalkingHumans() {
       ref={wrapperRef}
       data-id="walking-humans"
       aria-hidden="true"
-      className="relative w-full h-[56px] pointer-events-none"
+      className="w-full h-full flex items-end pointer-events-none"
     >
       <canvas
         ref={leftCanvasRef}
         data-id="walking-human-left"
         width={CANVAS_SIZE}
         height={CANVAS_SIZE}
-        className="absolute bottom-0 w-[56px] h-[56px] translate-x-[var(--walker-x)] [image-rendering:pixelated]"
+        className="absolute w-[56px] h-[56px] translate-x-[var(--walker-x)] [image-rendering:pixelated]"
+        style={{ bottom: 0 }}
       />
       <canvas
         ref={rightCanvasRef}
         data-id="walking-human-right"
         width={CANVAS_SIZE}
         height={CANVAS_SIZE}
-        className="absolute bottom-0 w-[56px] h-[56px] translate-x-[var(--walker-x)] [image-rendering:pixelated]"
+        className="absolute w-[56px] h-[56px] translate-x-[var(--walker-x)] [image-rendering:pixelated]"
+        style={{ bottom: 0 }}
       />
     </div>
   );
