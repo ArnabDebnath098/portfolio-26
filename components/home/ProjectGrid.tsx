@@ -1,138 +1,15 @@
 "use client";
 
 import { useState, ReactNode } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { StaggerChildren, StaggerItem } from "@/components/animations/StaggerChildren";
+import { StaggerChildren } from "@/components/animations/StaggerChildren";
 import { type Project } from "@/data/projects";
 import { cn } from "@/lib/utils";
 import { BotanicMark } from "@/components/illustrations/IndianOrnaments";
 import { CaseStudyModal } from "@/components/work/CaseStudyModal";
-
-const TAG_COLORS = [
-  "bg-indigo-100 text-indigo-700 dark:bg-indigo-600 dark:text-white",
-  "bg-amber-100 text-amber-800 dark:bg-amber-400 dark:text-amber-950",
-  "bg-emerald-100 text-emerald-700 dark:bg-emerald-500 dark:text-white",
-  "bg-rose-100 text-rose-700 dark:bg-rose-500 dark:text-white",
-];
-
-const ORNAMENT_DOT = (
-  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-    <circle cx="6" cy="6" r="4" stroke="var(--color-ornament)" strokeWidth="0.6" />
-    <circle cx="6" cy="6" r="1.5" fill="var(--color-ornament)" opacity="0.5" />
-  </svg>
-);
-
-function CardBody({ project, eager }: { project: Project; eager?: boolean }) {
-  const tagColor = (idx: number) => TAG_COLORS[idx % 4];
-  return (
-    <div
-      data-id={`project-card-${project.slug}`}
-      className="flex flex-col gap-4 p-6"
-    >
-      {/* Thumbnail */}
-      <div
-        data-id={`project-card-thumb-${project.slug}`}
-        className="relative aspect-[3/2] overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-bg-elevated)] to-[var(--color-bg-subtle)]"
-      >
-        {project.thumbnail && (
-          <Image
-            data-id={`project-card-thumb-img-${project.slug}`}
-            src={project.thumbnail}
-            alt={project.title}
-            fill
-            className="object-cover will-change-transform transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
-            sizes="(max-width: 640px) 100vw, 50vw"
-            {...(eager ? { preload: true } : {})}
-          />
-        )}
-        <div data-id={`project-card-thumb-tags-${project.slug}`} className="absolute bottom-3 left-3 flex flex-wrap gap-1.5">
-          {project.tags.slice(0, 2).map((tag, idx) => (
-            <span
-              key={tag}
-              data-id={`project-card-tag-${project.slug}-${tag.toLowerCase().replace(/\s/g, "-")}`}
-              className={cn(
-                "px-2.5 py-1 text-[10px] font-semibold tracking-wide rounded-full",
-                tagColor(idx)
-              )}
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Content */}
-      <div data-id={`project-card-content-${project.slug}`} className="flex flex-col gap-3 px-1">
-        <div data-id={`project-card-divider-${project.slug}`} className="flex items-center gap-2" aria-hidden>
-          {ORNAMENT_DOT}
-          <div data-id={`project-card-divider-line-${project.slug}`} className="flex-1 h-px bg-[var(--color-ornament)] opacity-15" />
-          {ORNAMENT_DOT}
-        </div>
-
-        <p data-id={`project-card-meta-${project.slug}`} className="text-[11px] font-medium tracking-wide uppercase text-[var(--color-ornament)]">
-          {project.company} · {project.year}
-        </p>
-        <h3
-          data-id={`project-card-title-${project.slug}`}
-          className="text-lg md:text-xl font-display text-[var(--color-text-primary)] leading-snug transition-colors duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:text-[var(--color-accent)]"
-        >
-          {project.title}
-        </h3>
-        <p data-id={`project-card-outcome-${project.slug}`} className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-          {project.outcome}
-        </p>
-
-        <div data-id={`project-card-flourish-${project.slug}`} aria-hidden className="flex justify-center pt-2 opacity-25">
-          <svg width="48" height="8" viewBox="0 0 48 8" fill="none">
-            <path d="M0 4 Q6 0 12 4 Q18 8 24 4 Q30 0 36 4 Q42 8 48 4" stroke="var(--color-ornament)" strokeWidth="0.8" fill="none" />
-          </svg>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ProjectCard({
-  project,
-  hasContent,
-  onOpen,
-  eager,
-}: {
-  project: Project;
-  hasContent: boolean;
-  onOpen: () => void;
-  eager?: boolean;
-}) {
-  return (
-    <StaggerItem>
-      {project.externalLink ? (
-        <a
-          data-id={`project-card-link-${project.slug}`}
-          href={project.externalLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group block h-full"
-        >
-          <CardBody project={project} eager={eager} />
-        </a>
-      ) : hasContent ? (
-        <button
-          data-id={`project-card-link-${project.slug}`}
-          onClick={onOpen}
-          className="group block h-full w-full text-left cursor-pointer"
-        >
-          <CardBody project={project} eager={eager} />
-        </button>
-      ) : (
-        <Link data-id={`project-card-link-${project.slug}`} href={`/work?open=${project.slug}`} className="group block h-full">
-          <CardBody project={project} eager={eager} />
-        </Link>
-      )}
-    </StaggerItem>
-  );
-}
+import { PressButton } from "@/components/ui/PressButton";
+import { ProjectCard } from "@/components/work/ProjectCard";
 
 interface ProjectGridProps {
   projects: Project[];
@@ -153,21 +30,21 @@ export function ProjectGrid({ projects, caseStudyContent = {} }: ProjectGridProp
         transition={{ duration: 0.5 }}
         className="flex flex-col items-center text-center gap-2"
       >
-          <div data-id="project-grid-label-row" className="flex items-center justify-center gap-3">
-            <BotanicMark size={20} color="var(--color-ornament)" opacity={0.7} />
-            <p data-id="project-grid-label" className="text-[10px] font-medium tracking-[0.14em] uppercase text-[var(--color-ornament)]">Selected Work</p>
-          </div>
-          <h2 data-id="project-grid-heading" className={cn(
-            "text-3xl font-display tracking-[-0.02em]",
-            "text-[var(--color-text-primary)]"
-          )}>
-            Case Studies
-          </h2>
+        <div data-id="project-grid-label-row" className="flex items-center justify-center gap-3">
+          <BotanicMark size={20} color="var(--color-ornament)" opacity={0.7} />
+          <p data-id="project-grid-label" className="text-[10px] font-medium tracking-[0.14em] uppercase text-[var(--color-ornament)]">Selected Work</p>
+        </div>
+        <h2 data-id="project-grid-heading" className={cn(
+          "text-3xl font-display tracking-[-0.02em]",
+          "text-[var(--color-text-primary)]"
+        )}>
+          Case Studies
+        </h2>
       </motion.div>
 
       {/* Grid — first 4 only */}
       <StaggerChildren
-        className="grid grid-cols-1 sm:grid-cols-2 gap-10 items-start"
+        className="grid grid-cols-1 sm:grid-cols-2 gap-x-16 gap-y-20 items-start"
         delay={0.1}
         stagger={0.1}
       >
@@ -192,25 +69,9 @@ export function ProjectGrid({ projects, caseStudyContent = {} }: ProjectGridProp
           transition={{ duration: 0.4 }}
           className="flex justify-center"
         >
-          <Link
-            data-id="project-grid-view-more-link"
-            href="/work"
-            className={cn(
-              "inline-flex items-center gap-2 px-6 py-2.5",
-              "text-sm font-medium tracking-wide",
-              "border border-[var(--color-border-default)]",
-              "rounded-full",
-              "text-[var(--color-text-secondary)]",
-              "hover:border-[var(--color-border-strong)]",
-              "hover:text-[var(--color-text-primary)]",
-              "transition-colors duration-200"
-            )}
-          >
+          <PressButton data-id="project-grid-view-more-link" variant="secondary" href="/work">
             View all work
-            <svg data-id="project-grid-view-more-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </Link>
+          </PressButton>
         </motion.div>
       )}
 

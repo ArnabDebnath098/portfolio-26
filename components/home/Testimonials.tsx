@@ -69,7 +69,7 @@ function TestimonialCard({
     >
       <div
         data-id={`testimonial-card-inner-${t.id}`}
-        className="w-[var(--card-w)] rounded-2xl border border-[var(--color-border-default)] bg-[var(--color-bg-surface)] p-5 sm:p-7 flex flex-col gap-4 sm:gap-5 shadow-sm h-[360px] sm:h-[400px] overflow-hidden"
+        className="w-[var(--card-w)] rounded-2xl border border-[var(--color-border-default)] bg-white dark:bg-[var(--color-bg-surface)] p-5 sm:p-7 flex flex-col gap-4 sm:gap-5 shadow-sm h-[360px] sm:h-[400px] overflow-hidden"
       >
         {/* Folk flower accent */}
         <div data-id={`testimonial-flower-${t.id}`} aria-hidden className="-mb-1">

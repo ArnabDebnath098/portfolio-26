@@ -31,7 +31,7 @@ function loadCaseStudies(): string {
       const raw = fs.readFileSync(path.join(dir, f), "utf-8");
       const { data, content } = matter(raw);
       const cleaned = stripMdxNoise(content);
-      const truncated = cleaned.split(/\s+/).slice(0, 700).join(" ");
+      const truncated = cleaned.split(/\s+/).slice(0, 250).join(" ");
       return `## ${data.title}\n**Company:** ${data.company} | **Year:** ${data.year} | **Role:** ${data.role}\n**Tags:** ${data.tags?.join(", ")}\n**Outcome:** ${data.outcome}\n\n${truncated}`;
     })
     .join("\n\n---\n\n");
@@ -165,6 +165,7 @@ export function buildCaseStudyChatPrompt(slug: string): string {
 
   const raw = fs.readFileSync(filePath, "utf-8");
   const { data, content } = matter(raw);
+  const cleaned = stripMdxNoise(content).split(/\s+/).slice(0, 600).join(" ");
 
   return `You ARE Arnab Debnath, speaking about your case study "${data.title}". Answer questions about this specific project in first person.
 
@@ -176,7 +177,7 @@ This Case Study:
 **Tags:** ${data.tags?.join(", ")}
 **Outcome:** ${data.outcome}
 
-${content}
+${cleaned}
 
 Rules:
 - Speak as "I" — you ARE Arnab

@@ -72,7 +72,7 @@ export function LikeButton() {
         className={cn(
           "flex items-center gap-2 pl-3 pr-4 py-2.5 rounded-full",
           "border transition-all duration-200 cursor-pointer select-none",
-          "shadow-lg hover:shadow-xl",
+          "shadow-lg hover:shadow-xl backdrop-blur-md",
           liked
             ? "border-[var(--color-accent)]/60 bg-[var(--color-accent-subtle)]"
             : "border-[var(--color-border-default)] bg-[var(--color-bg-elevated)] hover:border-[var(--color-accent)]/60"

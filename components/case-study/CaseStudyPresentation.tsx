@@ -19,100 +19,11 @@ interface CaseStudyPresentationProps {
 
 
 /* ═══════════════════════════════════════════════════════
-   SIDEBAR — sticky left, shows section nav
+   FLOATING NAV — single pill that expands vertically upward
+   in place when clicked. Bottom edge stays anchored so the
+   "current section" row never moves.
 ═══════════════════════════════════════════════════════ */
-function Sidebar({
-  headings,
-  activeIndex,
-  onSectionClick,
-}: {
-  headings: (string | null)[];
-  activeIndex: number;
-  onSectionClick: (index: number) => void;
-}) {
-  return (
-    <aside
-      data-id="case-study-sidebar"
-      className={cn(
-        "hidden lg:flex flex-col w-[240px] min-w-[240px]",
-        "sticky top-0 h-[95vh] max-h-full",
-        "border-r border-[var(--color-border-default)]",
-        "bg-[var(--color-bg-base)]"
-      )}
-    >
-      <nav
-        data-id="case-study-sidebar-nav"
-        className="flex-1 overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none]"
-      >
-        <p data-id="case-study-sidebar-nav-header" className="text-[10px] font-medium tracking-[0.14em] uppercase text-[var(--color-text-muted)] px-6 pt-4 pb-3">
-          Table of Contents
-        </p>
-        <div data-id="case-study-sidebar-nav-divider" className="h-px bg-[var(--color-border-default)] mb-3" />
-        <ul data-id="case-study-sidebar-sections" className="flex flex-col gap-0.5 px-3 py-2">
-          {headings.map((heading, i) => {
-            const isActive = i === activeIndex;
-            const isPast = i < activeIndex;
-            const label = heading || `Section ${i + 1}`;
-            return (
-              <li key={i} data-id={`case-study-sidebar-item-${i}`} className="relative">
-                {/* Animated pill — slides to the active item */}
-                {isActive && (
-                  <motion.div
-                    data-id="case-study-sidebar-active-pill"
-                    layoutId="sidebar-active-pill"
-                    className="absolute inset-0 rounded-lg bg-[var(--color-accent-subtle)]"
-                    transition={{ type: "spring", stiffness: 400, damping: 35 }}
-                  />
-                )}
-                <button
-                  data-id={`case-study-sidebar-btn-${i}`}
-                  onClick={() => onSectionClick(i)}
-                  className={cn(
-                    "relative w-full flex items-start gap-3 px-3 py-2.5 rounded-lg text-left",
-                    "cursor-pointer group",
-                    !isActive && "hover:bg-[var(--color-bg-surface)]"
-                  )}
-                >
-                  <span
-                    data-id={`case-study-sidebar-step-num-${i}`}
-                    className={cn(
-                      "font-datatype text-[10px] tabular-nums mt-0.5 flex-shrink-0 w-5",
-                      isActive
-                        ? "text-[var(--color-accent)]"
-                        : isPast
-                          ? "text-[var(--color-text-muted)]"
-                          : "text-[var(--color-text-muted)] opacity-50"
-                    )}
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span
-                    data-id={`case-study-sidebar-step-label-${i}`}
-                    className={cn(
-                      "text-[13px] leading-snug transition-colors duration-200",
-                      isActive
-                        ? "text-[var(--color-accent)] font-medium"
-                        : isPast
-                          ? "text-[var(--color-text-secondary)]"
-                          : "text-[var(--color-text-muted)]"
-                    )}
-                  >
-                    {label}
-                  </span>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
-    </aside>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════
-   MOBILE NAV — floating pill + bottom sheet menu
-═══════════════════════════════════════════════════════ */
-function MobileNav({
+function FloatingNav({
   headings,
   activeIndex,
   total,
@@ -123,173 +34,180 @@ function MobileNav({
   total: number;
   onSectionClick: (index: number) => void;
 }) {
-  const [sheetOpen, setSheetOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const navRef = useRef<HTMLDivElement>(null);
 
   const handleSelect = useCallback(
     (index: number) => {
       onSectionClick(index);
-      setSheetOpen(false);
+      setOpen(false);
     },
     [onSectionClick]
   );
 
-  return (
-    <>
-      {/* Floating pill */}
-      <div
-        data-id="case-study-mobile-nav"
-        className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50"
-      >
-        <button
-          data-id="case-study-mobile-nav-pill"
-          onClick={() => setSheetOpen(true)}
-          className={cn(
-            "flex items-center gap-3 px-5 py-3 rounded-full",
-            "bg-[var(--color-bg-elevated)]/90 backdrop-blur-md",
-            "border border-[var(--color-border-default)]",
-            "shadow-lg cursor-pointer",
-            "transition-shadow hover:shadow-xl"
-          )}
-        >
-          <span
-            data-id="case-study-mobile-nav-counter"
-            className="font-datatype text-[10px] text-[var(--color-accent)] tabular-nums font-semibold"
-          >
-            {String(activeIndex + 1).padStart(2, "0")}/{String(total).padStart(2, "0")}
-          </span>
-          <span
-            data-id="case-study-mobile-nav-heading"
-            className="text-xs text-[var(--color-text-secondary)] truncate max-w-[180px]"
-          >
-            {headings[activeIndex] || `Section ${activeIndex + 1}`}
-          </span>
-          <svg
-            data-id="case-study-mobile-nav-chevron"
-            width="12"
-            height="12"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="text-[var(--color-text-muted)]"
-          >
-            <path d="M18 15l-6-6-6 6" />
-          </svg>
-        </button>
-      </div>
+  // Close on outside click
+  useEffect(() => {
+    if (!open) return;
+    function onDocClick(e: MouseEvent) {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, [open]);
 
-      {/* Bottom sheet */}
-      <AnimatePresence>
-        {sheetOpen && (
-          <>
+  // Close on Escape
+  useEffect(() => {
+    if (!open) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  const activeLabel = headings[activeIndex] || `Section ${activeIndex + 1}`;
+
+  return (
+    <div
+      ref={navRef}
+      data-id="case-study-floating-nav"
+      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50"
+    >
+      {/* Pill — `layout` springs the size, `popLayout` removes the exiting
+          list from layout flow immediately so the parent shrinks and the
+          list fades concurrently — making close mirror open. */}
+      <motion.div
+        data-id="case-study-floating-nav-pill"
+        layout
+        transition={{ type: "spring", stiffness: 380, damping: 34 }}
+        className={cn(
+          "flex flex-col overflow-hidden w-[200px]",
+          "bg-[var(--color-bg-elevated)]/95 backdrop-blur-md",
+          "border border-[var(--color-border-default)]",
+          "shadow-lg",
+          open ? "rounded-[20px]" : "rounded-full"
+        )}
+      >
+        <AnimatePresence mode="popLayout" initial={false}>
+          {open && (
             <motion.div
-              data-id="case-study-mobile-sheet-backdrop"
+              data-id="case-study-floating-nav-list-wrap"
+              layout
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              onClick={() => setSheetOpen(false)}
-              className="lg:hidden fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm"
-            />
-            <motion.div
-              data-id="case-study-mobile-sheet"
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "100%" }}
-              transition={{ type: "spring", damping: 30, stiffness: 350 }}
-              className={cn(
-                "lg:hidden fixed bottom-0 left-0 right-0 z-[61]",
-                "bg-[var(--color-bg-base)]",
-                "border-t border-[var(--color-border-default)]",
-                "rounded-t-2xl",
-                "max-h-[70vh] overflow-y-auto",
-                "pb-[env(safe-area-inset-bottom,16px)]"
-              )}
+              transition={{ type: "spring", stiffness: 380, damping: 34 }}
             >
-              {/* Handle */}
-              <div data-id="case-study-mobile-sheet-handle-wrap" className="flex justify-center pt-3 pb-2">
-                <div
-                  data-id="case-study-mobile-sheet-handle"
-                  className="w-10 h-1 rounded-full bg-[var(--color-border-strong)]"
-                />
-              </div>
-
-              {/* Title */}
-              <div data-id="case-study-mobile-sheet-title-wrap" className="px-5 pb-3 border-b border-[var(--color-border-default)]">
-                <p
-                  data-id="case-study-mobile-sheet-title"
-                  className="text-xs font-semibold tracking-[0.12em] uppercase text-[var(--color-text-muted)]"
-                >
-                  Sections
-                </p>
-              </div>
-
-              {/* Section list */}
-              <nav data-id="case-study-mobile-sheet-nav" className="px-3 py-2">
-                <ul data-id="case-study-mobile-sheet-list" className="flex flex-col gap-0.5">
-                  {headings.map((heading, i) => {
-                    const isActive = i === activeIndex;
-                    const isPast = i < activeIndex;
-                    const label = heading || `Section ${i + 1}`;
-                    return (
-                      <li key={i} data-id={`case-study-mobile-sheet-item-${i}`}>
-                        <button
-                          data-id={`case-study-mobile-sheet-btn-${i}`}
-                          onClick={() => handleSelect(i)}
+              <p
+                data-id="case-study-floating-nav-list-title"
+                className="text-[10px] font-semibold tracking-[0.14em] uppercase text-[var(--color-text-muted)] px-4 pt-3 pb-2 text-center"
+              >
+                Sections
+              </p>
+              <ul
+                data-id="case-study-floating-nav-list"
+                className="flex flex-col gap-0.5 px-2 pb-2 max-h-[60vh] overflow-y-auto"
+              >
+                {headings.map((heading, i) => {
+                  const isActive = i === activeIndex;
+                  const isPast = i < activeIndex;
+                  const label = heading || `Section ${i + 1}`;
+                  return (
+                    <li key={i} data-id={`case-study-floating-nav-item-${i}`}>
+                      <button
+                        data-id={`case-study-floating-nav-btn-${i}`}
+                        onClick={() => handleSelect(i)}
+                        className={cn(
+                          "w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-center",
+                          "cursor-pointer transition-colors duration-150",
+                          isActive
+                            ? "bg-[var(--color-accent-subtle)]"
+                            : "hover:bg-[var(--color-bg-surface)]"
+                        )}
+                      >
+                        <span
+                          data-id={`case-study-floating-nav-num-${i}`}
                           className={cn(
-                            "w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-left",
-                            "cursor-pointer transition-colors duration-150",
+                            "font-datatype text-[10px] tabular-nums flex-shrink-0 text-center",
                             isActive
-                              ? "bg-[var(--color-accent-subtle)]"
-                              : "hover:bg-[var(--color-bg-surface)]"
+                              ? "text-[var(--color-accent)] font-semibold"
+                              : isPast
+                                ? "text-[var(--color-text-muted)]"
+                                : "text-[var(--color-text-muted)] opacity-50"
                           )}
                         >
-                          <span
-                            data-id={`case-study-mobile-sheet-num-${i}`}
-                            className={cn(
-                              "font-datatype text-[11px] tabular-nums flex-shrink-0 w-6",
-                              isActive
-                                ? "text-[var(--color-accent)] font-semibold"
-                                : isPast
-                                  ? "text-[var(--color-text-muted)]"
-                                  : "text-[var(--color-text-muted)] opacity-50"
-                            )}
-                          >
-                            {String(i + 1).padStart(2, "0")}
-                          </span>
-                          <span
-                            data-id={`case-study-mobile-sheet-label-${i}`}
-                            className={cn(
-                              "text-sm leading-snug",
-                              isActive
-                                ? "text-[var(--color-accent)] font-medium"
-                                : isPast
-                                  ? "text-[var(--color-text-secondary)]"
-                                  : "text-[var(--color-text-muted)]"
-                            )}
-                          >
-                            {label}
-                          </span>
-                          {isActive && (
-                            <span data-id={`case-study-mobile-sheet-active-${i}`} className="ml-auto">
-                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M20 6L9 17l-5-5" />
-                              </svg>
-                            </span>
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span
+                          data-id={`case-study-floating-nav-label-${i}`}
+                          className={cn(
+                            "text-[13px] leading-snug truncate text-center",
+                            isActive
+                              ? "text-[var(--color-accent)] font-medium"
+                              : isPast
+                                ? "text-[var(--color-text-secondary)]"
+                                : "text-[var(--color-text-muted)]"
                           )}
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </nav>
+                        >
+                          {label}
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
             </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-    </>
+          )}
+        </AnimatePresence>
+
+        {/* Compact "current" row — same in closed and open states.
+            Stays in the same fixed position so the user's anchor never moves. */}
+        <motion.button
+          data-id="case-study-floating-nav-current"
+          layout
+          onClick={() => setOpen((v) => !v)}
+          className={cn(
+            "flex items-center justify-center gap-2 px-4 py-2.5 cursor-pointer w-full",
+            "hover:bg-[var(--color-bg-surface)]/40 transition-colors whitespace-nowrap text-center"
+          )}
+        >
+          <span
+            data-id="case-study-floating-nav-counter"
+            className="font-datatype text-[10px] text-[var(--color-accent)] tabular-nums font-semibold flex-shrink-0 text-center"
+          >
+            {String(activeIndex + 1).padStart(2, "0")}/{String(total).padStart(2, "0")}
+          </span>
+          <motion.span
+            data-id="case-study-floating-nav-heading"
+            key={activeLabel}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2 }}
+            className="text-xs font-medium text-[var(--color-text-primary)] truncate text-center"
+          >
+            {activeLabel}
+          </motion.span>
+          <motion.svg
+            data-id="case-study-floating-nav-chevron"
+            width="11"
+            height="11"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-[var(--color-text-muted)] flex-shrink-0"
+            animate={{ rotate: open ? 180 : 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <path d="M18 15l-6-6-6 6" />
+          </motion.svg>
+        </motion.button>
+      </motion.div>
+    </div>
   );
 }
 
@@ -597,29 +515,22 @@ export function CaseStudyPresentation({
   }
 
   return (
-    <div data-id="case-study-presentation" className="flex min-h-full">
-      {/* Sidebar — desktop only */}
-      <Sidebar
-        headings={sectionHeadings}
-        activeIndex={activeSection}
-        onSectionClick={scrollToSection}
-      />
-
-      {/* Main content — vertical scroll */}
+    <div data-id="case-study-presentation" className="min-h-full">
+      {/* Main content — full width, vertical scroll */}
       <main
         ref={contentRef}
         data-id="case-study-main"
-        className="flex-1 min-w-0"
+        className="w-full"
       >
         {/* Cover */}
-        <div data-id="case-study-cover-wrapper" className="max-w-[1000px] mx-auto">
+        <div data-id="case-study-cover-wrapper" className="max-w-[860px] mx-auto">
           <CoverSection frontmatter={frontmatter} />
         </div>
 
         {/* Story sections */}
         <div
           data-id="case-study-sections"
-          className="max-w-[1000px] mx-auto px-5 sm:px-8 lg:px-6 pb-32 lg:pb-20 flex flex-col gap-0"
+          className="max-w-[860px] mx-auto px-5 sm:px-8 lg:px-10 pb-32 flex flex-col gap-0"
         >
           {sections.map((sectionContent, i) => (
             <StorySection
@@ -635,8 +546,8 @@ export function CaseStudyPresentation({
         </div>
       </main>
 
-      {/* Mobile floating pill + bottom sheet */}
-      <MobileNav
+      {/* Floating bottom nav — all screen sizes */}
+      <FloatingNav
         headings={sectionHeadings}
         activeIndex={activeSection}
         total={sectionHeadings.length}

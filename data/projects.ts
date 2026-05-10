@@ -16,6 +16,22 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "agent-space",
+    title: "Agent Space — Manage, Build & Analyse AI Agents",
+    subtitle: "AI Infrastructure · JUSPAY · 2025",
+    company: "JUSPAY",
+    year: "2025",
+    tags: ["AI", "Developer Tools", "Dashboard"],
+    thumbnail: "/images/case-studies/agent-space.png",
+    outcome:
+      "A unified workspace to create and configure agents, wire up skills and MCP connections, and surface real-time analytics — so teams can understand and govern every agent in production.",
+    description:
+      "Designing the control plane for AI agents: create agents, attach skills, connect MCP servers, and monitor performance with a full analytics layer. Built for platform teams who need visibility and control over a growing fleet of autonomous systems.",
+    featured: true,
+    locked: true,
+    order: 0,
+  },
+  {
     slug: "bengaluru-transit",
     title: "One City. One App. Seamless Transit in Bengaluru.",
     subtitle: "Transit UX · Personal Project · Dec 2023",

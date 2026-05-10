@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { PressButton } from "@/components/ui/PressButton";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { VineRow, FloralCross } from "@/components/illustrations/IndianOrnaments";
@@ -129,8 +130,8 @@ export function Footer() {
   const pathname = usePathname();
   const year = new Date().getFullYear();
 
-  // Hide footer on case study detail pages
-  if (/^\/work\/.+/.test(pathname)) return null;
+  // Hide footer on the work index and on case study detail pages
+  if (pathname === "/work" || pathname.startsWith("/work/")) return null;
 
   return (
     <footer data-id="footer" className="relative mt-20">
@@ -198,33 +199,16 @@ export function Footer() {
             </p>
 
             <div data-id="footer-cta-buttons" className="flex flex-wrap gap-3">
-              <Link
-                data-id="footer-cta-contact"
-                href="/contact"
-                className={cn(
-                  "inline-flex items-center gap-2 px-7 py-3",
-                  "bg-white text-[var(--primitive-red-vivid)] text-sm font-semibold",
-                  "rounded-full",
-                  "hover:bg-white/90 transition-colors"
-                )}
-              >
+              <PressButton data-id="footer-cta-contact" variant="primary" href="/contact">
                 Get in touch
-                <svg data-id="footer-cta-contact-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </Link>
-              <a
+              </PressButton>
+              <PressButton
                 data-id="footer-cta-resume"
+                variant="secondary"
                 href="mailto:arnabdebnath.design@gmail.com"
-                className={cn(
-                  "inline-flex items-center gap-2 px-7 py-3",
-                  "bg-white/10 text-white text-sm font-medium",
-                  "border border-white/20 rounded-full",
-                  "hover:bg-white/20 transition-colors"
-                )}
               >
                 Email me
-              </a>
+              </PressButton>
             </div>
           </div>
         </div>

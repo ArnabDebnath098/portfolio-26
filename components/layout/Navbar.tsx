@@ -6,6 +6,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
+import { PressButton } from "@/components/ui/PressButton";
 
 function LogoMark({ className }: { className?: string }) {
   return (
@@ -281,17 +282,14 @@ export function Navbar() {
                     {link.label}
                   </Link>
                 ))}
-                <Link
+                <PressButton
                   data-id="navbar-mobile-cta"
+                  variant="primary"
                   href="/contact"
                   onClick={() => setMobileOpen(false)}
-                  className={cn(
-                    "px-4 py-2.5 text-sm font-semibold text-center",
-                    "bg-[var(--color-accent)] text-white"
-                  )}
                 >
                   Get in touch
-                </Link>
+                </PressButton>
               </nav>
             </motion.div>
           )}

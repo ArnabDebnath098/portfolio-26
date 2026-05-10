@@ -266,6 +266,16 @@
   will-change: background-color;
 }
 
+/* ── Project card thumbnail ── */
+.card-thumb-shadow {
+  border-radius: 24px;
+  background: #e0e0e0;
+}
+
+[data-theme="dark"] .card-thumb-shadow {
+  background: #1c1b19;
+}
+
 /* ── Card hover effect ── */
 .card-hover {
   transition:
@@ -277,6 +287,36 @@
 .card-hover:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-xl);
+}
+
+/* ── Rainbow gradient text — left-to-right infinite flow ── */
+@keyframes rainbow-flow {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+.text-rainbow-flow,
+.text-rainbow-flow-alt {
+  background: linear-gradient(
+    90deg,
+    #fb7185, #fb923c, #fbbf24, #34d399, #60a5fa, #c084fc, #fb7185
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  will-change: background-position;
+}
+
+/* "designer" — left to right, 10s */
+.text-rainbow-flow {
+  animation: rainbow-flow 10s linear infinite;
+}
+
+/* "engineer" — right to left, 7s */
+.text-rainbow-flow-alt {
+  animation: rainbow-flow 7s linear infinite reverse;
 }
 
 /* ── Marquee — seamless infinite scroll ── */

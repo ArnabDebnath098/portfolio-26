@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect, useCallback, useState, useRef } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
@@ -11,48 +11,44 @@ interface CaseStudyModalProps {
   children: ReactNode;
 }
 
+type LenisInstance = { stop: () => void; start: () => void };
+
+function getLenis(): LenisInstance | undefined {
+  return (window as unknown as { lenis?: LenisInstance }).lenis;
+}
+
 export function CaseStudyModal({ open, onClose, children }: CaseStudyModalProps) {
   const [mounted, setMounted] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Ref-based onClose access so the lock effect only depends on `open` —
+  // avoids rapid lenis stop/start cycles when the parent passes an unstable callback.
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useEffect(() => setMounted(true), []);
 
-  // Close on Escape
-  const handleKey = useCallback(
-    (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    },
-    [onClose]
-  );
-
   useEffect(() => {
-    if (open) {
-      document.addEventListener("keydown", handleKey);
-      document.body.style.overflow = "hidden";
-      const lenis = (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis;
-      lenis?.stop();
+    if (!open) return;
+
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "Escape") onCloseRef.current();
     }
+
+    document.addEventListener("keydown", handleKey);
+    document.body.style.overflow = "hidden";
+    getLenis()?.stop();
+
     return () => {
       document.removeEventListener("keydown", handleKey);
       document.body.style.overflow = "";
-      const lenis = (window as unknown as { lenis?: { stop: () => void; start: () => void } }).lenis;
-      lenis?.start();
+      getLenis()?.start();
     };
-  }, [open, handleKey]);
-
-  // Prevent scroll events from leaking to Lenis
-  const stopPropagation = useCallback((e: React.WheelEvent | React.TouchEvent) => {
-    e.stopPropagation();
-  }, []);
+  }, [open]);
 
   if (!mounted) return null;
 
   const modal = (
-    <AnimatePresence mode="wait" onExitComplete={() => {
-      document.body.style.overflow = "";
-      const lenis = (window as unknown as { lenis?: { start: () => void } }).lenis;
-      lenis?.start();
-    }}>
+    <AnimatePresence mode="wait">
       {open && (
         <motion.div
           key="casestudy-modal"
@@ -62,8 +58,6 @@ export function CaseStudyModal({ open, onClose, children }: CaseStudyModalProps)
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
-          onWheel={stopPropagation}
-          onTouchMove={stopPropagation}
         >
           {/* Backdrop */}
           <motion.div
@@ -83,15 +77,12 @@ export function CaseStudyModal({ open, onClose, children }: CaseStudyModalProps)
               "bg-[var(--color-bg-base)]",
               "border border-[var(--color-border-default)]",
               "overflow-hidden",
-              // Mobile: bottom sheet
-              "w-full h-[95vh] rounded-t-[24px]",
-              // Desktop: centered modal
-              "lg:w-[95vw] lg:h-[95vh] lg:rounded-[24px]"
+              "w-full h-[95vh] rounded-t-xl",
+              "lg:w-[95vw] lg:h-[95vh] lg:rounded-xl"
             )}
-            // Mobile: slide up from bottom; Desktop: scale in
-            initial={{ y: "100%", opacity: 1 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: "100%", opacity: 1 }}
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
           >
             {/* Handle — mobile only */}
@@ -118,19 +109,18 @@ export function CaseStudyModal({ open, onClose, children }: CaseStudyModalProps)
                 )}
                 aria-label="Close case study"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg data-id="casestudy-modal-close-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18" />
                   <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
               </button>
             </div>
 
-            {/* Scrollable content */}
+            {/* Scrollable content — data-lenis-prevent stops Lenis from hijacking scroll inside */}
             <div
-              ref={scrollRef}
               data-id="casestudy-modal-content"
               data-lenis-prevent
-              className="flex-1 overflow-y-auto overscroll-contain rounded-t-2xl lg:rounded-2xl"
+              className="flex-1 overflow-y-auto overscroll-contain"
             >
               {children}
             </div>

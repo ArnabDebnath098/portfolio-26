@@ -4,7 +4,7 @@ import Link from "next/link";
 import { FadeUp } from "@/components/animations/FadeUp";
 import { StaggerChildren, StaggerItem } from "@/components/animations/StaggerChildren";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/Button";
+import { PressButton } from "@/components/ui/PressButton";
 import { BeyondPixels } from "@/components/about/BeyondPixels";
 
 export const metadata: Metadata = {
@@ -17,12 +17,14 @@ const timeline = [
     year: "2022–Present · 4+ yrs",
     role: "Product Designer II",
     company: "JUSPAY",
+    logo: "/images/juspay-logo.png",
     detail: "Designing and scaling AI-driven products that blend intelligent automation with seamless user experiences. Worked across fintech and B2B SaaS — from checkout UX to embedded finance at scale.",
   },
   {
     year: "Oct 2021–Jan 2022",
     role: "Product Design Intern",
     company: "AirAsia",
+    logo: "/images/airasia-logo.png",
     detail: "Designed for the digital lifestyle ecosystem — travel, food, and fintech all under one product umbrella.",
   },
   {
@@ -62,15 +64,15 @@ export default function AboutPage() {
 
           {/* Profile photo */}
           <FadeUp delay={0.05} className="shrink-0">
-            <div data-id="about-profile-photo" className="relative w-48 h-48 sm:w-56 sm:h-56 rounded-2xl overflow-hidden border border-[var(--color-border-default)]">
+            <div data-id="about-profile-photo" className="relative w-48 h-48 sm:w-56 sm:h-56 rounded-[24px] overflow-hidden border border-[var(--color-border-default)]">
               <Image
                 data-id="about-profile-img"
-                src="/myprofile.jpg"
+                src="/images/myprofileimage.png"
                 alt="Arnab Debnath"
                 fill
                 sizes="(min-width: 640px) 224px, 192px"
                 className="object-cover"
-                preload
+                priority
               />
             </div>
           </FadeUp>
@@ -110,24 +112,18 @@ export default function AboutPage() {
             {/* CTAs */}
             <FadeUp delay={0.35}>
               <div data-id="about-cta-row" className="flex flex-wrap gap-3 pt-4">
-                <Link data-id="about-cta-work" href="/work" className={buttonVariants({ variant: "primary", size: "md" })}>
+                <PressButton data-id="about-cta-work" variant="primary" href="/work">
                   See my work
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </Link>
-                <a
+                </PressButton>
+                <PressButton
                   data-id="about-cta-linkedin"
+                  variant="secondary"
                   href="https://www.linkedin.com/in/arnabdebnath07/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={buttonVariants({ variant: "secondary", size: "md" })}
                 >
                   LinkedIn
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
-                  </svg>
-                </a>
+                </PressButton>
               </div>
             </FadeUp>
           </div>
@@ -155,7 +151,8 @@ export default function AboutPage() {
                   <p data-id={`about-timeline-year-${item.year.replace(/[^a-z0-9]/gi, "-").toLowerCase()}`} className="font-datatype text-sm text-[var(--color-text-muted)] pt-0.5 shrink-0">
                     {item.year}
                   </p>
-                  <div data-id={`about-timeline-content-${item.year.replace(/[^a-z0-9]/gi, "-").toLowerCase()}`} className="space-y-1">
+                  <div data-id={`about-timeline-content-${item.year.replace(/[^a-z0-9]/gi, "-").toLowerCase()}`} className="flex items-start gap-4">
+                    <div data-id={`about-timeline-content-inner-${item.year.replace(/[^a-z0-9]/gi, "-").toLowerCase()}`} className="space-y-1 flex-1">
                     <div data-id={`about-timeline-role-row-${item.year.replace(/[^a-z0-9]/gi, "-").toLowerCase()}`} className="flex items-baseline gap-2">
                       <h3 data-id={`about-timeline-role-${item.year.replace(/[^a-z0-9]/gi, "-").toLowerCase()}`} className="text-base font-semibold text-[var(--color-text-primary)]">
                         {item.role}
@@ -165,6 +162,17 @@ export default function AboutPage() {
                     <p data-id={`about-timeline-detail-${item.year.replace(/[^a-z0-9]/gi, "-").toLowerCase()}`} className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
                       {item.detail}
                     </p>
+                    </div>
+                    {"logo" in item && item.logo && (
+                      <Image
+                        data-id={`about-timeline-logo-${item.year.replace(/[^a-z0-9]/gi, "-").toLowerCase()}`}
+                        src={item.logo}
+                        alt={item.company}
+                        width={56}
+                        height={56}
+                        className="shrink-0 object-contain ml-auto"
+                      />
+                    )}
                   </div>
                 </div>
               </StaggerItem>

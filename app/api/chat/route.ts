@@ -4,9 +4,9 @@ import { buildChatSystemPrompt, buildCaseStudyChatPrompt } from "@/lib/ai";
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 const MODEL = "llama-3.1-8b-instant";
 
-// Simple in-memory rate limit: 8 requests per IP per minute
+// Simple in-memory rate limit: 20 requests per IP per minute
 const ipHits = new Map<string, { count: number; reset: number }>();
-const RATE_LIMIT = 8;
+const RATE_LIMIT = 20;
 const WINDOW_MS = 60_000;
 
 function checkRateLimit(ip: string): boolean {
@@ -23,7 +23,10 @@ function checkRateLimit(ip: string): boolean {
 
 export async function POST(req: NextRequest) {
   const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    req.headers.get("x-real-ip") ??
+    req.headers.get("x-client-ip") ??
+    "unknown";
 
   if (!checkRateLimit(ip)) {
     return Response.json(
@@ -52,7 +55,7 @@ export async function POST(req: NextRequest) {
 
   const groqMessages = [
     { role: "system", content: systemPrompt },
-    ...messages.slice(-6),
+    ...messages.slice(-4),
   ];
 
   const response = await fetch(GROQ_API_URL, {

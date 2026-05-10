@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { BotanicMark } from "@/components/illustrations/IndianOrnaments";
+import { PressButton } from "@/components/ui/PressButton";
 
 export function UiMateFeatured() {
   return (
@@ -80,21 +81,13 @@ export function UiMateFeatured() {
                 Most platforms let you post work. uiMate actually helps you improve — with AI-powered critiques on your designs, personalised daily challenges, curated resources and tweets from the design world, career trajectory tracking, and a community that gives real feedback, not just likes.
               </p>
               <div data-id="uimate-featured-cta-wrap" className="pt-2">
-                <span
+                <PressButton
                   data-id="uimate-featured-cta"
-                  className={cn(
-                    "inline-flex items-center gap-2 px-5 py-2.5",
-                    "text-xs font-semibold tracking-wide",
-                    "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)]",
-                    "rounded-full",
-                    "group-hover:bg-[var(--color-accent)] group-hover:text-white transition-colors duration-200"
-                  )}
+                  variant="primary"
+                  className="self-start"
                 >
                   Visit uimate.in
-                  <svg data-id="uimate-cta-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M7 17L17 7M7 7h10v10" />
-                  </svg>
-                </span>
+                </PressButton>
               </div>
             </div>
           </div>
