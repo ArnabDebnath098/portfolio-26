@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
 import { projects } from "@/data/projects";
 import { prerenderCaseStudies } from "@/lib/prerender-case-studies";
 import { WorkPageClient } from "@/components/work/WorkPageClient";
@@ -13,9 +14,11 @@ export default async function WorkPage() {
   const caseStudyContent = await prerenderCaseStudies();
 
   return (
-    <WorkPageClient
-      sorted={sorted}
-      caseStudyContent={caseStudyContent}
-    />
+    <Suspense fallback={null}>
+      <WorkPageClient
+        sorted={sorted}
+        caseStudyContent={caseStudyContent}
+      />
+    </Suspense>
   );
 }

@@ -17,7 +17,7 @@ function CardBody({ project, eager }: { project: Project; eager?: boolean }) {
       {/* Thumbnail */}
       <div
         data-id={`project-card-thumb-${project.slug}`}
-        className="relative aspect-[16/10] overflow-hidden rounded-xl bg-[var(--color-bg-subtle)]"
+        className="relative aspect-[16/10] max-h-[var(--card-thumb-max-h,none)] overflow-hidden rounded-xl bg-[var(--color-bg-subtle)]"
       >
         {project.thumbnail && (
           <motion.div
