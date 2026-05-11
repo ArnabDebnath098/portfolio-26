@@ -7,27 +7,35 @@ import { cn } from "@/lib/utils";
 import type { Exploration } from "@/data/explorations";
 
 function ImageCard({ item, index }: { item: Exploration; index: number }) {
-  const isPriority = index < 4;
-  const [loaded, setLoaded] = useState(isPriority);
+  const isPriority = index < 3;
+  const [loaded, setLoaded] = useState(false);
 
   return (
     <div
       data-id={`masonry-img-wrap-${item.id}`}
       className={cn(
-        "overflow-hidden rounded-2xl group p-4 sm:p-6",
+        "overflow-hidden rounded-[20px] group p-4 sm:p-6 relative",
         "bg-[var(--color-bg-elevated)]",
         "flex items-center justify-center"
       )}
       style={{ "--card-max-h": `${item.maxH}px` } as React.CSSProperties}
     >
+      {!loaded && (
+        <div
+          data-id={`masonry-img-skeleton-${item.id}`}
+          className="absolute inset-0 rounded-[20px] bg-[var(--color-bg-subtle)] animate-pulse"
+        />
+      )}
       <Image
         data-id={`masonry-img-${item.id}`}
         src={item.image}
         alt={item.title}
         width={900}
         height={1200}
+        loading={isPriority ? "eager" : "lazy"}
+        decoding={isPriority ? "sync" : "async"}
         className={cn(
-          "w-full h-auto max-h-[var(--card-max-h)] object-contain rounded-2xl sm:rounded-3xl transition-all duration-500",
+          "w-auto max-w-full h-auto max-h-[var(--card-max-h)] block rounded-[12px] transition-opacity duration-500 relative z-10",
           "group-hover:scale-[1.02]",
           loaded ? "opacity-100" : "opacity-0"
         )}
@@ -44,7 +52,7 @@ function PlaceholderCard({ item }: { item: Exploration }) {
     <div
       data-id={`masonry-placeholder-${item.id}`}
       className={cn(
-        "flex items-center justify-center rounded-2xl h-60 sm:h-80",
+        "flex items-center justify-center rounded-[20px] h-60 sm:h-80",
         "bg-[var(--color-bg-elevated)] border border-[var(--color-border-default)]"
       )}
     >

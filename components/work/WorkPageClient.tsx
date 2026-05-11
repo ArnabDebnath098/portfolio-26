@@ -34,7 +34,7 @@ export function WorkPageClient({ sorted, caseStudyContent }: WorkPageClientProps
         data-id="work-sticky-header"
         className="pt-8 pb-6"
       >
-        <div data-id="work-header-container" className="max-w-6xl mx-auto px-6">
+        <div data-id="work-header-container" className="max-w-[1200px] mx-auto px-6">
           <div data-id="work-header" className="max-w-xl flex flex-col gap-3">
             <div data-id="work-header-label-row" className="flex items-center gap-3">
               <span data-id="work-header-rule" className="rule-red" />
@@ -55,7 +55,7 @@ export function WorkPageClient({ sorted, caseStudyContent }: WorkPageClientProps
       {/* Normal scrolling list of cards */}
       <div
         data-id="work-list"
-        className="max-w-6xl mx-auto px-6 flex flex-col gap-16 pt-8 pb-24"
+        className="max-w-[1200px] mx-auto px-6 flex flex-col gap-16 pt-8 pb-24"
       >
         {sorted.map((project, i) => (
           <div key={project.slug} data-id={`work-card-${project.slug}`}>

@@ -6,7 +6,8 @@
 
 :root {
   /* ── Primitive: Monochrome ── */
-  --primitive-black:   #0a0a08;
+  --primitive-neutral-950: oklch(14.5% 0 0);
+  --primitive-black:   #131313;
   --primitive-black-2: #111110;
   --primitive-black-3: #1a1a17;
   --primitive-black-4: #232320;
@@ -204,7 +205,7 @@
    ============================================ */
 [data-theme="dark"] {
   /* Background */
-  --color-bg-base:     var(--primitive-black);
+  --color-bg-base:     var(--primitive-neutral-950);
   --color-bg-surface:  var(--primitive-black-2);
   --color-bg-elevated: var(--primitive-black-3);
   --color-bg-subtle:   var(--primitive-black-4);

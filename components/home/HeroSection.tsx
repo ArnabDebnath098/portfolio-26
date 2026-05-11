@@ -7,7 +7,7 @@ import { PressButton } from "@/components/ui/PressButton";
 export function HeroSection() {
   return (
     <section data-id="hero" className="relative min-h-[100dvh] flex flex-col justify-center overflow-hidden pt-14">
-      <div data-id="hero-content" className="relative w-full max-w-[1280px] mx-auto px-6 sm:px-8 lg:px-12 flex flex-col items-center text-center gap-6">
+      <div data-id="hero-content" className="relative w-full max-w-[1200px] mx-auto px-6 sm:px-8 lg:px-12 flex flex-col items-center text-center gap-11">
 
         <motion.div
           data-id="hero-label-row"

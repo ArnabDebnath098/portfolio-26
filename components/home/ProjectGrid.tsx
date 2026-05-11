@@ -20,7 +20,7 @@ export function ProjectGrid({ projects, caseStudyContent = {} }: ProjectGridProp
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
 
   return (
-    <section data-id="project-grid" className="w-full sm:w-[90%] sm:max-w-[80vw] mx-auto px-4 sm:px-6 pt-16 pb-32 flex flex-col gap-10">
+    <section data-id="project-grid" className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 pt-16 pb-32 flex flex-col gap-10">
       {/* Section header */}
       <motion.div
         data-id="project-grid-header"

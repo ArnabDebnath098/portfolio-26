@@ -163,12 +163,12 @@ export function BeyondPixels() {
 
               <div data-id={`beyond-pixels-card-text-${i}`} className="flex flex-col gap-2">
                 <div data-id={`beyond-pixels-card-top-${i}`} className="flex items-center">
-                  <h3
+                  <p
                     data-id={`beyond-pixels-title-${i}`}
-                    className="text-base font-semibold text-[var(--color-text-primary)] tracking-[-0.01em]"
+                    className="font-questrial font-bold text-[20px] text-[var(--color-text-primary)] tracking-[-0.01em]"
                   >
                     {item.title}
-                  </h3>
+                  </p>
                 </div>
                 <p
                   data-id={`beyond-pixels-desc-${i}`}

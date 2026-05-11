@@ -29,10 +29,33 @@ function ThemeToggle() {
   if (!mounted) return <div data-id="theme-toggle-placeholder" className="w-7 h-7" />;
   const isDark = theme === "dark";
 
+  const handleToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const next = isDark ? "light" : "dark";
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    const root = document.documentElement;
+    root.style.setProperty("--theme-x", `${x}px`);
+    root.style.setProperty("--theme-y", `${y}px`);
+    const r = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y),
+    );
+    root.style.setProperty("--theme-r", `${r}px`);
+
+    if (typeof document.startViewTransition !== "function") {
+      setTheme(next);
+      return;
+    }
+    root.classList.add("theme-transitioning");
+    const transition = document.startViewTransition(() => setTheme(next));
+    transition.finished.finally(() => root.classList.remove("theme-transitioning"));
+  };
+
   return (
     <button
       data-id="theme-toggle"
-      onClick={() => setTheme(isDark ? "light" : "dark")}
+      onClick={handleToggle}
       aria-label="Toggle theme"
       className={cn(
         "relative w-7 h-7 flex items-center justify-center",

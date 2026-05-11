@@ -125,7 +125,7 @@ function BentoCard({ cell, index }: { cell: BentoCell; index: number }) {
 
 export function MandatesBento() {
   return (
-    <section data-id="mandates-bento" className="max-w-5xl mx-auto px-6 py-16">
+    <section data-id="mandates-bento" className="max-w-[1200px] mx-auto px-6 py-16">
       <motion.div
         data-id="mandates-bento-header"
         initial={{ opacity: 0, y: 20 }}

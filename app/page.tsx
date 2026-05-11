@@ -29,9 +29,9 @@ export default async function Home() {
       <HeroSection />
       <UiMateFeatured />
       <ProjectGrid projects={featured} caseStudyContent={caseStudyContent} />
-      <JaliDivider data-id="jali-divider-projects-testimonials" className="max-w-5xl mx-auto px-6" />
+      <JaliDivider data-id="jali-divider-projects-testimonials" className="max-w-[1200px] mx-auto px-6" />
       <Testimonials />
-      <JaliDivider data-id="jali-divider-testimonials-achievements" className="max-w-5xl mx-auto px-6" />
+      <JaliDivider data-id="jali-divider-testimonials-achievements" className="max-w-[1200px] mx-auto px-6" />
       <Achievements />
     </>
   );

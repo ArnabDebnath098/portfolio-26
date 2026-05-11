@@ -4,6 +4,7 @@ import path from "path";
 import { FadeUp } from "@/components/animations/FadeUp";
 import { explorations } from "@/data/explorations";
 import { MasonryGrid } from "@/components/lab/MasonryGrid";
+import { MotionWithCode } from "@/components/lab/MotionWithCode";
 
 export const metadata: Metadata = {
   title: "Lab",
@@ -17,7 +18,7 @@ export default function LabPage() {
 
   return (
     <div data-id="lab-page" className="min-h-screen pt-28 pb-32">
-      <div data-id="lab-container" className="max-w-6xl mx-auto px-6 flex flex-col gap-16">
+      <div data-id="lab-container" className="max-w-[1200px] mx-auto px-6 flex flex-col gap-16">
 
         {/* Header */}
         <FadeUp className="flex flex-col gap-3">
@@ -35,6 +36,8 @@ export default function LabPage() {
           </p>
         </FadeUp>
 
+        <MotionWithCode />
+
         {/* UI Explorations — Pinterest masonry */}
         <div data-id="lab-explorations-section" className="flex flex-col gap-6">
           <FadeUp>
@@ -47,7 +50,6 @@ export default function LabPage() {
           </FadeUp>
           <MasonryGrid items={explorations} hasImages={hasImages} />
         </div>
-
 
       </div>
     </div>

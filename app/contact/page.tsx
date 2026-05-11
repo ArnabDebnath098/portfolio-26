@@ -32,7 +32,7 @@ export default function ContactPage() {
 
   return (
     <div data-id="contact-page" className="min-h-screen pt-28 pb-32">
-      <div data-id="contact-container" className="max-w-5xl mx-auto px-6 flex flex-col gap-16">
+      <div data-id="contact-container" className="max-w-[1200px] mx-auto px-6 flex flex-col gap-16">
 
         {/* Header */}
         <FadeUp className="flex flex-col gap-3">

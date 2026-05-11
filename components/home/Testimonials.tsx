@@ -177,7 +177,7 @@ export function Testimonials() {
       {/* Carousel */}
       <div
         data-id="testimonials-carousel"
-        className="relative max-w-7xl mx-auto px-6 overflow-hidden"
+        className="relative max-w-[1200px] mx-auto px-6 overflow-hidden"
         onMouseEnter={() => { paused.current = true; }}
         onMouseLeave={() => { paused.current = false; }}
       >

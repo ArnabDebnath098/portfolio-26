@@ -7,7 +7,7 @@ import { PressButton } from "@/components/ui/PressButton";
 
 export function UiMateFeatured() {
   return (
-    <section data-id="uimate-section" className="w-full px-5 sm:w-[90%] sm:max-w-[80vw] sm:mx-auto sm:px-6 pt-16">
+    <section data-id="uimate-section" className="w-full max-w-[1200px] mx-auto px-5 sm:px-6 pt-16">
       <motion.div
         data-id="uimate-section-header"
         initial={{ opacity: 0, y: 20 }}
@@ -76,7 +76,7 @@ export function UiMateFeatured() {
               </p>
               <p
                 data-id="uimate-featured-subtext"
-                className="text-sm text-[var(--color-text-secondary)] leading-relaxed max-w-lg"
+                className="text-sm text-[var(--color-text-secondary)] leading-relaxed"
               >
                 Most platforms let you post work. uiMate actually helps you improve — with AI-powered critiques on your designs, personalised daily challenges, curated resources and tweets from the design world, career trajectory tracking, and a community that gives real feedback, not just likes.
               </p>

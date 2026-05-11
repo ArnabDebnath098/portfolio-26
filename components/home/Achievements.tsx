@@ -120,7 +120,7 @@ export function Achievements() {
       <KolamCorner className="absolute bottom-6 left-6 opacity-40 -scale-y-100" />
       <KolamCorner className="absolute bottom-6 right-6 opacity-40 scale-[-1]" />
 
-      <div data-id="achievements-container" className="relative max-w-6xl mx-auto px-6 space-y-20">
+      <div data-id="achievements-container" className="relative max-w-[1200px] mx-auto px-6 space-y-20">
 
         {/* ── Section Header ── */}
         <motion.div
@@ -222,35 +222,32 @@ export function Achievements() {
                 )}
 
                 {/* Content */}
-                <div className="p-6 space-y-3">
-                  {/* Ornamental line with paisley ends */}
-                  <div className="flex items-center gap-2">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
+                <div data-id={`achievements-milestone-content-${i}`} className="p-6 flex flex-col gap-3">
+                  <div data-id={`achievements-milestone-ornament-${i}`} className="flex items-center gap-2">
+                    <svg data-id={`achievements-milestone-ornament-left-${i}`} width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
                       <circle cx="6" cy="6" r="4" stroke="var(--color-ornament)" strokeWidth="0.6" />
                       <circle cx="6" cy="6" r="1.5" fill="var(--color-ornament)" opacity="0.5" />
                     </svg>
-                    <div className="flex-1 h-px bg-[var(--color-ornament)] opacity-15" />
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
+                    <div data-id={`achievements-milestone-ornament-line-${i}`} className="flex-1 h-px bg-[var(--color-ornament)] opacity-15" />
+                    <svg data-id={`achievements-milestone-ornament-right-${i}`} width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
                       <circle cx="6" cy="6" r="4" stroke="var(--color-ornament)" strokeWidth="0.6" />
                       <circle cx="6" cy="6" r="1.5" fill="var(--color-ornament)" opacity="0.5" />
                     </svg>
                   </div>
 
-                  <h3 className="text-lg md:text-xl font-display text-[var(--color-text-primary)] leading-snug">
+                  <p data-id={`achievements-milestone-title-${i}`} className="text-lg md:text-xl font-questrial font-bold text-[var(--color-text-primary)] leading-snug">
                     {item.title}
-                  </h3>
+                  </p>
 
-                  {/* Venue label below title */}
-                  <p className="text-[11px] font-medium tracking-wide uppercase text-[var(--color-ornament)]">
+                  <p data-id={`achievements-milestone-venue-${i}`} className="text-[11px] font-medium tracking-wide uppercase text-[var(--color-ornament)]">
                     {item.venue}
                   </p>
 
-                  <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                  <p data-id={`achievements-milestone-desc-${i}`} className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
                     {item.description}
                   </p>
 
-                  {/* Bottom ornamental flourish */}
-                  <div aria-hidden className="flex justify-center pt-2 opacity-25">
+                  <div data-id={`achievements-milestone-flourish-${i}`} aria-hidden className="flex justify-center opacity-25">
                     <svg width="48" height="8" viewBox="0 0 48 8" fill="none">
                       <path d="M0 4 Q6 0 12 4 Q18 8 24 4 Q30 0 36 4 Q42 8 48 4" stroke="var(--color-ornament)" strokeWidth="0.8" fill="none" />
                     </svg>
