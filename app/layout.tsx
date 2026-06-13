@@ -12,6 +12,7 @@ const gloock = Gloock({
 
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { IntroAnimation } from "@/components/animations/IntroAnimation";
 import { CaseStudyChat } from "@/components/chat/CaseStudyChat";
@@ -200,6 +201,7 @@ export default function RootLayout({
           <IntroAnimation />
           <SmoothScroll />
           <Navbar />
+          <ScrollProgress />
           <main data-id="root-main" className="flex-1">{children}</main>
           <Footer />
           <CaseStudyChat />

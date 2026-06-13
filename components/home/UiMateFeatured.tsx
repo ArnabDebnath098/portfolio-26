@@ -1,40 +1,31 @@
 "use client";
 
-import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
-import { BotanicMark } from "@/components/illustrations/IndianOrnaments";
+import { Reveal } from "@/components/animations/Reveal";
+import { SECTION_CONTAINER, SECTION_RHYTHM } from "@/components/layout/Section";
+import { SectionHeader } from "@/components/layout/SectionHeader";
 import { PressButton } from "@/components/ui/PressButton";
 
 export function UiMateFeatured() {
   return (
-    <section data-id="uimate-section" className="w-full max-w-[1200px] mx-auto px-5 sm:px-6 pt-16">
-      <motion.div
-        data-id="uimate-section-header"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.5 }}
-        className="flex flex-col items-center text-center gap-2 mb-8"
-      >
-        <div data-id="uimate-label-row" className="flex items-center justify-center gap-3">
-          <BotanicMark size={20} color="var(--color-ornament)" opacity={0.7} />
-          <p data-id="uimate-label" className="text-[10px] font-medium tracking-[0.14em] uppercase text-[var(--color-ornament)]">
-            Currently Building
-          </p>
-        </div>
-      </motion.div>
+    <section data-id="uimate-section" className={cn(SECTION_RHYTHM, SECTION_CONTAINER)}>
+      <SectionHeader
+        id="uimate"
+        index="01"
+        eyebrow="Currently Building"
+        title="Building the thing I wished existed."
+        subtitle="Founder-mode on uiMate — designing, coding, and shipping it in public. Proof I live in the same constraints I design for."
+        className="mb-10"
+      />
 
-      <motion.a
-        data-id="uimate-featured-link"
-        href="https://uimate.in"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group block"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.6, delay: 0.1 }}
-      >
+      <Reveal data-id="uimate-featured-reveal" delay={0.1}>
+        <a
+          data-id="uimate-featured-link"
+          href="https://uimate.in"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group block"
+        >
         <div
           data-id="uimate-featured-card"
           className={cn(
@@ -106,7 +97,8 @@ export function UiMateFeatured() {
             />
           </div>
         </div>
-      </motion.a>
+        </a>
+      </Reveal>
     </section>
   );
 }

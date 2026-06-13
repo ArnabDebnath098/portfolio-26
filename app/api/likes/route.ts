@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
 export async function GET() {
+  if (!supabase) return NextResponse.json({ count: 0 });
+
   const { data, error } = await supabase
     .from("portfolio_likes")
     .select("count")
@@ -13,6 +15,8 @@ export async function GET() {
 }
 
 export async function POST() {
+  if (!supabase) return NextResponse.json({ count: 0 });
+
   const { data, error } = await supabase.rpc("increment_likes");
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
@@ -20,6 +24,8 @@ export async function POST() {
 }
 
 export async function DELETE() {
+  if (!supabase) return NextResponse.json({ count: 0 });
+
   const { data, error } = await supabase.rpc("decrement_likes");
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });

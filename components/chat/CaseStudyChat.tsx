@@ -269,30 +269,43 @@ export function CaseStudyChat() {
           >
             <WalkingHumans />
           </div>
-          <button
+          <motion.button
             ref={pillRef}
             data-id="chat-trigger"
             onClick={() => setIsOpen(true)}
+            initial={{ y: 72, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 240, damping: 17 }}
+            whileHover={{ y: -4 }}
+            whileTap={{ scale: 0.94 }}
             className={cn(
-              "p-3 sm:pl-2.5 sm:pr-5 sm:py-2.5 rounded-full w-fit",
+              "group relative overflow-hidden w-fit",
+              "p-3 sm:pl-3 sm:pr-5 sm:py-2.5",
               "flex items-center gap-2",
               "cursor-pointer select-none",
               "border border-[var(--color-border-default)]",
-              "bg-[var(--color-bg-elevated)]",
-              "shadow-lg hover:shadow-xl",
-              "transition-shadow",
-              "animate-chat-trigger-pulse"
+              "bg-[var(--color-bg-base)] text-[var(--color-text-primary)]",
+              "hover:bg-[var(--color-bg-inverse)] hover:text-[var(--color-text-inverse)]",
+              "shadow-[6px_6px_0_0_var(--color-bg-inverse)] hover:shadow-[3px_3px_0_0_var(--color-accent)]",
+              "transition-[background-color,color,box-shadow] duration-300"
             )}
             aria-label="Ask me anything"
           >
-            <AIFace size={22} />
+            <motion.span
+              data-id="chat-trigger-face"
+              className="relative inline-flex"
+              animate={{ rotate: [0, -10, 10, 0] }}
+              transition={{ duration: 1.6, repeat: Infinity, repeatDelay: 1.8, ease: "easeInOut" }}
+            >
+              <AIFace size={22} />
+            </motion.span>
             <span
               data-id="chat-trigger-label"
-              className="hidden sm:inline text-xs tracking-wide text-[var(--color-text-secondary)]"
+              className="hidden sm:inline text-xs tracking-wide"
             >
               Ask me anything
             </span>
-          </button>
+          </motion.button>
         </div>
       )}
 

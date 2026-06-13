@@ -3,12 +3,13 @@
 import { useRef, useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
+import { SectionHeader } from "@/components/layout/SectionHeader";
 
 const videos = [
-  { id: "agents",     src: "/images/lab/agents.mp4"     },
-  { id: "folder",     src: "/images/lab/folder.mp4"     },
-  { id: "bottomnav",  src: "/images/lab/bottomnav.mp4"  },
-  { id: "desktopnav", src: "/images/lab/desktopnav.mp4" },
+  { id: "agents", src: "/images/lab/agents.mp4", label: "AI Agents" },
+  { id: "folder", src: "/images/lab/folder.mp4", label: "Folder" },
+  { id: "bottomnav", src: "/images/lab/bottomnav.mp4", label: "Bottom Nav" },
+  { id: "desktopnav", src: "/images/lab/desktopnav.mp4", label: "Desktop Nav" },
 ];
 
 function LazyVideo({ src, id }: { src: string; id: string }) {
@@ -47,7 +48,7 @@ function LazyVideo({ src, id }: { src: string; id: string }) {
       loop
       muted
       playsInline
-      className="w-full h-auto block"
+      className="block h-auto w-full"
     />
   );
 }
@@ -80,29 +81,34 @@ export function MotionWithCode() {
     el.scrollBy({ left: dir === "next" ? SCROLL_BY : -SCROLL_BY, behavior: "smooth" });
   }
 
-  return (
-    <div data-id="motion-with-code-section" className="flex flex-col gap-6">
-      <div data-id="motion-with-code-header" className="flex items-center justify-between">
-        <div data-id="motion-with-code-title-row" className="flex items-center gap-3">
-          <span data-id="motion-with-code-rule" className="rule-red" />
-          <h2 data-id="motion-with-code-heading" className="text-2xl font-bold tracking-[-0.03em] text-[var(--color-text-primary)]">
-            Motion with Code
-          </h2>
-        </div>
+  const arrowClass = (enabled: boolean) =>
+    cn(
+      "flex h-9 w-9 items-center justify-center border transition-colors duration-200",
+      "border-[var(--color-border-default)]",
+      enabled
+        ? "cursor-pointer text-[var(--color-text-primary)] hover:bg-[var(--color-text-primary)] hover:text-[var(--color-bg-base)]"
+        : "cursor-default text-[var(--color-text-muted)] opacity-30"
+    );
 
-        <div data-id="motion-with-code-arrows" className="flex items-center gap-2">
+  return (
+    <section data-id="motion-with-code-section" className="flex flex-col gap-8">
+      <SectionHeader
+        id="lab-motion"
+        index="02"
+        eyebrow="Motion"
+        title="Motion, built with code."
+        subtitle="Interface motion prototyped in real components — animated in code, not faked in a mockup."
+      />
+
+      <div data-id="motion-with-code-body" className="flex flex-col gap-4">
+        {/* Controls — square, sharp, hover-invert */}
+        <div data-id="motion-with-code-controls" className="flex items-center justify-end gap-2">
           <button
             data-id="motion-with-code-prev"
             onClick={() => scroll("prev")}
             disabled={!canPrev}
             aria-label="Previous"
-            className={cn(
-              "w-8 h-8 flex items-center justify-center rounded-full border transition-all duration-200",
-              "border-[var(--color-border-default)] bg-[var(--color-bg-elevated)]",
-              canPrev
-                ? "text-[var(--color-text-primary)] hover:bg-[var(--color-bg-surface)] cursor-pointer"
-                : "text-[var(--color-text-muted)] opacity-30 cursor-default"
-            )}
+            className={arrowClass(canPrev)}
           >
             <svg data-id="motion-prev-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M15 18l-6-6 6-6" />
@@ -113,41 +119,48 @@ export function MotionWithCode() {
             onClick={() => scroll("next")}
             disabled={!canNext}
             aria-label="Next"
-            className={cn(
-              "w-8 h-8 flex items-center justify-center rounded-full border transition-all duration-200",
-              "border-[var(--color-border-default)] bg-[var(--color-bg-elevated)]",
-              canNext
-                ? "text-[var(--color-text-primary)] hover:bg-[var(--color-bg-surface)] cursor-pointer"
-                : "text-[var(--color-text-muted)] opacity-30 cursor-default"
-            )}
+            className={arrowClass(canNext)}
           >
             <svg data-id="motion-next-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M9 18l6-6-6-6" />
             </svg>
           </button>
         </div>
-      </div>
 
-      <div
-        ref={trackRef}
-        data-id="motion-with-code-track"
-        className="flex items-start gap-4 overflow-x-auto scroll-smooth pb-2 snap-x snap-mandatory"
-        style={{ scrollbarWidth: "none" }}
-      >
-        {videos.map((video, i) => (
-          <motion.div
-            key={video.id}
-            data-id={`motion-card-${video.id}`}
-            className="shrink-0 snap-start rounded-[20px] overflow-hidden border border-[var(--color-border-default)] bg-[var(--color-bg-elevated)] w-[min(420px,80vw)]"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.5, delay: i * 0.08 }}
-          >
-            <LazyVideo src={video.src} id={video.id} />
-          </motion.div>
-        ))}
+        <div
+          ref={trackRef}
+          data-id="motion-with-code-track"
+          className="flex snap-x snap-mandatory items-start gap-4 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none]"
+        >
+          {videos.map((video, i) => (
+            <motion.div
+              key={video.id}
+              data-id={`motion-card-${video.id}`}
+              className="group w-[min(420px,80vw)] shrink-0 snap-start border border-[var(--color-border-default)] bg-[var(--color-bg-elevated)] transition-colors duration-300 hover:border-[var(--color-border-strong)]"
+              initial={{ opacity: 0, y: 28, filter: "blur(8px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <div data-id={`motion-card-media-${video.id}`} className="overflow-hidden">
+                <LazyVideo src={video.src} id={video.id} />
+              </div>
+              {/* Caption — sharp hairline divider, label + index */}
+              <div
+                data-id={`motion-card-caption-${video.id}`}
+                className="flex items-center justify-between gap-3 border-t border-[var(--color-border-default)] px-4 py-3"
+              >
+                <span data-id={`motion-card-label-${video.id}`} className="text-xs uppercase tracking-[0.12em] text-[var(--color-text-primary)] transition-colors duration-300 group-hover:text-[var(--color-accent)]">
+                  {video.label}
+                </span>
+                <span data-id={`motion-card-index-${video.id}`} className="font-datatype text-[10px] tabular-nums text-[var(--color-text-muted)]">
+                  ({String(i + 1).padStart(2, "0")})
+                </span>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

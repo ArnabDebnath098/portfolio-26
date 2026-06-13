@@ -5,7 +5,6 @@ import { UiMateFeatured } from "@/components/home/UiMateFeatured";
 import { ProjectGrid } from "@/components/home/ProjectGrid";
 import { Testimonials } from "@/components/home/Testimonials";
 import { Achievements } from "@/components/home/Achievements";
-import { JaliDivider } from "@/components/illustrations/JaliDivider";
 import { WipBanner } from "@/components/home/WipBanner";
 import { projects } from "@/data/projects";
 import { prerenderCaseStudies } from "@/lib/prerender-case-studies";
@@ -29,9 +28,7 @@ export default async function Home() {
       <HeroSection />
       <UiMateFeatured />
       <ProjectGrid projects={featured} caseStudyContent={caseStudyContent} />
-      <JaliDivider data-id="jali-divider-projects-testimonials" className="max-w-[1200px] mx-auto px-6" />
       <Testimonials />
-      <JaliDivider data-id="jali-divider-testimonials-achievements" className="max-w-[1200px] mx-auto px-6" />
       <Achievements />
     </>
   );

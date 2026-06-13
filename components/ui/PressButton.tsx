@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { type ButtonHTMLAttributes } from "react";
+import { cn } from "@/lib/utils";
 
 interface PressButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary";
@@ -7,6 +8,19 @@ interface PressButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   target?: string;
   rel?: string;
 }
+
+const base =
+  "inline-flex items-center justify-center px-7 py-3 text-sm font-medium tracking-tight " +
+  "transition-colors duration-200 cursor-pointer select-none whitespace-nowrap";
+
+const variants = {
+  primary:
+    "bg-[var(--color-bg-inverse)] text-[var(--color-text-inverse)] " +
+    "border border-[var(--color-bg-inverse)] hover:bg-transparent hover:text-[var(--color-text-primary)]",
+  secondary:
+    "bg-transparent text-[var(--color-text-primary)] border border-[var(--color-border-default)] " +
+    "hover:bg-[var(--color-bg-inverse)] hover:text-[var(--color-text-inverse)]",
+};
 
 export function PressButton({
   variant = "primary",
@@ -17,15 +31,7 @@ export function PressButton({
   className,
   ...props
 }: PressButtonProps) {
-  const inner = (
-    <div data-id={`press-button-outer-${variant}`} className="press-btn-outer">
-      <div data-id={`press-button-inner-${variant}`} className="press-btn-inner">
-        <span data-id={`press-button-label-${variant}`} className="press-btn-label">
-          {children}
-        </span>
-      </div>
-    </div>
-  );
+  const classes = cn(base, variants[variant], className);
 
   if (href) {
     return (
@@ -34,20 +40,16 @@ export function PressButton({
         href={href}
         target={target}
         rel={rel}
-        className={`press-btn press-btn-${variant} ${className ?? ""}`}
+        className={classes}
       >
-        {inner}
+        {children}
       </Link>
     );
   }
 
   return (
-    <button
-      data-id={`press-button-${variant}`}
-      className={`press-btn press-btn-${variant} ${className ?? ""}`}
-      {...props}
-    >
-      {inner}
+    <button data-id={`press-button-${variant}`} className={classes} {...props}>
+      {children}
     </button>
   );
 }

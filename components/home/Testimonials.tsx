@@ -3,8 +3,10 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion } from "motion/react";
+import { cn } from "@/lib/utils";
+import { SECTION_CONTAINER, SECTION_RHYTHM } from "@/components/layout/Section";
+import { SectionHeader } from "@/components/layout/SectionHeader";
 import { testimonials, type Testimonial } from "@/data/testimonials";
-import { FolkFlowerSprig, TinyFleur } from "@/components/illustrations/IndianOrnaments";
 
 const COUNT = testimonials.length;
 
@@ -71,25 +73,10 @@ function TestimonialCard({
         data-id={`testimonial-card-inner-${t.id}`}
         className="w-[var(--card-w)] rounded-2xl border border-[var(--color-border-default)] bg-white dark:bg-[var(--color-bg-surface)] p-5 sm:p-7 flex flex-col gap-4 sm:gap-5 shadow-sm h-[360px] sm:h-[400px] overflow-hidden"
       >
-        {/* Folk flower accent */}
-        <div data-id={`testimonial-flower-${t.id}`} aria-hidden className="-mb-1">
-          <TinyFleur size={18} color="var(--color-ornament)" opacity={0.35} />
-        </div>
-
         {/* Quote text */}
         <p data-id={`testimonial-quote-${t.id}`} className={`text-sm leading-relaxed text-[var(--color-text-secondary)] flex-1 flex items-center text-center ${offset === 0 ? "font-medium" : ""}`}>
           {t.quote}
         </p>
-
-        {/* Ornamental divider */}
-        <div data-id={`testimonial-divider-${t.id}`} aria-hidden className="flex items-center gap-2">
-          <div data-id={`testimonial-divider-left-${t.id}`} className="flex-1 h-px bg-[var(--color-ornament)] opacity-15" />
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <circle cx="6" cy="6" r="4" stroke="var(--color-ornament)" strokeWidth="0.6" />
-            <circle cx="6" cy="6" r="1.5" fill="var(--color-ornament)" opacity="0.5" />
-          </svg>
-          <div data-id={`testimonial-divider-right-${t.id}`} className="flex-1 h-px bg-[var(--color-ornament)] opacity-15" />
-        </div>
 
         {/* Author */}
         <div data-id={`testimonial-author-${t.id}`} className="flex items-center gap-3">
@@ -147,37 +134,23 @@ export function Testimonials() {
     <section
       ref={sectionRef}
       data-id="testimonials"
-      className="py-24 overflow-hidden"
+      className={cn(SECTION_RHYTHM, "overflow-hidden")}
       aria-label="Testimonials"
     >
-      <div data-id="testimonials-header" className="w-[90%] max-w-[80vw] mx-auto px-6 mb-14">
-        <motion.div
-          data-id="testimonials-header-inner"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="flex flex-col items-center text-center gap-3"
-        >
-          <div data-id="testimonials-label-row" className="flex items-center justify-center gap-3">
-            <FolkFlowerSprig size={24} color="var(--color-ornament)" opacity={0.65} />
-            <p data-id="testimonials-label" className="text-[10px] font-medium tracking-[0.18em] uppercase text-[var(--color-ornament)]">
-              What people say
-            </p>
-          </div>
-          <h2 data-id="testimonials-heading" className="text-3xl md:text-4xl font-display text-[var(--color-text-primary)] leading-tight">
-            Voices that matter
-          </h2>
-          <p data-id="testimonials-subheading" className="text-sm text-[var(--color-text-muted)] leading-relaxed max-w-xl">
-            From colleagues, managers, and collaborators across JUSPAY, AirAsia, and beyond.
-          </p>
-        </motion.div>
+      <div data-id="testimonials-header" className={cn(SECTION_CONTAINER, "mb-14")}>
+        <SectionHeader
+          id="testimonials"
+          index="03"
+          eyebrow="What People Say"
+          title="Vouched for by the people I shipped with."
+          subtitle="Managers, PMs, and engineers I've built alongside at JUSPAY, AirAsia, and beyond — not curated praise, just the working truth."
+        />
       </div>
 
       {/* Carousel */}
       <div
         data-id="testimonials-carousel"
-        className="relative max-w-[1200px] mx-auto px-6 overflow-hidden"
+        className={cn(SECTION_CONTAINER, "relative overflow-hidden")}
         onMouseEnter={() => { paused.current = true; }}
         onMouseLeave={() => { paused.current = false; }}
       >

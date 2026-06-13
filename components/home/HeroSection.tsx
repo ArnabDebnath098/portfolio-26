@@ -1,19 +1,19 @@
 "use client";
 
 import { motion } from "motion/react";
-import { cn } from "@/lib/utils";
-import { PressButton } from "@/components/ui/PressButton";
+import Link from "next/link";
+import { KineticHeadline } from "@/components/home/KineticHeadline";
 
 export function HeroSection() {
   return (
     <section data-id="hero" className="relative min-h-[100dvh] flex flex-col justify-center overflow-hidden pt-14">
-      <div data-id="hero-content" className="relative w-full max-w-[1200px] mx-auto px-6 sm:px-8 lg:px-12 flex flex-col items-center text-center gap-11">
+      <div data-id="hero-content" className="relative w-full max-w-[1104px] mx-auto px-6 sm:px-8 lg:px-12 flex flex-col items-start text-left gap-10">
 
         <motion.div
           data-id="hero-label-row"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.15 }}
           className="flex items-center gap-4"
         >
           <span data-id="hero-availability" className="inline-flex items-center gap-2 text-xs font-medium tracking-[0.12em] uppercase text-[var(--color-text-muted)]">
@@ -22,47 +22,15 @@ export function HeroSection() {
             </span>
             Available · Bengaluru
           </span>
-          <span data-id="hero-star" className="text-[var(--color-ornament)] opacity-60 text-xs">✦</span>
+          <span data-id="hero-year-sep" aria-hidden className="text-[var(--color-text-muted)]">/</span>
           <span data-id="hero-year" className="font-datatype text-xs text-[var(--color-text-muted)] tracking-wider">2026</span>
         </motion.div>
 
-        <div data-id="hero-headline" className="space-y-0">
-          {[
-            { text: "The gap between", color: "text-[var(--color-text-primary)]", delay: 0.3 },
-            { text: "a designer", color: "text-[var(--color-text-secondary)]", delay: 0.42, accent: true, rainbowWord: "designer", rainbowClass: "text-rainbow-flow" },
-            { text: "and an engineer", color: "text-[var(--color-text-secondary)]", delay: 0.54, rainbowWord: "engineer", rainbowClass: "text-rainbow-flow-alt" },
-            { text: "is where I work.", color: "text-[var(--color-text-primary)]", delay: 0.66 },
-          ].map(({ text, color, delay, accent, rainbowWord, rainbowClass }, i) => {
-            const beforeWord = rainbowWord ? text.slice(0, text.indexOf(rainbowWord)) : null;
-            const afterWord  = rainbowWord ? text.slice(text.indexOf(rainbowWord) + rainbowWord.length) : null;
-            return (
-            <div key={text} data-id={`hero-headline-line-${i}`} className="overflow-hidden pb-1 pt-0.5">
-              <motion.div
-                initial={{ y: "110%" }}
-                animate={{ y: "0%" }}
-                transition={{ duration: 0.75, delay, ease: [0.22, 1, 0.36, 1] }}
-                className={cn(
-                  "text-[clamp(40px,6vw,72px)] font-normal font-display",
-                  "leading-[1.15] tracking-[-0.02em]",
-                  color,
-                  accent && "flex items-baseline justify-center gap-4"
-                )}
-              >
-                {rainbowWord ? (
-                  <>
-                    {beforeWord}
-                    <span data-id={`hero-headline-rainbow-${i}`} className={rainbowClass}>{rainbowWord}</span>
-                    {afterWord}
-                  </>
-                ) : text}
-                {accent && (
-                  <span data-id="hero-accent-dash" className="inline-block w-10 h-[0.12em] bg-[var(--color-accent)] shrink-0" />
-                )}
-              </motion.div>
-            </div>
-            );
-          })}
-        </div>
+        <KineticHeadline
+          data-id="hero-headline"
+          lines={["The gap between", "a designer &", "an engineer is", "where I work."]}
+          className="text-[clamp(38px,8vw,108px)] leading-[1.04] tracking-[-0.03em] text-[var(--color-text-primary)] pb-[0.06em]"
+        />
 
         <motion.p
           data-id="hero-subline"
@@ -72,7 +40,7 @@ export function HeroSection() {
           className="text-base sm:text-lg max-w-xl text-[var(--color-text-secondary)] leading-relaxed"
         >
           Product Designer II at{" "}
-          <span data-id="hero-company" className="inline-flex items-center gap-1.5 align-middle text-[var(--color-text-primary)] font-semibold pl-1">
+          <span data-id="hero-company" className="inline-flex items-center gap-1.5 align-middle text-[var(--color-text-secondary)] font-semibold pl-1">
             <svg
               data-id="hero-company-logo"
               width="16"
@@ -96,14 +64,22 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.05 }}
-          className="flex flex-wrap items-center justify-center gap-4"
+          className="flex flex-wrap items-center justify-start gap-4"
         >
-          <PressButton data-id="hero-cta-work" variant="primary" href="/work">
+          <Link
+            data-id="hero-cta-work"
+            href="/work"
+            className="inline-flex items-center justify-center bg-black px-7 py-3 text-sm font-medium text-white transition-opacity hover:opacity-80"
+          >
             View my work
-          </PressButton>
-          <PressButton data-id="hero-cta-about" variant="secondary" href="/about">
+          </Link>
+          <Link
+            data-id="hero-cta-about"
+            href="/about"
+            className="inline-flex items-center justify-center bg-black px-7 py-3 text-sm font-medium text-white transition-opacity hover:opacity-80"
+          >
             About me
-          </PressButton>
+          </Link>
         </motion.div>
 
       </div>

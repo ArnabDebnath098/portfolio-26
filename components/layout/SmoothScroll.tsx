@@ -27,6 +27,12 @@ export function SmoothScroll() {
 
     rafId = requestAnimationFrame(raf);
 
+    // Lazy-loaded media (e.g. the /lab grid) grows the page after Lenis has
+    // measured it, leaving the bottom unreachable. Recompute the scroll limit
+    // whenever the document height changes.
+    const resizeObserver = new ResizeObserver(() => lenis.resize());
+    resizeObserver.observe(document.body);
+
     // Expose on window so the case study modal can pause/resume
     (window as unknown as { lenis?: Lenis }).lenis = lenis;
 
@@ -42,6 +48,7 @@ export function SmoothScroll() {
 
     return () => {
       cancelAnimationFrame(rafId);
+      resizeObserver.disconnect();
       document.removeEventListener("visibilitychange", onVisibilityChange);
       (window as unknown as { lenis?: Lenis }).lenis = undefined;
       lenis.destroy();

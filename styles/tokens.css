@@ -72,14 +72,14 @@
   --space-40: 10rem;
   --space-48: 12rem;
 
-  /* ── Primitive: Radius ── */
+  /* ── Primitive: Radius — flattened for sharp/edgy aesthetic ── */
   --radius-none: 0;
-  --radius-xs:   3px;
-  --radius-sm:   6px;
-  --radius-md:   10px;
-  --radius-lg:   16px;
-  --radius-xl:   24px;
-  --radius-2xl:  32px;
+  --radius-xs:   0;
+  --radius-sm:   0;
+  --radius-md:   0;
+  --radius-lg:   0;
+  --radius-xl:   0;
+  --radius-2xl:  0;
   --radius-full: 9999px;
 
   /* ── Primitive: Typography ── */
@@ -142,25 +142,25 @@
    ============================================ */
 :root,
 [data-theme="light"] {
-  /* Background */
+  /* Background — pure white */
   --color-bg-base:     #ffffff;
-  --color-bg-surface:  var(--primitive-parchment-2);
-  --color-bg-elevated: var(--primitive-parchment-3);
-  --color-bg-subtle:   var(--primitive-parchment-4);
-  --color-bg-inverse:  var(--primitive-black);
+  --color-bg-surface:  #ffffff;
+  --color-bg-elevated: #f2f2f2;
+  --color-bg-subtle:   #f7f7f7;
+  --color-bg-inverse:  #000000;
 
-  /* Text */
-  --color-text-primary:   var(--primitive-black);
-  --color-text-secondary: var(--primitive-gray-2);
-  --color-text-muted:     var(--primitive-gray-4);
-  --color-text-disabled:  var(--primitive-gray-6);
-  --color-text-inverse:   var(--primitive-white);
-  --color-text-on-accent: var(--primitive-white);
+  /* Text — pure black */
+  --color-text-primary:   #000000;
+  --color-text-secondary: #2a2a2a;
+  --color-text-muted:     #6b6b6b;
+  --color-text-disabled:  #b0b0b0;
+  --color-text-inverse:   #ffffff;
+  --color-text-on-accent: #ffffff;
 
-  /* Border — warm-tinted */
-  --color-border-default: var(--primitive-parchment-4);
-  --color-border-subtle:  var(--primitive-parchment-3);
-  --color-border-strong:  var(--primitive-gray-6);
+  /* Border — crisp black */
+  --color-border-default: #000000;
+  --color-border-subtle:  #e2e2e2;
+  --color-border-strong:  #000000;
 
   /* Accent — Terracotta */
   --color-accent:        var(--primitive-red-vivid);
@@ -182,15 +182,15 @@
   --color-error:   var(--primitive-red-deep);
 
   /* Card */
-  --color-card-bg:           var(--primitive-parchment-1);
-  --color-card-border:       var(--primitive-parchment-4);
-  --color-card-hover-bg:     var(--primitive-parchment-2);
-  --color-card-hover-border: var(--primitive-gray-6);
+  --color-card-bg:           #ffffff;
+  --color-card-border:       #000000;
+  --color-card-hover-bg:     #f7f7f7;
+  --color-card-hover-border: #000000;
 
-  /* Nav */
-  --color-nav-bg:          rgba(253, 249, 243, 0.90);
-  --color-nav-border:      rgba(180, 160, 130, 0.15);
-  --color-nav-pill-shadow: 0 4px 24px rgba(120, 80, 40, 0.10), 0 1px 3px rgba(0, 0, 0, 0.04);
+  /* Nav — solid white, full-bleed bar */
+  --color-nav-bg:          #ffffff;
+  --color-nav-border:      #000000;
+  --color-nav-pill-shadow: none;
 
   /* GitHub contribution graph — light */
   --gh-lvl-0: #ebedf0;

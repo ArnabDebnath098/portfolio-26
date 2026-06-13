@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 import { PressButton } from "@/components/ui/PressButton";
@@ -25,6 +25,9 @@ const links = [
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  // Alternate the reveal direction each toggle: expand out of the button, then
+  // contract back into it on the next press.
+  const expandRef = useRef(true);
   useEffect(() => setMounted(true), []);
   if (!mounted) return <div data-id="theme-toggle-placeholder" className="w-7 h-7" />;
   const isDark = theme === "dark";
@@ -47,9 +50,14 @@ function ThemeToggle() {
       setTheme(next);
       return;
     }
-    root.classList.add("theme-transitioning");
+
+    const expanding = expandRef.current;
+    expandRef.current = !expandRef.current;
+    const dirClass = expanding ? "theme-expand" : "theme-contract";
+
+    root.classList.add("theme-transitioning", dirClass);
     const transition = document.startViewTransition(() => setTheme(next));
-    transition.finished.finally(() => root.classList.remove("theme-transitioning"));
+    transition.finished.finally(() => root.classList.remove("theme-transitioning", dirClass));
   };
 
   return (
@@ -107,68 +115,63 @@ export function Navbar() {
 
   return (
     <>
-      {/* ── Desktop: floating pill ── */}
-      <motion.div
+      {/* ── Desktop: full-bleed bar ── */}
+      <motion.header
         data-id="navbar-desktop"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed top-5 left-1/2 -translate-x-1/2 z-50 hidden md:block max-w-[calc(100vw-2rem)]"
+        className="fixed top-0 left-0 right-0 z-50 hidden md:block bg-[var(--color-nav-bg)] border-b border-[var(--color-nav-border)]"
       >
         <div
           data-id="navbar-desktop-pill"
-          className={cn(
-            "flex items-center gap-3 rounded-full pl-6 pr-4",
-            "backdrop-blur-md nav-pill-shadow",
-            "bg-[var(--color-nav-bg)]",
-            "border border-[var(--color-nav-border)]",
-          )}
+          className="relative flex items-center justify-between h-16 w-full max-w-[1104px] mx-auto px-6 sm:px-8 lg:px-12"
         >
           {caseStudyTitle ? (
             /* ── Case study mode: back + title + theme ── */
             <>
-              <Link
-                data-id="navbar-casestudy-back"
-                href="/work"
-                className={cn(
-                  "flex items-center gap-1.5 py-2 text-sm font-medium",
-                  "text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]",
-                  "transition-colors duration-200 group shrink-0"
-                )}
-              >
-                <svg
-                  data-id="navbar-casestudy-back-icon"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="group-hover:-translate-x-0.5 transition-transform duration-200"
+              <div data-id="navbar-casestudy-left" className="flex items-center gap-3 min-w-0">
+                <Link
+                  data-id="navbar-casestudy-back"
+                  href="/work"
+                  className={cn(
+                    "flex items-center gap-1.5 text-sm font-medium",
+                    "text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]",
+                    "transition-colors duration-200 group shrink-0"
+                  )}
                 >
-                  <path d="M19 12H5M12 5l-7 7 7 7" />
-                </svg>
-                Work
-              </Link>
-              <div data-id="navbar-casestudy-divider" className="w-px h-4 bg-[var(--color-border-default)]" />
-              <span
-                data-id="navbar-casestudy-title"
-                className="text-sm font-medium text-[var(--color-text-primary)] truncate max-w-[280px] lg:max-w-[400px] py-2"
-              >
-                {caseStudyTitle}
-              </span>
-              <div data-id="navbar-casestudy-divider-2" className="w-px h-4 bg-[var(--color-border-default)]" />
-              <div data-id="navbar-right-casestudy" className="py-2">
+                  <svg
+                    data-id="navbar-casestudy-back-icon"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="group-hover:-translate-x-0.5 transition-transform duration-200"
+                  >
+                    <path d="M19 12H5M12 5l-7 7 7 7" />
+                  </svg>
+                  Work
+                </Link>
+                <span
+                  data-id="navbar-casestudy-title"
+                  className="text-sm font-medium text-[var(--color-text-primary)] truncate max-w-[280px] lg:max-w-[440px]"
+                >
+                  {caseStudyTitle}
+                </span>
+              </div>
+              <div data-id="navbar-right-casestudy" className="shrink-0">
                 <ThemeToggle />
               </div>
             </>
           ) : (
-            /* ── Default mode: logo + nav links + theme ── */
+            /* ── Default mode: logo · centered nav · actions ── */
             <>
               {/* Left — logo */}
-              <div data-id="navbar-left" className="py-2 flex items-center">
+              <div data-id="navbar-left" className="flex items-center">
                 <Link
                   data-id="navbar-logo-desktop"
                   href="/"
@@ -179,11 +182,8 @@ export function Navbar() {
                 </Link>
               </div>
 
-              {/* Divider */}
-              <div data-id="navbar-desktop-divider-1" className="w-px h-4 bg-[var(--color-border-default)]" />
-
-              {/* Center — Nav links */}
-              <div data-id="navbar-center" className="flex items-center gap-1 px-2 py-2">
+              {/* Center — Nav links (absolutely centered) */}
+              <nav data-id="navbar-center" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-0.5">
                 {links.map((link) => {
                   const active = pathname === link.href || pathname.startsWith(link.href + "/");
                   return (
@@ -192,45 +192,62 @@ export function Navbar() {
                       data-id={`navbar-link-${link.href.slice(1)}`}
                       href={link.href}
                       className={cn(
-                        "px-2.5 lg:px-3.5 py-1.5 text-sm font-medium rounded-full transition-all duration-200",
+                        "relative px-4 py-1.5 text-sm font-medium transition-colors duration-200",
                         active
-                          ? "text-[var(--color-text-primary)] bg-[var(--color-bg-elevated)]"
-                          : "text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-elevated)]"
+                          ? "text-[var(--color-text-primary)]"
+                          : "text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]"
                       )}
                     >
-                      {link.label}
+                      {active && (
+                        <motion.span
+                          data-id={`navbar-link-indicator-${link.href.slice(1)}`}
+                          layoutId="navbar-active-indicator"
+                          className="absolute inset-0 bg-[var(--color-bg-elevated)]"
+                          transition={{ type: "spring", stiffness: 480, damping: 38 }}
+                        />
+                      )}
+                      <span data-id={`navbar-link-label-${link.href.slice(1)}`} className="relative z-10">
+                        {link.label}
+                      </span>
                     </Link>
                   );
                 })}
-              </div>
+              </nav>
 
-              {/* Divider */}
-              <div data-id="navbar-desktop-divider-2" className="w-px h-4 bg-[var(--color-border-default)]" />
-
-              {/* Right — Theme toggle */}
-              <div data-id="navbar-right" className="py-2">
+              {/* Right — actions */}
+              <div data-id="navbar-right" className="flex items-center gap-4">
                 <ThemeToggle />
+                <Link
+                  data-id="navbar-cta"
+                  href="/contact"
+                  className={cn(
+                    "text-sm font-medium px-4 py-1.5 border border-[var(--color-text-primary)]",
+                    "text-[var(--color-text-primary)] transition-colors duration-200",
+                    "hover:bg-[var(--color-text-primary)] hover:text-[var(--color-bg-base)]"
+                  )}
+                >
+                  Let&apos;s talk
+                </Link>
               </div>
             </>
           )}
         </div>
-      </motion.div>
+      </motion.header>
 
-      {/* ── Mobile: floating pill ── */}
+      {/* ── Mobile: full-bleed bar ── */}
       <motion.div
         data-id="navbar-mobile"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed top-4 left-4 right-4 z-50 md:hidden flex flex-col gap-2"
+        className="fixed top-0 left-0 right-0 z-50 md:hidden flex flex-col"
       >
         <div
           data-id="navbar-mobile-pill"
           className={cn(
-            "flex items-center justify-between px-2 py-2 rounded-full",
-            "backdrop-blur-md nav-pill-shadow",
+            "flex items-center justify-between px-4 h-14",
             "bg-[var(--color-nav-bg)]",
-            "border border-[var(--color-nav-border)]",
+            "border-b border-[var(--color-nav-border)]",
           )}
         >
           {/* Logo */}

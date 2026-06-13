@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Gloock&family=Questrial&family=Teko:wght@300..700&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=clash-display@1&display=swap');
 @import "tailwindcss";
 @import "../styles/tokens.css";
 @import "../styles/animations.css";
-@import "../styles/press-button.css";
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
@@ -81,6 +81,7 @@
   --font-questrial: "Questrial", sans-serif;
   --font-mono:      'Datatype', ui-monospace, 'Cascadia Code', monospace;
   --font-display:   "Gloock", serif;
+  --font-clash:     "Clash Display", "Questrial", sans-serif;
 }
 
 /* ── Base ── */
@@ -94,6 +95,9 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  /* Native scrollbar hidden — replaced by the custom ScrollProgress bar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 body {
@@ -130,16 +134,8 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-text-on-accent);
 }
 
-/* ── Scrollbar ── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: var(--color-border-strong);
-  border-radius: var(--radius-full);
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-accent);
-}
+/* ── Scrollbar — hidden (custom ScrollProgress bar replaces it) ── */
+::-webkit-scrollbar { width: 0; height: 0; display: none; }
 
 /* ── Focus visible ── */
 :focus-visible {
@@ -202,6 +198,72 @@ h1, h2, h3, h4, h5, h6 {
   font-style: normal;
 }
 
+
+/* ── Kinetic headline — per-letter variable weight ── */
+.kinetic-letter {
+  display: inline-block;
+  font-family: "Clash Display", "Questrial", sans-serif;
+  font-variation-settings: "wght" var(--wght, 400);
+  will-change: font-variation-settings;
+}
+
+/* ── Headline plain letters — gentle weight breathing, travels as a wave ── */
+@keyframes hero-letter-breathe {
+  0%, 100% { font-variation-settings: "wght" 340; }
+  50%      { font-variation-settings: "wght" 500; }
+}
+.hero-letter {
+  display: inline-block;
+  font-family: "Clash Display", "Questrial", sans-serif;
+  font-variation-settings: "wght" 400;
+  animation: hero-letter-breathe 6s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * 0.09s);
+  will-change: font-variation-settings;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-letter { animation: none; font-variation-settings: "wght" 440; }
+}
+
+/* ── Headline accent words — accent shine glides across the ink ── */
+@keyframes hero-accent-sweep {
+  to { background-position: -200% center; }
+}
+.hero-word-accent {
+  font-variation-settings: "wght" 560;
+  background-image: linear-gradient(
+    100deg,
+    var(--color-text-primary) 0%,
+    var(--color-text-primary) 38%,
+    var(--color-accent) 50%,
+    var(--color-text-primary) 62%,
+    var(--color-text-primary) 100%
+  );
+  background-size: 200% auto;
+  background-position: 0% center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: hero-accent-sweep 5.5s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-word-accent {
+    animation: none;
+    background: none;
+    color: var(--color-accent);
+    -webkit-text-fill-color: var(--color-accent);
+  }
+}
+
+/* ── Case study display type — Clash Display at fixed heavy weights ── */
+.cs-display {
+  font-family: "Clash Display", "Questrial", sans-serif;
+  font-variation-settings: "wght" 600;
+}
+.cs-heading {
+  font-family: "Clash Display", "Questrial", sans-serif;
+  font-variation-settings: "wght" 540;
+}
 
 /* ── Logo theme filter ── */
 .logo-themed { filter: brightness(0); transition: filter 0.2s; }
@@ -276,13 +338,34 @@ h1, h2, h3, h4, h5, h6 {
 ::view-transition-old(root) { z-index: 1; }
 ::view-transition-new(root) { z-index: 2; }
 
-@keyframes theme-reveal {
+/* The reveal is a circle anchored at the toggle button (--theme-x/y), and it
+   alternates direction each press:
+   • EXPAND  — the incoming theme grows out of the button over the old one.
+   • CONTRACT — the outgoing theme shrinks back into the button, uncovering
+     the new one already sitting underneath.
+   (View Transitions are Chrome-only; other browsers get the instant fallback.) */
+@keyframes theme-grow {
   from { clip-path: circle(0 at var(--theme-x, 50%) var(--theme-y, 50%)); }
   to   { clip-path: circle(var(--theme-r, 150vmax) at var(--theme-x, 50%) var(--theme-y, 50%)); }
 }
-.theme-transitioning::view-transition-new(root) {
-  animation: theme-reveal 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+@keyframes theme-shrink {
+  from { clip-path: circle(var(--theme-r, 150vmax) at var(--theme-x, 50%) var(--theme-y, 50%)); }
+  to   { clip-path: circle(0 at var(--theme-x, 50%) var(--theme-y, 50%)); }
 }
+
+/* Expand: new theme on top, growing from the button. */
+.theme-expand::view-transition-new(root) {
+  z-index: 2;
+  animation: theme-grow 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.theme-expand::view-transition-old(root) { z-index: 1; }
+
+/* Contract: old theme on top, shrinking into the button. */
+.theme-contract::view-transition-old(root) {
+  z-index: 2;
+  animation: theme-shrink 700ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+.theme-contract::view-transition-new(root) { z-index: 1; }
 
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root),

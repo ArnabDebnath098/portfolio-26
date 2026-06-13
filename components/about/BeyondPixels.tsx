@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { FadeUp } from "@/components/animations/FadeUp";
-import { BotanicMark } from "@/components/illustrations/IndianOrnaments";
+import { SectionHeader } from "@/components/layout/SectionHeader";
 import { GithubContributionGraph } from "@/components/about/GithubContributionGraph";
 
 const passions = [
@@ -86,24 +86,15 @@ function TravelBento({ images }: { images: string[] }) {
 export function BeyondPixels() {
   return (
     <div data-id="beyond-pixels-section" className="pt-8 flex flex-col gap-10">
-      <FadeUp>
-        <div data-id="beyond-pixels-header" className="flex flex-col gap-2">
-          <div data-id="beyond-pixels-label-row" className="flex items-center gap-3">
-            <BotanicMark size={20} color="var(--color-ornament)" opacity={0.7} />
-            <p data-id="beyond-pixels-label" className="text-[10px] font-medium tracking-[0.14em] uppercase text-[var(--color-ornament)]">
-              Beyond the Pixels
-            </p>
-          </div>
-          <h2 data-id="beyond-pixels-heading" className="text-2xl font-bold tracking-[-0.03em] text-[var(--color-text-primary)]">
-            What fuels the work
-          </h2>
-          <p data-id="beyond-pixels-subline" className="text-sm text-[var(--color-text-secondary)] leading-relaxed max-w-lg">
-            Design doesn&apos;t happen in a vacuum. These are the things that shape how I see, think, and create.
-          </p>
-        </div>
-      </FadeUp>
+      <SectionHeader
+        id="beyond-pixels"
+        index="03"
+        eyebrow="Beyond the Pixels"
+        title="What fuels the work."
+        subtitle="Design doesn't happen in a vacuum. These are the things that shape how I see, think, and create."
+      />
 
-      <div data-id="beyond-pixels-list" className="flex flex-col gap-4">
+      <div data-id="beyond-pixels-list" className="flex flex-col -space-y-px">
         {passions.map((item, i) => (
           <motion.div
             key={item.title}

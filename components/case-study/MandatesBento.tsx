@@ -125,7 +125,7 @@ function BentoCard({ cell, index }: { cell: BentoCell; index: number }) {
 
 export function MandatesBento() {
   return (
-    <section data-id="mandates-bento" className="max-w-[1200px] mx-auto px-6 py-16">
+    <section data-id="mandates-bento" className="max-w-[1104px] mx-auto px-6 py-16">
       <motion.div
         data-id="mandates-bento-header"
         initial={{ opacity: 0, y: 20 }}
@@ -134,7 +134,7 @@ export function MandatesBento() {
         transition={{ duration: 0.5 }}
         className="mb-10"
       >
-        <p data-id="mandates-bento-label" className="text-[10px] font-medium tracking-[0.14em] uppercase text-[var(--color-ornament)] mb-2">
+        <p data-id="mandates-bento-label" className="text-[10px] font-medium tracking-[0.14em] uppercase text-[var(--color-text-muted)] mb-2">
           Design Showcase
         </p>
         <h2 data-id="mandates-bento-heading" className="text-2xl sm:text-3xl font-display text-[var(--color-text-primary)] leading-tight">

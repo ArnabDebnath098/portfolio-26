@@ -256,16 +256,6 @@
   z-index: 1;
 }
 
-/* ── Chat trigger background pulse ── */
-@keyframes chat-trigger-bg-pulse {
-  0%, 100% { background-color: var(--color-bg-elevated); }
-  50%      { background-color: var(--color-accent-subtle); }
-}
-.animate-chat-trigger-pulse {
-  animation: chat-trigger-bg-pulse 2.4s ease-in-out infinite;
-  will-change: background-color;
-}
-
 /* ── Project card thumbnail ── */
 .card-thumb-shadow {
   border-radius: 24px;
@@ -326,4 +316,21 @@
 }
 .animate-marquee {
   animation: marquee 40s linear infinite;
+}
+
+/* ── About page — ghost display type (outlined, no fill) ── */
+.text-ghost-stroke {
+  -webkit-text-stroke: 1px var(--color-border-subtle);
+  color: transparent;
+}
+
+/* ── About page — scroll cue line pulsing down ── */
+@keyframes about-cue {
+  0%   { transform: scaleY(0); transform-origin: top; }
+  45%  { transform: scaleY(1); transform-origin: top; }
+  55%  { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+.animate-about-cue {
+  animation: about-cue 1.6s ease-in-out infinite;
 }

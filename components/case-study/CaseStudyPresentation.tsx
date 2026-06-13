@@ -17,11 +17,66 @@ interface CaseStudyPresentationProps {
   slug: string;
 }
 
+const REVEAL_EASE = [0.22, 1, 0.36, 1] as const;
+
+/** A stable editorial "project code" — e.g. AGE·25. */
+function projectCode(slug: string, year?: string) {
+  const base = slug.replace(/[^a-z0-9]/gi, "").slice(0, 3).toUpperCase().padEnd(3, "X");
+  const yy = (year ?? "").replace(/\D/g, "").slice(-2) || "00";
+  return `${base}·${yy}`;
+}
+
+/* ───────────────────────────────────────────────────────
+   Custom cubic-bezier smooth scroll (Newton-Raphson solve)
+─────────────────────────────────────────────────────── */
+function cubicBezier(p1x: number, p1y: number, p2x: number, p2y: number) {
+  const cx = 3 * p1x;
+  const bx = 3 * (p2x - p1x) - cx;
+  const ax = 1 - cx - bx;
+  const cy = 3 * p1y;
+  const by = 3 * (p2y - p1y) - cy;
+  const ay = 1 - cy - by;
+  const sampleX = (t: number) => ((ax * t + bx) * t + cx) * t;
+  const sampleY = (t: number) => ((ay * t + by) * t + cy) * t;
+  const sampleDX = (t: number) => (3 * ax * t + 2 * bx) * t + cx;
+  const solveX = (x: number) => {
+    let t = x;
+    for (let i = 0; i < 8; i++) {
+      const x2 = sampleX(t) - x;
+      if (Math.abs(x2) < 1e-5) return t;
+      const d = sampleDX(t);
+      if (Math.abs(d) < 1e-6) break;
+      t -= x2 / d;
+    }
+    return t;
+  };
+  return (x: number) => sampleY(solveX(Math.min(1, Math.max(0, x))));
+}
+
+// A deliberate ease-in-out for section jumps — slow lead-in, long glide-out.
+const SCROLL_EASE = cubicBezier(0.62, 0.0, 0.18, 1);
+
+function smoothScrollTo(
+  getCurrent: () => number,
+  setCurrent: (v: number) => void,
+  target: number,
+  duration = 1000
+) {
+  const start = getCurrent();
+  const delta = target - start;
+  if (Math.abs(delta) < 1) return;
+  let startTs = 0;
+  const frame = (ts: number) => {
+    if (!startTs) startTs = ts;
+    const p = Math.min(1, (ts - startTs) / duration);
+    setCurrent(start + delta * SCROLL_EASE(p));
+    if (p < 1) requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame);
+}
 
 /* ═══════════════════════════════════════════════════════
-   FLOATING NAV — single pill that expands vertically upward
-   in place when clicked. Bottom edge stays anchored so the
-   "current section" row never moves.
+   FLOATING NAV — mobile only
 ═══════════════════════════════════════════════════════ */
 function FloatingNav({
   headings,
@@ -45,19 +100,15 @@ function FloatingNav({
     [onSectionClick]
   );
 
-  // Close on outside click
   useEffect(() => {
     if (!open) return;
     function onDocClick(e: MouseEvent) {
-      if (navRef.current && !navRef.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
+      if (navRef.current && !navRef.current.contains(e.target as Node)) setOpen(false);
     }
     document.addEventListener("mousedown", onDocClick);
     return () => document.removeEventListener("mousedown", onDocClick);
   }, [open]);
 
-  // Close on Escape
   useEffect(() => {
     if (!open) return;
     function onKey(e: KeyboardEvent) {
@@ -70,24 +121,16 @@ function FloatingNav({
   const activeLabel = headings[activeIndex] || `Section ${activeIndex + 1}`;
 
   return (
-    <div
-      ref={navRef}
-      data-id="case-study-floating-nav"
-      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50"
-    >
-      {/* Pill — `layout` springs the size, `popLayout` removes the exiting
-          list from layout flow immediately so the parent shrinks and the
-          list fades concurrently — making close mirror open. */}
+    <div ref={navRef} data-id="case-study-floating-nav" className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2">
       <motion.div
         data-id="case-study-floating-nav-pill"
         layout
         transition={{ type: "spring", stiffness: 380, damping: 34 }}
         className={cn(
-          "flex flex-col overflow-hidden w-[200px]",
+          "flex w-[230px] flex-col overflow-hidden",
           "bg-[var(--color-bg-elevated)]/95 backdrop-blur-md",
-          "border border-[var(--color-border-default)]",
-          "shadow-lg",
-          open ? "rounded-[20px]" : "rounded-full"
+          "border border-[var(--color-border-default)] shadow-lg",
+          open ? "rounded-[4px]" : "rounded-full"
         )}
       >
         <AnimatePresence mode="popLayout" initial={false}>
@@ -102,40 +145,28 @@ function FloatingNav({
             >
               <p
                 data-id="case-study-floating-nav-list-title"
-                className="text-[10px] font-semibold tracking-[0.14em] uppercase text-[var(--color-text-muted)] px-4 pt-3 pb-2 text-center"
+                className="px-4 pb-2 pt-3 font-datatype text-[10px] uppercase tracking-[0.18em] text-[var(--color-text-muted)]"
               >
-                Sections
+                Index
               </p>
-              <ul
-                data-id="case-study-floating-nav-list"
-                className="flex flex-col gap-0.5 px-2 pb-2 max-h-[60vh] overflow-y-auto"
-              >
+              <ul data-id="case-study-floating-nav-list" className="flex max-h-[60vh] flex-col overflow-y-auto px-2 pb-2">
                 {headings.map((heading, i) => {
                   const isActive = i === activeIndex;
-                  const isPast = i < activeIndex;
-                  const label = heading || `Section ${i + 1}`;
                   return (
                     <li key={i} data-id={`case-study-floating-nav-item-${i}`}>
                       <button
                         data-id={`case-study-floating-nav-btn-${i}`}
                         onClick={() => handleSelect(i)}
                         className={cn(
-                          "w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-center",
-                          "cursor-pointer transition-colors duration-150",
-                          isActive
-                            ? "bg-[var(--color-accent-subtle)]"
-                            : "hover:bg-[var(--color-bg-surface)]"
+                          "flex w-full items-center gap-2.5 px-3 py-2.5 text-left transition-colors duration-150",
+                          isActive ? "bg-[var(--color-accent-subtle)]" : "hover:bg-[var(--color-bg-surface)]"
                         )}
                       >
                         <span
                           data-id={`case-study-floating-nav-num-${i}`}
                           className={cn(
-                            "font-datatype text-[10px] tabular-nums flex-shrink-0 text-center",
-                            isActive
-                              ? "text-[var(--color-accent)] font-semibold"
-                              : isPast
-                                ? "text-[var(--color-text-muted)]"
-                                : "text-[var(--color-text-muted)] opacity-50"
+                            "shrink-0 font-datatype text-[10px] tabular-nums",
+                            isActive ? "text-[var(--color-accent)]" : "text-[var(--color-text-muted)] opacity-60"
                           )}
                         >
                           {String(i + 1).padStart(2, "0")}
@@ -143,15 +174,11 @@ function FloatingNav({
                         <span
                           data-id={`case-study-floating-nav-label-${i}`}
                           className={cn(
-                            "text-[13px] leading-snug truncate text-center",
-                            isActive
-                              ? "text-[var(--color-accent)] font-medium"
-                              : isPast
-                                ? "text-[var(--color-text-secondary)]"
-                                : "text-[var(--color-text-muted)]"
+                            "truncate font-questrial text-[13px] leading-snug",
+                            isActive ? "text-[var(--color-accent)]" : "text-[var(--color-text-secondary)]"
                           )}
                         >
-                          {label}
+                          {heading || `Section ${i + 1}`}
                         </span>
                       </button>
                     </li>
@@ -162,21 +189,13 @@ function FloatingNav({
           )}
         </AnimatePresence>
 
-        {/* Compact "current" row — same in closed and open states.
-            Stays in the same fixed position so the user's anchor never moves. */}
         <motion.button
           data-id="case-study-floating-nav-current"
           layout
           onClick={() => setOpen((v) => !v)}
-          className={cn(
-            "flex items-center justify-center gap-2 px-4 py-2.5 cursor-pointer w-full",
-            "hover:bg-[var(--color-bg-surface)]/40 transition-colors whitespace-nowrap text-center"
-          )}
+          className="flex w-full cursor-pointer items-center gap-2 whitespace-nowrap px-4 py-2.5 transition-colors hover:bg-[var(--color-bg-surface)]/40"
         >
-          <span
-            data-id="case-study-floating-nav-counter"
-            className="font-datatype text-[10px] text-[var(--color-accent)] tabular-nums font-semibold flex-shrink-0 text-center"
-          >
+          <span data-id="case-study-floating-nav-counter" className="shrink-0 font-datatype text-[10px] tabular-nums text-[var(--color-accent)]">
             {String(activeIndex + 1).padStart(2, "0")}/{String(total).padStart(2, "0")}
           </span>
           <motion.span
@@ -185,21 +204,14 @@ function FloatingNav({
             initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.2 }}
-            className="text-xs font-medium text-[var(--color-text-primary)] truncate text-center"
+            className="flex-1 truncate font-questrial text-xs text-[var(--color-text-primary)]"
           >
             {activeLabel}
           </motion.span>
           <motion.svg
             data-id="case-study-floating-nav-chevron"
-            width="11"
-            height="11"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="text-[var(--color-text-muted)] flex-shrink-0"
+            width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+            className="shrink-0 text-[var(--color-text-muted)]"
             animate={{ rotate: open ? 180 : 0 }}
             transition={{ duration: 0.2 }}
           >
@@ -212,135 +224,65 @@ function FloatingNav({
 }
 
 /* ═══════════════════════════════════════════════════════
-   HERO COVER — full viewport intro for the case study
+   INTRO — editorial lead (carries the metadata header)
 ═══════════════════════════════════════════════════════ */
-function CoverSection({ frontmatter }: { frontmatter: CaseStudyFrontmatter }) {
+function IntroBlock({ frontmatter, slug }: { frontmatter: CaseStudyFrontmatter; slug: string }) {
   return (
-    <section
-      data-id="case-study-cover"
-      className="min-h-[80vh] flex flex-col justify-center items-center text-center px-6 sm:px-12 py-20"
-    >
-      {/* Tags */}
-      <motion.div
-        data-id="case-study-cover-tags"
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        className="flex flex-wrap justify-center gap-2 mb-6"
-      >
-        {frontmatter.tags.map((tag) => (
-          <span
-            key={tag}
-            data-id={`case-study-cover-tag-${tag.toLowerCase().replace(/\s/g, "-")}`}
-            className={cn(
-              "px-2.5 py-0.5 text-[10px] font-medium tracking-wide uppercase",
-              "bg-[var(--color-accent-subtle)]",
-              "text-[var(--color-accent)]",
-              "border border-[var(--color-accent-muted)]"
-            )}
-          >
-            {tag}
+    <header data-id="case-study-intro" className="pb-4">
+      {/* Meta header — client/role/code */}
+      <div data-id="case-study-intro-meta" className="mb-10 flex items-center gap-3">
+        <div data-id="case-study-intro-meta-text" className="flex flex-col leading-tight">
+          <span className="font-questrial text-sm font-bold text-[var(--color-text-primary)]">{frontmatter.company}</span>
+          <span className="font-datatype text-[11px] uppercase tracking-[0.14em] text-[var(--color-text-muted)]">
+            {[frontmatter.role, frontmatter.year, projectCode(slug, frontmatter.year)].filter(Boolean).join(" · ")}
           </span>
-        ))}
-      </motion.div>
+        </div>
+      </div>
 
-      {/* Title */}
-      <motion.h2
-        data-id="case-study-cover-title"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-        className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-display tracking-[-0.04em] text-[var(--color-text-primary)] leading-[1.08] mb-6 max-w-3xl"
+      {frontmatter.tags?.length > 0 && (
+        <motion.div
+          data-id="case-study-intro-tags"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1 font-datatype text-[11px] uppercase tracking-[0.18em] text-[var(--color-text-muted)]"
+        >
+          {frontmatter.tags.map((t, i) => (
+            <span key={t} data-id={`case-study-intro-tag-${i}`} className="flex items-center gap-3">
+              {t}
+              {i < frontmatter.tags.length - 1 && <span aria-hidden className="opacity-40">/</span>}
+            </span>
+          ))}
+        </motion.div>
+      )}
+
+      <motion.h1
+        data-id="case-study-intro-title"
+        initial={{ opacity: 0, y: 26, filter: "blur(10px)" }}
+        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        transition={{ duration: 0.8, ease: REVEAL_EASE }}
+        className="cs-display max-w-[16ch] text-[clamp(36px,5.4vw,68px)] leading-[1.02] tracking-[-0.03em] text-[var(--color-text-primary)]"
       >
         {frontmatter.title}
-      </motion.h2>
+      </motion.h1>
 
-      {/* Outcome */}
       <motion.p
-        data-id="case-study-cover-outcome"
+        data-id="case-study-intro-outcome"
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.35 }}
-        className="text-sm sm:text-base text-[var(--color-text-secondary)] leading-[1.8] max-w-2xl mx-auto mb-10"
+        transition={{ duration: 0.6, delay: 0.2, ease: REVEAL_EASE }}
+        className="mt-10 max-w-[52ch] font-questrial text-[clamp(17px,1.6vw,21px)] leading-[1.65] text-[var(--color-text-secondary)]"
       >
         {frontmatter.outcome}
       </motion.p>
 
-      {/* Meta row */}
-      <motion.div
-        data-id="case-study-cover-meta"
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.5 }}
-        className="grid grid-cols-2 sm:flex w-full max-w-[800px] sm:justify-between gap-6 sm:gap-12 px-4"
-      >
-        {[
-          { label: "Company", value: frontmatter.company },
-          { label: "Year", value: frontmatter.year },
-          { label: "Role", value: frontmatter.role },
-          { label: "Duration", value: frontmatter.duration },
-        ].map((item) => (
-          <div
-            data-id={`case-study-cover-meta-${item.label.toLowerCase()}`}
-            key={item.label}
-            className="flex flex-col gap-0.5"
-          >
-            <span
-              data-id={`case-study-cover-meta-label-${item.label.toLowerCase()}`}
-              className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-[0.14em] font-medium"
-            >
-              {item.label}
-            </span>
-            <span
-              data-id={`case-study-cover-meta-value-${item.label.toLowerCase()}`}
-              className="text-sm font-semibold text-[var(--color-text-primary)]"
-            >
-              {item.value}
-            </span>
-          </div>
-        ))}
-      </motion.div>
-
-      {/* Scroll hint */}
-      <motion.div
-        data-id="case-study-cover-scroll-hint"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.9, duration: 0.6 }}
-        className="mt-16 flex items-center gap-2"
-      >
-        <span
-          data-id="case-study-cover-scroll-hint-text"
-          className="text-[10px] text-[var(--color-text-muted)] tracking-[0.14em] uppercase font-medium"
-        >
-          Scroll to read
-        </span>
-        <motion.div
-          data-id="case-study-cover-scroll-hint-arrow"
-          animate={{ y: [0, 4, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <svg
-            data-id="case-study-cover-scroll-hint-icon"
-            width="12"
-            height="12"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            className="text-[var(--color-text-muted)]"
-          >
-            <path d="M12 5v14M5 12l7 7 7-7" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </motion.div>
-      </motion.div>
-    </section>
+      <div data-id="case-study-intro-rule" aria-hidden className="mt-16 h-px w-full bg-[var(--color-border-subtle)]" />
+    </header>
   );
 }
 
 /* ═══════════════════════════════════════════════════════
-   STORY SECTION — single vertical section with
-   step number, heading, content, and optional images
+   STORY SECTION — oversized number + editorial block
 ═══════════════════════════════════════════════════════ */
 function StorySection({
   index,
@@ -359,98 +301,91 @@ function StorySection({
   const stepNum = String(index + 1).padStart(2, "0");
 
   return (
-    <section
+    <motion.section
       ref={sectionRef}
       data-id={`case-study-section-${index}`}
-      className="relative py-16 sm:py-20 lg:py-28"
+      className="relative py-20 sm:py-24 lg:py-28"
+      initial={{ opacity: 0, y: 36 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-12% 0px -22% 0px" }}
+      transition={{ duration: 0.75, ease: REVEAL_EASE }}
     >
-      {/* Step header — design-process style */}
-      <div data-id={`case-study-section-top-${index}`} className="relative max-w-[720px] mb-8">
-        {/* Ghost number */}
-        <span
-          data-id={`case-study-section-ghost-num-${index}`}
-          className="absolute top-0 left-0 font-display select-none pointer-events-none z-0 text-[var(--color-accent)] ghost-step-number"
-        >
-          {stepNum}
-        </span>
+      {/* Oversized ghost number */}
+      <span
+        data-id={`case-study-section-ghost-${index}`}
+        aria-hidden
+        className="cs-display pointer-events-none absolute -top-2 right-0 select-none text-[clamp(72px,12vw,150px)] leading-none tracking-[-0.04em] text-[color-mix(in_srgb,var(--color-text-primary)_5%,transparent)]"
+      >
+        {stepNum}
+      </span>
 
-        <div data-id={`case-study-section-header-${index}`} className="relative z-10 flex flex-col gap-1 pt-4 sm:pt-6">
-          <p
-            data-id={`case-study-section-phase-label-${index}`}
-            className="text-[9px] sm:text-[10px] tracking-[0.24em] uppercase font-semibold text-[var(--color-accent)]"
-          >
-            Section {stepNum}
-          </p>
-          {heading && (
-            <h2
-              data-id={`case-study-section-heading-${index}`}
-              className="font-display text-[clamp(24px,3.5vw,44px)] tracking-[-0.025em] text-[var(--color-text-primary)] leading-[1.08]"
+      {/* Eyebrow */}
+      <p
+        data-id={`case-study-section-eyebrow-${index}`}
+        className="relative mb-5 font-datatype text-[11px] uppercase tracking-[0.22em] text-[var(--color-accent)]"
+      >
+        Section {stepNum}
+      </p>
+
+      {heading && (
+        <h2
+          data-id={`case-study-section-heading-${index}`}
+          className="cs-heading relative mb-8 max-w-[20ch] text-[clamp(26px,3.4vw,46px)] leading-[1.06] tracking-[-0.025em] text-[var(--color-text-primary)]"
+        >
+          {heading}
+        </h2>
+      )}
+
+      <div
+        data-id={`case-study-section-text-${index}`}
+        className="relative flex max-w-[62ch] flex-col gap-6 font-questrial text-[clamp(16px,1.5vw,19px)] leading-[1.8] text-[var(--color-text-secondary)]"
+      >
+        {children}
+      </div>
+
+      {hasImages && (
+        <div data-id={`case-study-section-images-${index}`} className="mt-14 flex flex-col gap-8">
+          {images.map((img, i) => (
+            <motion.figure
+              key={i}
+              data-id={`case-study-section-image-${index}-${i}`}
+              initial={{ opacity: 0, y: 28, filter: "blur(8px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.7, ease: REVEAL_EASE }}
+              className="flex flex-col gap-2.5"
             >
-              {heading}
-            </h2>
-          )}
+              <Image
+                src={img.src}
+                alt={img.alt}
+                width={1200}
+                height={900}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1000px"
+                quality={90}
+                className={cn(
+                  "rounded-[2px] bg-[var(--color-bg-surface)]",
+                  img.fullWidth ? "block h-auto w-full" : "w-full object-contain"
+                )}
+                loading="lazy"
+              />
+              {img.alt && (
+                <figcaption
+                  data-id={`case-study-section-caption-${index}-${i}`}
+                  className="font-datatype text-[11px] uppercase tracking-[0.12em] text-[var(--color-text-muted)]"
+                >
+                  {img.alt}
+                </figcaption>
+              )}
+            </motion.figure>
+          ))}
         </div>
-      </div>
-
-      {/* Ornamental divider */}
-      <div data-id={`case-study-section-rule-${index}`} className="flex items-center gap-3 mb-8 max-w-[720px]">
-        <div data-id={`case-study-section-rule-left-${index}`} className="h-px flex-1 bg-[var(--color-accent)]/25" />
-        <svg data-id={`case-study-section-rule-icon-${index}`} width="12" height="12" viewBox="0 0 14 14" aria-hidden>
-          <polygon points="7,1 13,7 7,13 1,7" stroke="var(--color-accent)" strokeWidth="0.8" fill="none" opacity="0.7" />
-          <circle cx="7" cy="7" r="2" fill="var(--color-accent)" opacity="0.6" />
-        </svg>
-        <div data-id={`case-study-section-rule-right-${index}`} className="h-px flex-1 bg-[var(--color-accent)]/25" />
-      </div>
-
-      {/* Content */}
-      <div data-id={`case-study-section-body-${index}`} className="flex flex-col gap-8 w-full">
-        <div
-          data-id={`case-study-section-text-${index}`}
-          className="flex flex-col gap-4 w-full text-base md:text-lg leading-[1.8] text-[var(--color-text-secondary)]"
-        >
-          {children}
-        </div>
-
-        {/* Images */}
-        {hasImages && (
-          <div data-id={`case-study-section-images-${index}`} className="flex flex-col gap-4">
-            {images.map((img, i) => (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <motion.div
-                key={i}
-                data-id={`case-study-section-image-${index}-${i}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <Image
-                  src={img.src}
-                  alt={img.alt}
-                  width={1200}
-                  height={900}
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 75vw, 1000px"
-                  quality={90}
-                  className={cn(
-                    "rounded-xl bg-[var(--color-bg-surface)]",
-                    img.fullWidth
-                      ? "w-full h-auto block"
-                      : "w-full object-contain"
-                  )}
-                  loading="lazy"
-                />
-              </motion.div>
-            ))}
-          </div>
-        )}
-      </div>
-
-    </section>
+      )}
+    </motion.section>
   );
 }
 
 /* ═══════════════════════════════════════════════════════
-   MAIN COMPONENT — vertical scroll with sidebar
+   MAIN
 ═══════════════════════════════════════════════════════ */
 export function CaseStudyPresentation({
   frontmatter,
@@ -459,94 +394,109 @@ export function CaseStudyPresentation({
   slug,
 }: CaseStudyPresentationProps) {
   const contentRef = useRef<HTMLDivElement>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
   const [activeSection, setActiveSection] = useState(0);
 
-  // Track which section is in view via IntersectionObserver
-  // Find the nearest scrollable ancestor (modal scroll container) for root
+  // Resolve the scroll container once (modal scroll area, else window).
+  const getScrollEl = useCallback((): Element | null => {
+    return contentRef.current?.closest("[data-id='casestudy-modal-content']") ?? null;
+  }, []);
+
+  // Active section tracking
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
-
-    // Find the modal scroll container if we're inside one
-    const scrollRoot = contentRef.current?.closest("[data-id='casestudy-modal-content']") as Element | null;
-
+    const scrollRoot = getScrollEl();
     sectionRefs.current.forEach((el, i) => {
       if (!el) return;
       const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              setActiveSection(i);
-            }
-          });
-        },
-        {
-          root: scrollRoot || null,
-          rootMargin: "-20% 0px -60% 0px",
-          threshold: 0,
-        }
+        (entries) => entries.forEach((e) => e.isIntersecting && setActiveSection(i)),
+        { root: scrollRoot || null, rootMargin: "-22% 0px -60% 0px", threshold: 0 }
       );
       observer.observe(el);
       observers.push(observer);
     });
-
     return () => observers.forEach((o) => o.disconnect());
-  }, [sections.length]);
+  }, [sections.length, getScrollEl]);
 
-  function scrollToSection(index: number) {
-    const el = sectionRefs.current[index];
-    if (!el) return;
-
-    // If inside a modal, scroll the modal container instead of the page
-    const scrollContainer = el.closest("[data-id='casestudy-modal-content']");
-    if (scrollContainer) {
-      const containerTop = scrollContainer.getBoundingClientRect().top;
-      const elTop = el.getBoundingClientRect().top;
-      scrollContainer.scrollBy({ top: elTop - containerTop, behavior: "smooth" });
-    } else {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }
-
-  function setSectionRef(index: number) {
-    return (el: HTMLElement | null) => {
-      sectionRefs.current[index] = el;
+  // Reading-progress bar (writes a transform directly — no re-render per scroll)
+  useEffect(() => {
+    const scrollRoot = getScrollEl();
+    const target: Element | Window = scrollRoot ?? window;
+    const update = () => {
+      const bar = progressRef.current;
+      if (!bar) return;
+      let ratio = 0;
+      if (scrollRoot) {
+        const max = scrollRoot.scrollHeight - scrollRoot.clientHeight;
+        ratio = max > 0 ? scrollRoot.scrollTop / max : 0;
+      } else {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        ratio = max > 0 ? window.scrollY / max : 0;
+      }
+      bar.style.transform = `scaleX(${Math.min(1, Math.max(0, ratio))})`;
     };
-  }
+    update();
+    target.addEventListener("scroll", update, { passive: true });
+    return () => target.removeEventListener("scroll", update);
+  }, [getScrollEl]);
+
+  const scrollToSection = useCallback(
+    (index: number) => {
+      const el = sectionRefs.current[index];
+      if (!el) return;
+      const scrollRoot = getScrollEl() as HTMLElement | null;
+      const OFFSET = 64;
+      if (scrollRoot) {
+        const target = scrollRoot.scrollTop + (el.getBoundingClientRect().top - scrollRoot.getBoundingClientRect().top) - OFFSET;
+        smoothScrollTo(() => scrollRoot.scrollTop, (v) => (scrollRoot.scrollTop = v), target);
+      } else {
+        const target = window.scrollY + el.getBoundingClientRect().top - OFFSET;
+        smoothScrollTo(() => window.scrollY, (v) => window.scrollTo(0, v), target);
+      }
+    },
+    [getScrollEl]
+  );
+
+  const setSectionRef = (index: number) => (el: HTMLElement | null) => {
+    sectionRefs.current[index] = el;
+  };
 
   return (
     <div data-id="case-study-presentation" className="min-h-full">
-      {/* Main content — full width, vertical scroll */}
-      <main
+      {/* Reading progress bar */}
+      <div data-id="case-study-progress-track" className="sticky top-0 z-30 h-[2px] w-full bg-transparent">
+        <div
+          ref={progressRef}
+          data-id="case-study-progress-fill"
+          className="h-full w-full origin-left scale-x-0 bg-[var(--color-accent)]"
+        />
+      </div>
+
+      <div
         ref={contentRef}
         data-id="case-study-main"
-        className="w-full"
+        className="mx-auto w-full max-w-[760px] px-6 pb-40 pt-16 lg:px-8 lg:pt-24"
       >
-        {/* Cover */}
-        <div data-id="case-study-cover-wrapper" className="max-w-[860px] mx-auto">
-          <CoverSection frontmatter={frontmatter} />
-        </div>
+        <div data-id="case-study-content" className="min-w-0">
+          <IntroBlock frontmatter={frontmatter} slug={slug} />
 
-        {/* Story sections */}
-        <div
-          data-id="case-study-sections"
-          className="max-w-[860px] mx-auto px-5 sm:px-8 lg:px-10 pb-32 flex flex-col gap-0"
-        >
-          {sections.map((sectionContent, i) => (
-            <StorySection
-              key={i}
-              index={i}
-              heading={sectionHeadings[i]}
-              images={getSlideImages(slug, sectionHeadings[i])}
-              sectionRef={setSectionRef(i)}
-            >
-              {sectionContent}
-            </StorySection>
-          ))}
+          <div data-id="case-study-sections" className="flex flex-col">
+            {sections.map((sectionContent, i) => (
+              <StorySection
+                key={i}
+                index={i}
+                heading={sectionHeadings[i]}
+                images={getSlideImages(slug, sectionHeadings[i])}
+                sectionRef={setSectionRef(i)}
+              >
+                {sectionContent}
+              </StorySection>
+            ))}
+          </div>
         </div>
-      </main>
+      </div>
 
-      {/* Floating bottom nav — all screen sizes */}
       <FloatingNav
         headings={sectionHeadings}
         activeIndex={activeSection}
